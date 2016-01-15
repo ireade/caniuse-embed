@@ -56,6 +56,8 @@ strong {
 	position: relative;
 	border: 3px solid #DB5600;
 	border-bottom: 0;
+
+	display: none;
 }
 .feature-header {
 	padding: 10px 10px 0;
@@ -69,6 +71,12 @@ strong {
 	background-color: #DB5600;
 	color: #fff;
 	font-size: 1.1rem;
+}
+
+@media screen and (max-width: 500px) {
+	.feature-main {
+		padding: 10px 5px;
+	}
 }
 
 
@@ -170,7 +178,7 @@ th.android .browser-title {
 		-moz-transform: rotate(-90deg);
 		-ms-transform: rotate(-90deg);
 		-o-transform: rotate(-90deg);
-		filter: progid:DXImageTransform.Microsoft.BasicImage(rotation=3);
+		transform: rotate(-90deg);
 		white-space: nowrap;
 
 		left: 0;
@@ -226,6 +234,7 @@ tr.statistics td.y span:not(.usage),
 	color: #fff;
 }
 tr.statistics td.n span:not(.usage),
+tr.statistics td.p span:not(.usage),
 .legend .n {
 	background-color: #c44230;
 	color: #fff;
@@ -247,7 +256,6 @@ tr.statistics td span {
 
 
 
-
 .legend div {
 	display: inline-block;
 	width: auto;
@@ -256,6 +264,15 @@ tr.statistics td span {
 
 .note {
 	float: right;
+	font-weight: 600;
+}
+
+span.a {
+	color: #A8BD04;
+}
+
+span.y {
+	color: #39b54a;
 }
 
 @media screen and (max-width:500px) {
@@ -265,18 +282,3 @@ tr.statistics td span {
 		margin-bottom: 5px;
 	}
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-

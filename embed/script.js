@@ -22,11 +22,21 @@ $(document).ready(function() {
 
 		} else {
 
+			var global_y = feature.usage_perc_y;
+			var global_a = feature.usage_perc_a;
+			var global_total = global_y + global_a;
+
+			var description = feature.description;
+
+			if ( description.length > 190 ) {
+				description = description.slice(0, 180) + '....';
+			}
 
 			// DISPLAY GENERAL FEATURE INFORMATION
 			$('.feature-title span').html(feature.title);
-			$('.feature-description').html(feature.description);
-			$('.feature-link').attr('href', 'http://caniuse.com/#feat=' + featureID)
+			$('.feature-description').html(description);
+			$('.feature-link').attr('href', 'http://caniuse.com/#feat=' + featureID);
+			$('.note').html('Global: <span class="y">'+global_y+'%</span> + <span class="a">'+global_a+'%</span> = '+global_total+'%')
 
 
 			// GET BROWSER VERSIONS
@@ -100,5 +110,8 @@ $(document).ready(function() {
 
 
 		} // end else if feature
+
+		$('.feature').show();
+
 	}) // end get json
 })
