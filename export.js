@@ -10,17 +10,21 @@ $(document).ready(function() {
 	     } 
 	}
 
+	function capitalizeFirstLetter(string) {
+	    return string.charAt(0).toUpperCase() + string.slice(1);
+	}
+
 	// GET FEATURE DATA JSON
 	$.getJSON('https://raw.githubusercontent.com/Fyrd/caniuse/master/data.json', function(res) {
-
-		//console.log(res);
 
 		var featuresArray = [];
 
 		for (var feature in res.data) {
+			var featureTitle = res.data[feature].title;
+			featureTitle = capitalizeFirstLetter(featureTitle);
 			var feature = {
 				id: feature,
-				title: res.data[feature].title
+				title: featureTitle
 			}
 			featuresArray.push(feature);
 		}
