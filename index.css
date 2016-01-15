@@ -136,11 +136,54 @@ h3 {
 
 
 
-section {
+section.site-section {
 	margin-bottom: 50px;
 	padding-bottom: 30px;
 	border-bottom: 1px solid rgb(220, 220, 220);
 }
+section:not(.site-section) {
+	margin-bottom: 40px;
+}
+
+pre {
+	background-color: rgb(220, 220, 220);
+	padding: 10px;
+	display: block;
+	font-family: 'Source Code Pro', monospace;
+	font-size: 1.2rem;
+	color: #000;
+	margin-bottom: 15px;
+}
+
+
+select,
+input[type="submit"] {
+	height: 40px;
+	width: auto;
+	display: inline-block;
+	font-size: 1.6rem;
+    font-family: 'Source Sans Pro', sans-serif;
+}
+
+select {
+	padding: 5px;
+	background-color: #fff;
+	border: 2px solid #DB5600;
+	margin-right: 10px;
+	margin-bottom: 10px;
+
+}
+
+input[type="submit"] {
+	cursor: pointer;
+	padding: 5px 10px;
+	background-color: #DB5600;
+	border: 0;
+	border-radius: 5px;
+	color: #fff;
+
+}
+
 
 
 

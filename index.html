@@ -18,7 +18,7 @@
 
 		<section>
 		
-		<h1>Unofficial CanIUse Embed</h1>
+		<h1>(Unofficial) CanIUse Embed</h1>
 
 		<p class="about">Embed real-time data from <a href="http://caniuse.com" target="_blank">caniuse.com</a>. Displays feature support data for the latest three versions of the 10 major browsers.</p>
 
@@ -27,16 +27,8 @@
 		
 		</section>
 
-		<section>
+		<section class="site-section">
 			<h2>Example</h2>
-
-			
-			<pre>
-				<code>
-				<a href="">Hello</a>
-				</code>
-			</pre>
-			
 
 			<p class="ciu_embed" data-feature="svg-html">
 				<a href="http://caniuse.com/#feat=svg-html">Can I Use svg-html</a>
@@ -44,20 +36,63 @@
 		</section>
 
 
-		<section>
+		<section class="site-section">
 			<h2>How To Use</h2>
 
 
-			How to use information here
+
+			<section>
+
+			<h3>Step 1 - Include Script</h3>
+
+			<p>Include the following javascript file in your document. </p>
+
+<pre>&lt;script src="https://caniuse.bitsofco.de/caniuse-embed.js"&gt;&lt;/script&gt;</pre>
+
+			<p>This file will create the iframes as well as calculate the correct sizing for the iframe responsively.</p>
+				
+			</section>
+
+
+			<section>
+
+			<h3>Step 2 - Choose a Feature</h3>
+				
+			<div class="input-group">
+				<select name="featureID" id="featureID">
+					
+				</select>
+				<input type="submit" value="Generate">
+			</div>	
+				
+			</section>
+
+
+			<section class="step_3" style="display: none;">
+
+			<h3>Step 3 - Get Export Code</h3>
+
+			<div class="export"></div>
+				
+			</section>
+
+			
+
+
 		</section>
 
 		
 
 	</div>
-	
 
-	
 
-    <script src="client.js"></script>
+
+
+	<script src="caniuse-embed.js"></script>
+	
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
+	<script src="export.js"></script>
+
+    
 </body>
 </html>
