@@ -11,7 +11,7 @@ $(document).ready(function() {
 	
 	$.getJSON(caniuseDataUrl, function(res) {
 
-		console.log(res);
+		//console.log(res);
 
 		var feature = res.data[featureID];
 
@@ -25,7 +25,7 @@ $(document).ready(function() {
 
 
 
-		console.log(feature);
+		//console.log(feature);
 
 		$('.feature-title span').html(feature.title);
 		$('.feature-description').html(feature.description);

@@ -1,24 +1,23 @@
-var embeds = document.getElementsByClassName("ciu_embed");
+var caniuse_embeds = document.getElementsByClassName("ciu_embed");
 
-var pageWidth = document.body.clientWidth;
-
-var iframeHeight = '390px';
-if (pageWidth < 1000) {
-	iframeHeight = '400px';
-}
-if (pageWidth < 900) {
-	iframeHeight = '440px';
-}
-if (pageWidth < 750) {
-	iframeHeight = '550px';
-}
-if (pageWidth < 600) {
-	iframeHeight = '600px';
-}
-
-for (var i = 0; i < embeds.length; i++) {
-	var embed = embeds[i];
+for (var i = 0; i < caniuse_embeds.length; i++) {
+	var embed = caniuse_embeds[i];
 	var feature = embed.dataset.feature;
+
+	var parentWidth = embed.parentNode.offsetWidth;
+	var iframeHeight = '390px';
+	if (parentWidth < 1000) {
+		iframeHeight = '400px';
+	}
+	if (parentWidth < 900) {
+		iframeHeight = '440px';
+	}
+	if (parentWidth < 750) {
+		iframeHeight = '550px';
+	}
+	if (parentWidth < 600) {
+		iframeHeight = '600px';
+	}
 
 	if (!feature) {
 		embed.innerHTML = "A feature was not included. Add a feature ID to the 'data-feature' attribute of the element with class 'ciu_embed'.";
