@@ -39,10 +39,9 @@ a {
 h1 a {
 	text-decoration: none;
 }
-small {
-	font-size: 1rem;
-	display: block;
-	text-align: right;
+small,
+.legend {
+	font-size: 1.1rem;
 }
 strong {
 	font-weight: 600;
@@ -221,18 +220,53 @@ span.usage {
 
 
 
-tr.statistics td.y span:not(.usage) {
+tr.statistics td.y span:not(.usage),
+.legend .y {
 	background-color: #39b54a;
 	color: #fff;
 }
-tr.statistics td.n span:not(.usage){
+tr.statistics td.n span:not(.usage),
+.legend .n {
 	background-color: #c44230;
 	color: #fff;
 }
-tr.statistics td.a span:not(.usage) {
+tr.statistics td.a span:not(.usage),
+.legend .a {
 	background-color: #A8BD04;
 	color: #fff;
 }
+
+tr.statistics td.u span:not(.usage) {
+	background-color: #838383;
+	color: #fff;
+}
+
+tr.statistics td span {
+	position: relative;
+}
+
+
+
+
+.legend div {
+	display: inline-block;
+	width: auto;
+	padding: 3px 5px;
+}
+
+.note {
+	float: right;
+}
+
+@media screen and (max-width:500px) {
+	.note {
+		float: none;
+		display: block;
+		margin-bottom: 5px;
+	}
+}
+
+
 
 
 

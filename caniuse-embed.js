@@ -16,7 +16,7 @@ function calcIframeHeight(embed) {
 		iframeHeight = '550px';
 	}
 	if (parentWidth < 600) {
-		iframeHeight = '600px';
+		iframeHeight = '630px';
 	}
 	return iframeHeight;
 }
