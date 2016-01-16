@@ -7,6 +7,12 @@ $(document).ready(function() {
 
 	var browsers = ['ie', 'edge', 'firefox', 'chrome', 'safari', 'opera', 'ios_saf', 'op_mini', 'android', 'and_chr'];
 
+	function round(value, decimals) {
+		return Number(Math.round(value+'e'+decimals)+'e-'+decimals);
+	}
+
+
+
 
 	// GET CANIUSE JSON
 	$.getJSON(caniuseDataUrl, function(res) {
@@ -24,7 +30,8 @@ $(document).ready(function() {
 
 			var global_y = feature.usage_perc_y;
 			var global_a = feature.usage_perc_a;
-			var global_total = global_y + global_a;
+			var global_total = global_y + global_a,
+				global_total = round(global_total, 2);
 
 			var description = feature.description;
 
