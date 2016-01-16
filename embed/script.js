@@ -6,11 +6,11 @@ $(document).ready(function() {
 	var currentBrowserVersionIndex = 43;
 
 	var browsers = ['ie', 'edge', 'firefox', 'chrome', 'safari', 'opera', 'ios_saf', 'op_mini', 'android', 'and_chr'];
+	var periods = ['current', 'past_1', 'past_2', 'past_3'];
 
 	function round(value, decimals) {
 		return Number(Math.round(value+'e'+decimals)+'e-'+decimals);
 	}
-
 
 
 
@@ -81,40 +81,34 @@ $(document).ready(function() {
 					past_3: feature.stats[browser][ browserVersions[browser].past_3 ],
 				}
 			}
-
-
+	
 
 			// DISPLAY DATA
 			for (var i = 0; i < browsers.length; i++) {
 
 				var browser = browsers[i];
 
-				// GET CELL
-				var current = $('tr.current td.'+browser);
+				// LOOP THROUGH PERIODS (BROWSER VERSIONS)
+				for (var x = 0; x < periods.length; x++) {
 
-				// 	ADD SUPPORT CLASS TO TABLE CELL
-				data[browser].current != undefined ? current.addClass(data[browser].current) : false;
+					var period = periods[x];
+					var period_element = $('tr.'+period+' td.'+browser);
 
-				// ADD VERSION NUMBER TO TABLE CELL
-				browserVersions[browser].current != undefined ? current.html('<span>' + browserVersions[browser].current + '</span><span class="usage">'+currentBrowserUsage[browser]+'%</span>') : current.html('<span></span>');
+					// 	ADD SUPPORT CLASS TO TABLE CELL
+					data[browser][period] != undefined ? period_element.addClass(data[browser][period]) : false;
 
+					// GET VERSION NUMBER ALONE OR VERSION NUMBER WITH BROWSER USAGE
+					var versionString = '<span>' + browserVersions[browser][period] + '</span>';
+					if ( period === "current" ) {
+						versionString = '<span>' + browserVersions[browser].current + '</span><span class="usage">'+currentBrowserUsage[browser]+'%</span>';
+					} 
 
-				// REPEAT FOR PAST 
+					// ADD VERSION NUMBER TO TABLE CELL
+					browserVersions[browser][period] != undefined ? period_element.html(versionString) : period_element.html('<span></span>');
 
-				var past_1 = $('tr.past_1 td.'+browser);
-				data[browser].past_1 != undefined ? past_1.addClass(data[browser].past_1) : false;
-				browserVersions[browser].past_1 != undefined ? past_1.html('<span>' + browserVersions[browser].past_1 + '</span>') : past_1.html('<span></span>');
+				} // end loop through period
 
-				var past_2 = $('tr.past_2 td.'+browser);
-				data[browser].past_2 != undefined ? past_2.addClass(data[browser].past_2) : false;
-				browserVersions[browser].past_2 != undefined ? past_2.html('<span>' + browserVersions[browser].past_2 + '</span>') : past_2.html('<span></span>');
-
-				var past_3 = $('tr.past_3 td.'+browser);
-				data[browser].past_3 != undefined ? past_3.addClass(data[browser].past_3) : false;
-				browserVersions[browser].past_3 != undefined ? past_3.html('<span>' + browserVersions[browser].past_3 + '</span>') : past_3.html('<span></span>')
-
-			} // end display data
-
+			} // end display data loop
 
 		} // end else if feature
 

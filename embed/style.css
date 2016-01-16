@@ -247,17 +247,20 @@ tr.statistics td.y span:not(.usage),
 }
 tr.statistics td.n span:not(.usage),
 tr.statistics td.p span:not(.usage),
+tr.statistics td.d span:not(.usage),
 .legend .n {
 	background-color: #c44230;
 	color: #fff;
 }
 tr.statistics td.a span:not(.usage),
+tr.statistics td.x span:not(.usage),
 .legend .a {
 	background-color: #A8BD04;
 	color: #fff;
 }
 
-tr.statistics td.u span:not(.usage) {
+tr.statistics td.u span:not(.usage),
+.legend .u {
 	background-color: #838383;
 	color: #fff;
 }
