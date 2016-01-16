@@ -106,7 +106,7 @@ table.feature-support {
 
 	border-collapse: collapse;
 	border-spacing: 0;
-	margin-bottom: 10px;
+	margin-bottom: 20px;
 }
 
 @media screen and (max-width: 700px) {
@@ -201,27 +201,39 @@ tr.statistics td {
 	position: relative;
 }
 
+
 tr.statistics td span:not(.usage) {
 	display: block;
 	height: 100%;
 	width: 100%;
 	padding: 7px 0;
+	position: relative;
 }
 
 
 tr.current td {
 	border: 5px solid #584E3B;
+	position: relative;
 }
-tr.current td span:not(.usage) {
+tr.current td span {
 	border-top: 5px solid #584E3B;
 }
 
 span.usage {
-	font-size: 1rem;
-	display: block;
+	padding-top: 7px;
+	position: absolute;
 	width: 100%;
-	background-color: #f2e8d5;
-	padding: 2px 0;
+	background-color: #fff;
+	height: 100%;
+	top: 0;
+	left: 0;
+
+	display: none;
+}
+
+
+tr.current td:hover span.usage {
+	display: block;
 }
 
 
@@ -250,9 +262,7 @@ tr.statistics td.u span:not(.usage) {
 	color: #fff;
 }
 
-tr.statistics td span {
-	position: relative;
-}
+
 
 
 
