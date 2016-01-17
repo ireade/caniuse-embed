@@ -1,3 +1,17 @@
+/* VARS */
+
+$theme: #DB5600;
+$bg-colour: #f2e8d5;
+$dark-grey: #584E3B;
+
+$supported: #39b54a;
+$partial: #A8BD04;
+$not-supported: #c44230;
+$unknown: #838383;
+
+
+
+
 /* RESET */
 html, body, div, span, 
 h1, p, a, small, strong, 
@@ -52,9 +66,9 @@ strong {
 /* FEATURE LAYOUT */
 
 .feature {
-	background-color: #f2e8d5;
+	background-color: $bg-colour;
 	position: relative;
-	border: 3px solid #DB5600;
+	border: 3px solid $theme;
 	border-bottom: 0;
 
 	display: none;
@@ -72,7 +86,7 @@ strong {
 .feature-footer {
 	padding: 5px 10px;
 	margin-top: 20px;
-	background-color: #DB5600;
+	background-color: $theme;
 	color: #fff;
 	font-size: 1.1rem;
 }
@@ -122,7 +136,7 @@ table.feature-support {
 table.feature-support thead th {
 	width: 10%;
 	vertical-align: bottom;
-	border: 5px solid #f2e8d5;
+	border: 5px solid $bg-colour;
 }
 
 .browser-title {
@@ -193,7 +207,7 @@ th.android .browser-title {
 /* FEATURE STATISTICS */
 
 tr.statistics td {
-	border: 5px solid #f2e8d5;
+	border: 5px solid $bg-colour;
 	text-align: center;
 	position: relative;
 }
@@ -209,11 +223,11 @@ tr.statistics td span:not(.usage) {
 
 
 tr.current td {
-	border: 5px solid #584E3B;
+	border: 5px solid $dark-grey;
 	position: relative;
 }
 tr.current td span {
-	border-top: 5px solid #584E3B;
+	border-top: 5px solid $dark-grey;
 }
 
 span.usage {
@@ -239,26 +253,26 @@ tr.current td:hover span.usage {
 
 tr.statistics td.y span:not(.usage),
 .legend .y {
-	background-color: #39b54a;
+	background-color: $supported;
 	color: #fff;
 }
 tr.statistics td.n span:not(.usage),
 tr.statistics td.p span:not(.usage),
 tr.statistics td.d span:not(.usage),
 .legend .n {
-	background-color: #c44230;
+	background-color: $not-supported;
 	color: #fff;
 }
 tr.statistics td.a span:not(.usage),
 tr.statistics td.x span:not(.usage),
 .legend .a {
-	background-color: #A8BD04;
+	background-color: $partial;
 	color: #fff;
 }
 
 tr.statistics td.u span:not(.usage),
 .legend .u {
-	background-color: #838383;
+	background-color: $unknown;
 	color: #fff;
 }
 
@@ -282,9 +296,9 @@ tr.statistics td.u span:not(.usage),
 }
 
 span.a {
-	color: #A8BD04;
+	color: $partial;
 }
 span.y {
-	color: #39b54a;
+	color: $supported;
 }
 

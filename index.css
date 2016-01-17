@@ -159,8 +159,7 @@ pre {
 
 select,
 input[type="submit"] {
-	height: 40px;
-	width: auto;
+	height: 40px;	
 	display: inline-block;
 	font-size: 1.6rem;
     font-family: 'Source Sans Pro', sans-serif;
@@ -173,9 +172,13 @@ select {
 	margin-right: 10px;
 	margin-bottom: 10px;
 
+	width: 100%;
+	max-width: 300px;
+
 }
 
 input[type="submit"] {
+	width: auto;
 	cursor: pointer;
 	padding: 5px 10px;
 	background-color: #DB5600;
@@ -189,7 +192,6 @@ input[type="submit"] {
 
 
 /* Twemoji Awesome - http://ellekasai.github.io/twemoji-awesome/ */
-
  .twa {
   display: inline-block;
   height: 1em;
@@ -201,7 +203,8 @@ input[type="submit"] {
   background-size: 1em 1em; }
 
 .twa-heart {
-  background-image: url("https://twemoji.maxcdn.com/svg/2764.svg"); }
+  background-image: url("https://twemoji.maxcdn.com/svg/2764.svg"); 
+}
 
 
 
