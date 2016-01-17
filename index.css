@@ -147,6 +147,7 @@ pre {
 	font-size: 1.2rem;
 	color: #000;
 	margin-bottom: 15px;
+	white-space: pre-line;
 }
 
 
