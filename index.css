@@ -93,6 +93,8 @@ h1 {
 }
 
 
+
+
 p.about {
 	font-size: 2.5rem;
 	margin-bottom: 20px;
@@ -113,6 +115,10 @@ h3 {
 	font-size: 2rem;
 	font-weight: 600;
 	margin-bottom: 20px;
+}
+
+.uo {
+	color: rgb(180, 180, 180);
 }
 
 
@@ -182,7 +188,20 @@ input[type="submit"] {
 
 
 
+/* Twemoji Awesome - http://ellekasai.github.io/twemoji-awesome/ */
 
+ .twa {
+  display: inline-block;
+  height: 1em;
+  width: 1em;
+  margin: 0 .05em 0 .1em;
+  vertical-align: -0.1em;
+  background-repeat: no-repeat;
+  background-position: center center;
+  background-size: 1em 1em; }
+
+.twa-heart {
+  background-image: url("https://twemoji.maxcdn.com/svg/2764.svg"); }
 
 
 

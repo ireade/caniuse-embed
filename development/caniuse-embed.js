@@ -28,7 +28,7 @@ for (var i = 0; i < caniuse_embeds.length; i++) {
 	if (!feature) {
 		embed.innerHTML = "A feature was not included. Add a caniuse feature ID to the 'data-feature' attribute of the element with class 'ciu_embed'.";
 	} else {
-		var iframe = '<iframe src="https://caniuse.bitsofco.de/embed/index.html?feat='+feature+'" frameborder="0" width="100%" height="'+iframeHeight+'"></iframe>';
+		var iframe = '<iframe src="http://caniuse.bitsofco.de/embed/index.html?feat='+feature+'" frameborder="0" width="100%" height="'+iframeHeight+'"></iframe>';
 		embed.innerHTML = iframe;
 	}
 }
