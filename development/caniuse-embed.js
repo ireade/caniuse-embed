@@ -2,19 +2,25 @@ var caniuse_embeds = document.getElementsByClassName("ciu_embed");
 
 function calcIframeHeight(embed) {
 	var parentWidth = embed.parentNode.offsetWidth; 
-	var iframeHeight = '480px';
+	var iframeHeight = '430px';
 
-	if (parentWidth < 400) {
-		iframeHeight = '690px';
+	if (parentWidth < 350) {
+		iframeHeight = '620px';
+	} 
+	else if (parentWidth < 400) {
+		iframeHeight = '610px';
 	} 
 	else if (parentWidth < 500) {
-		iframeHeight = '650px';
+		iframeHeight = '580px';
 	} 
 	else if (parentWidth < 600) {
-		iframeHeight = '590px';
+		iframeHeight = '550px';
 	}
-	else if (parentWidth < 700) {
-		iframeHeight = '560px';
+	else if (parentWidth < 650) {
+		iframeHeight = '550px';
+	}
+	else if (parentWidth < 710) {
+		iframeHeight = '520px';
 	}
 
 	return iframeHeight;

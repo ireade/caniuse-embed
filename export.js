@@ -17,7 +17,7 @@ $(document).ready(function() {
 	// GET FEATURE DATA JSON
 	$.getJSON('https://raw.githubusercontent.com/Fyrd/caniuse/master/data.json', function(res) {
 
-		console.log(res);
+		//console.log(res);
 
 		var featuresArray = [];
 
