@@ -20,7 +20,7 @@ function calcIframeHeight(embed) {
 		iframeHeight = '550px';
 	}
 	else if (parentWidth < 710) {
-		iframeHeight = '520px';
+		iframeHeight = '530px';
 	}
 
 	return iframeHeight;
