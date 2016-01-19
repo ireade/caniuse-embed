@@ -264,7 +264,6 @@ tr.statistics td.d span:not(.usage),
 	color: #fff;
 }
 tr.statistics td.a span:not(.usage),
-tr.statistics td.x span:not(.usage),
 .legend .a {
 	background-color: $partial;
 	color: #fff;
@@ -275,6 +274,29 @@ tr.statistics td.u span:not(.usage),
 	background-color: $unknown;
 	color: #fff;
 }
+
+tr.statistics td.x span:not(.usage):after {
+	// with Prefix
+	content: ' ';
+	position: absolute;
+	top: 0;
+	right: 0;
+	background-color: #ff6;
+	color: #000;
+	line-height: 1;
+	font-size: 1pt;
+
+	height: 10px;
+    width: 10px;
+
+    @media screen and (max-width: 600px) {
+    	height: 6px;
+    }
+}
+// .legend .x {
+// 	background-color: #ff6;
+// 	color: #000;
+// }
 
 
 .legend div {
