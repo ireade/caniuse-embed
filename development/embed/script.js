@@ -92,12 +92,16 @@ $(document).ready(function() {
 					//past_3: feature.stats[browser][ browserVersions[browser].past_3 ],
 				}
 			}
-	
+		
+
+			var hasPrefixed = false;
 
 			// DISPLAY DATA
 			for (var i = 0; i < browsers.length; i++) {
 
 				var browser = browsers[i];
+
+
 
 				// LOOP THROUGH PERIODS (BROWSER VERSIONS)
 				for (var x = 0; x < periods.length; x++) {
@@ -119,9 +123,19 @@ $(document).ready(function() {
 					// ADD VERSION NUMBER TO TABLE CELL
 					browserVersions[browser][period] != undefined ? period_element.html(versionString) : period_element.html('<span></span>');
 
+					// CHECK IF ANY HAS PREFIX
+					if ( data[browser][period] != undefined && data[browser][period].indexOf('x') > -1 ) {
+						hasPrefixed = true;
+					}
+
+			
+
 				} // end loop through period
 
 			} // end display data loop
+
+			// DISPLAY PREFIX LEGEND IF DATA HAS PREFIXED
+			hasPrefixed ? $('.legend .x').show() : $('.legend .x').hide()
 
 		} // end else if feature
 
