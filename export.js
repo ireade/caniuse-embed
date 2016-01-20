@@ -50,9 +50,9 @@ $(document).ready(function() {
 
 		var featureID = $('select[name="featureID"]').val();
 
-		var exportCode = '<p>Paste this snippet where you want the embed to be displayed:</p><pre>&lt;p class="ciu_embed" data-feature="'+featureID+'">\n&nbsp;&nbsp;&lt;a href="http://caniuse.com/#feat='+featureID+'">Can I Use '+featureID+'&lt;/a&gt;\n&lt;/p&gt;</pre>';
+		var exportCode = '<p>Paste this snippet where you want the embed to be displayed:</p><pre>&lt;p class="ciu_embed" data-feature="'+featureID+'">\n&nbsp;&nbsp;&lt;a href="http://caniuse.com/#feat='+featureID+'">Can I Use '+featureID+'?&lt;/a&gt; Data on support for the '+featureID+' feature across the major browsers from caniuse.com.\n&lt;/p&gt;</pre>';
 
-		var preview = '<p>Preview of embed:</p><p class="ciu_embed" data-feature="'+featureID+'">\n&nbsp;&nbsp;<a href="http://caniuse.com/#feat='+featureID+'">Can I Use '+featureID+'?</a>\n</p>';
+		var preview = '<p>Preview of embed:</p><p class="ciu_embed" data-feature="'+featureID+'">\n&nbsp;&nbsp;<a href="http://caniuse.com/#feat='+featureID+'">Can I Use '+featureID+'?</a> Data on support for the '+featureID+' feature across the major browsers from caniuse.com.\n</p>';
 
 
 		$('.step_3').show();

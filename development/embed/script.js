@@ -6,7 +6,7 @@ $(document).ready(function() {
 	var currentBrowserVersionIndex = 43;
 
 	var browsers = ['ie', 'edge', 'firefox', 'chrome', 'safari', 'opera', 'ios_saf', 'op_mini', 'android', 'and_chr'];
-	var periods = ['current', 'past_1', 'past_2', 'past_3'];
+	var periods = ['future_1', 'current', 'past_1', 'past_2'];
 
 	function round(value, decimals) {
 		return Number(Math.round(value+'e'+decimals)+'e-'+decimals);
@@ -25,6 +25,8 @@ $(document).ready(function() {
 	$.getJSON(caniuseDataUrl, function(res) {
 
 		var feature = res.data[featureID];
+
+		//console.log(feature);
 
 		if (!feature) {
 
@@ -58,10 +60,11 @@ $(document).ready(function() {
 			for (var i = 0; i < browsers.length; i++) {
 				var browser = browsers[i];
 				browserVersions[browser] = {
+					future_1: res.agents[browser].versions[currentBrowserVersionIndex + 1],
 					current: res.agents[browser].versions[currentBrowserVersionIndex],
 					past_1: res.agents[browser].versions[currentBrowserVersionIndex - 1],
 					past_2: res.agents[browser].versions[currentBrowserVersionIndex - 2],
-					past_3: res.agents[browser].versions[currentBrowserVersionIndex - 3]
+					//past_3: res.agents[browser].versions[currentBrowserVersionIndex - 3]
 				}
 			}
 
@@ -82,10 +85,11 @@ $(document).ready(function() {
 			for (var i = 0; i < browsers.length; i++) {
 				var browser = browsers[i];
 				data[browser] = {
+					future_1: feature.stats[browser][ browserVersions[browser].future_1 ],
 					current: feature.stats[browser][ browserVersions[browser].current ],
 					past_1: feature.stats[browser][ browserVersions[browser].past_1 ],
 					past_2: feature.stats[browser][ browserVersions[browser].past_2 ],
-					past_3: feature.stats[browser][ browserVersions[browser].past_3 ],
+					//past_3: feature.stats[browser][ browserVersions[browser].past_3 ],
 				}
 			}
 	
