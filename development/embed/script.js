@@ -20,8 +20,7 @@ $(document).ready(function() {
 	}
 
 
-	$('.default-message').html('<a href="http://caniuse.com/#feat='+featureID+'">Can I Use '+featureID+'?</a> Data on support for the '+featureID+' feature across the major browsers from caniuse.com.');
-
+	$('.default-message').html('<a href="http://caniuse.com/#feat='+featureID+'">Can I Use '+featureID+'?</a> Data on support for the '+featureID+' feature across the major browsers from caniuse.com. (Embed Loading)');
 
 
 	// GET CANIUSE JSON
@@ -98,6 +97,7 @@ $(document).ready(function() {
 		
 
 			var hasPrefixed = false;
+			var hasUnknown = false;
 
 			// DISPLAY DATA
 			for (var i = 0; i < browsers.length; i++) {
@@ -126,9 +126,14 @@ $(document).ready(function() {
 					// ADD VERSION NUMBER TO TABLE CELL
 					browserVersions[browser][period] != undefined ? period_element.html(versionString) : period_element.html('<span></span>');
 
-					// CHECK IF ANY HAS PREFIX
+
+					// CHECK IF ANY HAS PREFIX OR UNKOWN
+
 					if ( data[browser][period] != undefined && data[browser][period].indexOf('x') > -1 ) {
 						hasPrefixed = true;
+					}
+					if ( data[browser][period] != undefined && data[browser][period].indexOf('u') > -1 ) {
+						hasUnknown = true;
 					}
 
 			
@@ -139,6 +144,7 @@ $(document).ready(function() {
 
 			// DISPLAY PREFIX LEGEND IF DATA HAS PREFIXED
 			hasPrefixed ? $('.legend .x').show() : $('.legend .x').hide()
+			hasUnknown ? $('.legend .u').show() : $('.legend .u').hide()
 
 		} // end else if feature
 
