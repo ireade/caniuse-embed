@@ -20,6 +20,9 @@ $(document).ready(function() {
 	}
 
 
+	$('.default-message').html('<a href="http://caniuse.com/#feat='+featureID+'">Can I Use '+featureID+'?</a> Data on support for the '+featureID+' feature across the major browsers from caniuse.com.');
+
+
 
 	// GET CANIUSE JSON
 	$.getJSON(caniuseDataUrl, function(res) {
@@ -139,6 +142,7 @@ $(document).ready(function() {
 
 		} // end else if feature
 
+		$('.default-message').hide();
 		$('.feature').show();
 
 	}) // end get json
