@@ -15,7 +15,7 @@ $(document).ready(function() {
 	}
 
 	// GET FEATURE DATA JSON
-	$.getJSON('https://raw.githubusercontent.com/Fyrd/caniuse/master/data.json', function(res) {
+	$.getJSON('https://raw.githubusercontent.com/Fyrd/caniuse/master/fulldata-json/data-2.0.json', function(res) {
 
 		//console.log(res);
 

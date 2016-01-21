@@ -3,14 +3,14 @@
 <link href="https://fonts.googleapis.com/css?family=Open+Sans:300,600' rel='stylesheet" rel="stylesheet" inline>
 <link rel="stylesheet" href="style.css" inline>
 
-<div class="default-message"></div>
+<div id="defaultMessage"></div>
 	
 <article class="feature">
 
 	<header class="feature-header">
 		<h1 class="feature-title">
-			<a href="/" class="feature-link" target="_blank">
-			<span></span>
+			<a href="/" id="featureLink" target="_blank">
+			<span id="featureTitle"></span>
 			<svg width="15px" viewBox="0 0 68 69">
 				<title>External Link</title>
         <g fill="#DB5600">
@@ -22,11 +22,11 @@
 		</h1>
 		
 	    
-		<p class="feature-description">&nbsp;</p>
+		<p class="feature-description" id="featureDescription">&nbsp;</p>
 	</header>
 
 
-	<main class="feature-main">
+	<main class="feature-main" id="featureMain">
 		<table class="feature-support">
 
 			<thead>
@@ -122,14 +122,14 @@
 			
 		</table>
 
-		<small class="note"></small>
+		<small class="note" id="note"></small>
 
 		<div class="legend">
 			<div class="y" aria-label="Supported">&#x2713;</div>
 			<div class="n" aria-lablel="Not Supported">&#x2717;</div>
-			<div class="u" aria-lablel="Unknown Support">?</div>
+			<div class="u" aria-lablel="Unknown Support" id="legendU">?</div>
 			<div class="a">Partial Support</div>
-			<div class="x">Prefixed</div>
+			<div class="x" id="legendX">Prefixed</div>
 		</div>
 	</main>
 
@@ -139,7 +139,7 @@
 	
 </article>
 
-<script src="jquery.min.js"></script>
+
 <script src="script.js"></script>
 </body>
 </html>
