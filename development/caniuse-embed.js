@@ -28,7 +28,7 @@ function calcIframeHeight(embed) {
 
 for (var i = 0; i < caniuse_embeds.length; i++) {
 	var embed = caniuse_embeds[i];
-	var feature = embed.dataset.feature;
+	var feature = embed.getAttribute('data-feature');
 	var iframeHeight = calcIframeHeight(embed);
 
 	if (!feature) {

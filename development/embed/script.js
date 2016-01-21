@@ -1,9 +1,11 @@
 $(document).ready(function() {
 
 	var caniuseDataUrl = 'https://raw.githubusercontent.com/Fyrd/caniuse/master/data.json';
+
+	var caniuseDataUrl = 'https://raw.githubusercontent.com/Fyrd/caniuse/master/fulldata-json/data-2.0.json';
+
 	var featureID = location.href.split('?feat=')[1];
 
-	var currentBrowserVersionIndex = 43;
 
 	var browsers = ['ie', 'edge', 'firefox', 'chrome', 'safari', 'opera', 'ios_saf', 'op_mini', 'android', 'and_chr'];
 	var periods = ['future_1', 'current', 'past_1', 'past_2'];
@@ -26,9 +28,11 @@ $(document).ready(function() {
 	// GET CANIUSE JSON
 	$.getJSON(caniuseDataUrl, function(res) {
 
+		//console.log(res);
+
 		var feature = res.data[featureID];
 
-		//console.log(feature);
+		
 
 		if (!feature) {
 
@@ -61,14 +65,26 @@ $(document).ready(function() {
 			var browserVersions = {};
 			for (var i = 0; i < browsers.length; i++) {
 				var browser = browsers[i];
+
+				var currentVersion = res.agents[browser].current_version;
+				var currentVersionIndex;
+
+				for (var x = 0; x < res.agents[browser].version_list.length; x++ ) {
+					if ( res.agents[browser].version_list[x].era === 0 ) {
+						currentVersionIndex = x;
+					}
+				} 
+
+				currentVersionIndex = parseInt(currentVersionIndex);
+
 				browserVersions[browser] = {
-					future_1: res.agents[browser].versions[currentBrowserVersionIndex + 1],
-					current: res.agents[browser].versions[currentBrowserVersionIndex],
-					past_1: res.agents[browser].versions[currentBrowserVersionIndex - 1],
-					past_2: res.agents[browser].versions[currentBrowserVersionIndex - 2],
-					//past_3: res.agents[browser].versions[currentBrowserVersionIndex - 3]
+					future_1: res.agents[browser].version_list[currentVersionIndex + 1] ? res.agents[browser].version_list[currentVersionIndex + 1].version : null,
+					current: currentVersion,
+					past_1: res.agents[browser].version_list[currentVersionIndex - 1] ? res.agents[browser].version_list[currentVersionIndex - 1].version : null,
+					past_2: res.agents[browser].version_list[currentVersionIndex - 2] ? res.agents[browser].version_list[currentVersionIndex - 2].version : null
 				}
 			}
+
 
 
 			// GET LATEST BROWSER VERSION USAGE
@@ -90,10 +106,11 @@ $(document).ready(function() {
 					future_1: feature.stats[browser][ browserVersions[browser].future_1 ],
 					current: feature.stats[browser][ browserVersions[browser].current ],
 					past_1: feature.stats[browser][ browserVersions[browser].past_1 ],
-					past_2: feature.stats[browser][ browserVersions[browser].past_2 ],
-					//past_3: feature.stats[browser][ browserVersions[browser].past_3 ],
+					past_2: feature.stats[browser][ browserVersions[browser].past_2 ]
 				}
 			}
+
+			//console.log(data);
 		
 
 			var hasPrefixed = false;
