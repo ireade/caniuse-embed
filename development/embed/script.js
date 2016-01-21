@@ -87,15 +87,38 @@ $(document).ready(function() {
 
 
 
-			// GET LATEST BROWSER VERSION USAGE
-			var currentBrowserUsage = {};
+			// GET BROWSER VERSION USAGE
+			var browserUsage = {};
 			for (var i = 0; i < browsers.length; i++) {
 				var browser = browsers[i];
+
+				var future_1 = browserVersions[browser].future_1;
+				var future_1_usage = res.agents[browser].usage_global[future_1],
+					future_1_usage = future_1_usage ? future_1_usage.toFixed(2) : 0;
+
 				var current = browserVersions[browser].current;
-				var rawUsage = parseInt(res.agents[browser].usage_global[current] );
-				var roundedUsage = Math.round(rawUsage);
-				currentBrowserUsage[browser] = roundedUsage;
+				var current_usage = res.agents[browser].usage_global[current],
+					current_usage = current_usage ? current_usage.toFixed(2) : 0;
+
+				var past_1 = browserVersions[browser].past_1;
+				var past_1_usage = res.agents[browser].usage_global[past_1],
+					past_1_usage = past_1_usage ? past_1_usage.toFixed(2) : 0;
+
+				var past_2 = browserVersions[browser].past_2;
+				var past_2_usage = res.agents[browser].usage_global[past_2],
+					past_2_usage = past_2_usage ? past_2_usage.toFixed(2) : 0;
+
+				browserUsage[browser] = {
+					future_1: future_1_usage,
+					current: current_usage,
+					past_1: past_1_usage,
+					past_2: past_2_usage
+				}
 			}
+
+	
+
+	
 
 
 			// GET DATA FOR EACH BROWSER
@@ -110,7 +133,7 @@ $(document).ready(function() {
 				}
 			}
 
-			//console.log(data);
+
 		
 
 			var hasPrefixed = false;
@@ -136,9 +159,9 @@ $(document).ready(function() {
 					var browserVersion = getShortenedBrowserVersion( browserVersions[browser][period] );
 					var versionString = '<span>' + browserVersion + '</span>';
 
-					if ( period === "current" ) {
-						versionString = '<span>' + browserVersion + '</span><span class="usage">'+currentBrowserUsage[browser]+'%</span>';
-					} 
+					//if ( period === "current" ) {
+						versionString = '<span>' + browserVersion + '</span><span class="usage">'+browserUsage[browser][period]+'%</span>';
+					//} 
 
 					// ADD VERSION NUMBER TO TABLE CELL
 					browserVersions[browser][period] != undefined ? period_element.html(versionString) : period_element.html('<span></span>');

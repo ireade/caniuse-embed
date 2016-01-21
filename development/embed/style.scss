@@ -212,6 +212,10 @@ tr.statistics td {
 	position: relative;
 }
 
+tr.statistics td:hover {
+	cursor: default;
+}
+
 
 tr.statistics td span:not(.usage) {
 	display: block;
@@ -243,7 +247,7 @@ span.usage {
 }
 
 
-tr.current td:hover span.usage {
+td:hover span.usage {
 	display: block;
 }
 
