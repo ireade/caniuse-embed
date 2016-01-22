@@ -89,6 +89,8 @@ $(document).ready(function() {
 		head.appendChild(script);
 
 
+		ga('send', 'event', 'button', 'click', 'generate embed');
+
 		return false;
 	})
 
