@@ -29,6 +29,9 @@ $(document).ready(function() {
 	}
 
 	
+	$('input[value="current"]').on('click', function() {
+		return false;
+	})
 
 
 	// GET FEATURE DATA JSON

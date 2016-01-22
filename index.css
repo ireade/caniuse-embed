@@ -157,6 +157,25 @@ pre {
 }
 
 
+
+
+.input-group {
+	margin-bottom: 20px;
+}
+
+label {
+	display: block;
+}
+
+.main-label {
+	font-weight: 600;
+	margin-bottom: 5px;
+}
+
+label:not(.main-label) {
+	padding: 5px 0;
+}
+
 select,
 input[type="submit"] {
 	height: 40px;	
@@ -173,7 +192,7 @@ select {
 	margin-bottom: 10px;
 
 	width: 100%;
-	max-width: 300px;
+	max-width: 400px;
 
 }
 
@@ -187,6 +206,15 @@ input[type="submit"] {
 	color: #fff;
 
 }
+
+label.current {
+	font-weight: 600;
+}
+
+input[type="checkbox"] {
+}
+
+
 
 
 

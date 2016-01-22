@@ -2,9 +2,9 @@ var caniuse_embeds = document.getElementsByClassName("ciu_embed");
 
 function calcIframeHeight(embed, rows) {
 	var parentWidth = embed.parentNode.offsetWidth; 
-	var iframeHeight = 310;
+	var rowHeight = 40; // height of each row
 
-	var rowHeight = 40;
+	var iframeHeight = 310; // default Iframe Height for large screens
 
 	if (parentWidth < 350) {
 		iframeHeight = 460;
@@ -16,7 +16,7 @@ function calcIframeHeight(embed, rows) {
 		iframeHeight = 420;
 	} 
 	else if (parentWidth < 600) {
-		iframeHeight = 390;
+		iframeHeight = 400;
 	}
 	else if (parentWidth < 650) {
 		iframeHeight = 390;
@@ -54,7 +54,7 @@ window.onresize = function(event) {
 	for (var i = 0; i < caniuse_embeds.length; i++) {
 		var embed = caniuse_embeds[i];
 		var periods = embed.getAttribute('data-periods'),
-		periodsArray = periods.split(",");
+			periodsArray = periods.split(",");
 		var iframeHeight = calcIframeHeight(embed, periodsArray.length);
 		if ( iframeHeight != embed.childNodes[0].height ) {
 			embed.childNodes[0].height = iframeHeight;

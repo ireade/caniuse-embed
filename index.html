@@ -38,7 +38,7 @@
 		
 		<h1>The <span class="uo">(Unofficial)</span> CanIUse Embed</h1>
 
-		<p class="about">Embed up-to-date data from <a href="http://caniuse.com" target="_blank">caniuse.com</a>. Displays feature support data for the latest four versions of the 10 major browsers. Reliable data, fully responsive design.</p>
+		<p class="about">Embed up-to-date data from <a href="http://caniuse.com" target="_blank">caniuse.com</a>. Displays feature support data for the latest four versions of the 10 major browsers. Configurable, reliable, and fully responsive.</p>
 
 
 
@@ -59,10 +59,18 @@
 		</section>
 
 		<section class="site-section">
-			<h2>Example</h2>
+			<h2>Examples</h2>
 
-			<p class="ciu_embed" data-feature="svg-html" data-periods="future_1,current,past_1,past_2,past_3" style="border: 1px solid red;">
-				<a href="http://caniuse.com/#feat=svg-html">Can I Use picture?</a> Data on support for the svg-html feature across the major browsers from caniuse.com.
+
+			<p>Default:</p>
+			<p class="ciu_embed" data-feature="viewport-units" data-periods="future_1,current,past_1,past_2">   
+				<a href="http://caniuse.com/#feat=viewport-units">Can I Use viewport-units?</a> Data on support for the viewport-units feature across the major browsers from caniuse.com. 
+			</p>
+
+
+			<p>Only showing current and future versions: </p>
+			<p class="ciu_embed" data-feature="css-variables" data-periods="future_2,future_1,current">   
+				<a href="http://caniuse.com/#feat=css-variables">Can I Use css-variables?</a> Data on support for the css-variables feature across the major browsers from caniuse.com. 
 			</p>
 		</section>
 
@@ -90,17 +98,29 @@
 			<h3>Step 2 - Choose Embed Settings</h3>
 				
 			<div class="input-group">
-				<label for="featureID">Choose a Feature</label>
+				<label for="featureID" class="main-label">a) Choose a Feature</label>
 				<select name="featureID" id="featureID">
 				</select>
 			</div>
 
 			<div class="input-group">
-				<label>Select</label>
+				<label class="main-label">b) Select the Browser Versions to Display</label>
 
-				<label> <input type="checkbox" name="periods" value="future_1"> Future 1 </label>
+				<label> <input type="checkbox" name="periods" value="future_2"> Current Version + 2 </label>
 
-				<label> <input type="checkbox" name="periods" value="current"> Current </label>
+				<label> <input type="checkbox" name="periods" value="future_1" checked="checked"> Current Version + 1 </label>
+
+				<label class="current"> <input type="checkbox" name="periods" value="current" checked="checked"> Current Version</label>
+
+				<label> <input type="checkbox" name="periods" value="past_1" checked="checked"> Current Version - 1 </label>
+
+				<label> <input type="checkbox" name="periods" value="past_2" checked="checked"> Current Version - 2 </label>
+
+				<label> <input type="checkbox" name="periods" value="past_3"> Current Version - 3 </label>
+
+				<label> <input type="checkbox" name="periods" value="past_4"> Current Version - 4 </label>
+
+				<label> <input type="checkbox" name="periods" value="past_5"> Current Version - 5 </label>
 
 			</div>
 
