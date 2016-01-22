@@ -34,10 +34,8 @@ for (var i = 0; i < caniuse_embeds.length; i++) {
 	var embed = caniuse_embeds[i];
 	var feature = embed.getAttribute('data-feature');
 	var periods = embed.getAttribute('data-periods'),
-		periodsArray = periods.split(",");
+			periodsArray = periods.split(",");
 	var iframeHeight = calcIframeHeight(embed, periodsArray.length);
-
-	//console.log(periods);
 
 	if (feature) {
 		
@@ -46,7 +44,7 @@ for (var i = 0; i < caniuse_embeds.length; i++) {
 
 	} else {
 
-		embed.innerHTML = "A feature was not included. Add a caniuse feature ID to the 'data-feature' attribute of the element with class 'ciu_embed'.";
+		embed.innerHTML = "A feature was not included. Go to <a href='http://caniuse.bitsofco.de/#how-to-use'>http://caniuse.bitsofco.de/#how-to-use</a> to generate an embed.";
 	}
 }
 

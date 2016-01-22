@@ -12,7 +12,7 @@
 	<meta name="twitter:site" content="@ireaderinokun">
 	<meta name="twitter:creator" content="@ireaderinokun">
 	<meta name="twitter:title" content="The (Unofficial) Embed for CanIUse Data">
-	<meta name="twitter:description" content="Embed up-to-date data from caniuse.com. Displays feature support data for the latest four versions of the 10 major browsers. Reliable data, fully responsive design.">
+	<meta name="twitter:description" content="Embed up-to-date data from caniuse.com. Displays feature support data for various versions of the 10 major browsers. Configurable, reliable, and fully responsive.">
 	<meta name="twitter:image" content="http://caniuse.bitsofco.de/example.png">
 
 	
@@ -38,7 +38,7 @@
 		
 		<h1>The <span class="uo">(Unofficial)</span> CanIUse Embed</h1>
 
-		<p class="about">Embed up-to-date data from <a href="http://caniuse.com" target="_blank">caniuse.com</a>. Displays feature support data for the latest four versions of the 10 major browsers. Configurable, reliable, and fully responsive.</p>
+		<p class="about">Embed up-to-date data from <a href="http://caniuse.com" target="_blank">caniuse.com</a>. Displays feature support data for various versions of the 10 major browsers. Configurable, reliable, and fully responsive.</p>
 
 
 
@@ -106,21 +106,23 @@
 			<div class="input-group">
 				<label class="main-label">b) Select the Browser Versions to Display</label>
 
-				<label> <input type="checkbox" name="periods" value="future_2"> Current Version + 2 </label>
+				<label> <input type="checkbox" name="periods" value="future_3"> Future Version (Current + 3) </label>
 
-				<label> <input type="checkbox" name="periods" value="future_1" checked="checked"> Current Version + 1 </label>
+				<label> <input type="checkbox" name="periods" value="future_2"> Future Version (Current + 2) </label>
 
-				<label class="current"> <input type="checkbox" name="periods" value="current" checked="checked"> Current Version</label>
+				<label> <input type="checkbox" name="periods" value="future_1" checked="checked"> Future Version (Current + 1) </label>
 
-				<label> <input type="checkbox" name="periods" value="past_1" checked="checked"> Current Version - 1 </label>
+				<label class="current"> <input type="checkbox" name="periods" value="current" checked="checked"> Current Version (required)</label>
 
-				<label> <input type="checkbox" name="periods" value="past_2" checked="checked"> Current Version - 2 </label>
+				<label> <input type="checkbox" name="periods" value="past_1" checked="checked"> Past Version (Current - 1) </label>
 
-				<label> <input type="checkbox" name="periods" value="past_3"> Current Version - 3 </label>
+				<label> <input type="checkbox" name="periods" value="past_2" checked="checked"> Past Version (Current - 2) </label>
 
-				<label> <input type="checkbox" name="periods" value="past_4"> Current Version - 4 </label>
+				<label> <input type="checkbox" name="periods" value="past_3"> Past Version (Current - 3) </label>
 
-				<label> <input type="checkbox" name="periods" value="past_5"> Current Version - 5 </label>
+				<label> <input type="checkbox" name="periods" value="past_4"> Past Version (Current - 4) </label>
+
+				<label> <input type="checkbox" name="periods" value="past_5"> Past Version (Current - 5) </label>
 
 			</div>
 

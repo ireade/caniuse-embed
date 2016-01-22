@@ -1,6 +1,6 @@
 # The (Unofficial) CanIUse Embed
 
-**Embed up-to-date data from caniuse.com**. Displays feature support data for the latest four versions of the 10 major browsers.
+**Embed up-to-date data from caniuse.com**. Displays feature support data for various versions of the 10 major browsers. Configurable, reliable, and fully responsive.
 
 ![caniuse SVG Table](example.png)
 

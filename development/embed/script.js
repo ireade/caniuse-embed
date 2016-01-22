@@ -114,6 +114,7 @@ loadJSON(caniuseDataUrl, function(res) {
 			for (var x = 0; x < res.agents[browser].version_list.length; x++ ) {
 				if ( res.agents[browser].version_list[x].era === 0 ) {
 					currentVersionIndex = x;
+					break;
 				}
 			} 
 			currentVersionIndex = parseInt(currentVersionIndex);
@@ -133,22 +134,18 @@ loadJSON(caniuseDataUrl, function(res) {
 				else if ( period.indexOf('past') > -1 ) {
 
 					n = parseInt(period.split('_')[1]);
-
 					browserVersions[browser][period] = res.agents[browser].version_list[currentVersionIndex - n] ? res.agents[browser].version_list[currentVersionIndex - n].version : null
-
 				}
 
 				else if ( period.indexOf('future') > -1 ) {
 
 					n = parseInt(period.split('_')[1]);
-
 					browserVersions[browser][period] = res.agents[browser].version_list[currentVersionIndex + n] ? res.agents[browser].version_list[currentVersionIndex + n].version : null
-
 				}
 
 
-			}
-		}
+			} // end for periods
+		} // end get browser versions
 
 
 
@@ -171,8 +168,8 @@ loadJSON(caniuseDataUrl, function(res) {
 
 				browserUsage[browser][period] = period_usage;
 
-			}
-		}
+			} // end for periods
+		} // end get browser usages
 
 
 
