@@ -13,6 +13,23 @@ $(document).ready(function() {
 	function capitalizeFirstLetter(string) {
 	    return string.charAt(0).toUpperCase() + string.slice(1);
 	}
+	// Pass the checkbox name to the function
+	function getCheckedBoxes(chkboxName) {
+	  var checkboxes = document.getElementsByName(chkboxName);
+	  var checkboxesChecked = [];
+	  // loop over them all
+	  for (var i=0; i<checkboxes.length; i++) {
+	     // And stick the checked ones onto an array...
+	     if (checkboxes[i].checked) {
+	        checkboxesChecked.push(checkboxes[i].value);
+	     }
+	  }
+	  // Return the array if it is non-empty, or null
+	  return checkboxesChecked.length > 0 ? checkboxesChecked : null;
+	}
+
+	
+
 
 	// GET FEATURE DATA JSON
 	$.getJSON('https://raw.githubusercontent.com/Fyrd/caniuse/master/fulldata-json/data-2.0.json', function(res) {
@@ -50,9 +67,12 @@ $(document).ready(function() {
 
 		var featureID = $('select[name="featureID"]').val();
 
-		var exportCode = '<p>Paste this snippet where you want the embed to be displayed:</p><pre>&lt;p class="ciu_embed" data-feature="'+featureID+'">\n&nbsp;&nbsp;&lt;a href="http://caniuse.com/#feat='+featureID+'">Can I Use '+featureID+'?&lt;/a&gt; Data on support for the '+featureID+' feature across the major browsers from caniuse.com.\n&lt;/p&gt;</pre>';
+		var periods = getCheckedBoxes("periods"),
+			periods = periods.join();
 
-		var preview = '<p>Preview of embed:</p><p class="ciu_embed" data-feature="'+featureID+'">\n&nbsp;&nbsp;<a href="http://caniuse.com/#feat='+featureID+'">Can I Use '+featureID+'?</a> Data on support for the '+featureID+' feature across the major browsers from caniuse.com.\n</p>';
+		var exportCode = '<p>Paste this snippet where you want the embed to be displayed:</p><pre>&lt;p class="ciu_embed" data-feature="'+featureID+'" data-periods="'+periods+'">\n&nbsp;&nbsp;&lt;a href="http://caniuse.com/#feat='+featureID+'">Can I Use '+featureID+'?&lt;/a&gt; Data on support for the '+featureID+' feature across the major browsers from caniuse.com.\n&lt;/p&gt;</pre>';
+
+		var preview = '<p>Preview of embed:</p><p class="ciu_embed" data-feature="'+featureID+'" data-periods="'+periods+'">\n&nbsp;&nbsp;<a href="http://caniuse.com/#feat='+featureID+'">Can I Use '+featureID+'?</a> Data on support for the '+featureID+' feature across the major browsers from caniuse.com.\n</p>';
 
 
 		$('.step_3').show();

@@ -1,1 +1,278 @@
-function getShortenedBrowserVersion(e){return e&&e.indexOf("-")>-1&&(e=e.split("-")[1]),e}function loadJSON(e,t,n){var s=new XMLHttpRequest;s.onreadystatechange=function(){s.readyState===XMLHttpRequest.DONE&&(200===s.status?t&&t(JSON.parse(s.responseText)):n&&n(s))},s.open("GET",e,!0),s.send()}var caniuseDataUrl="https://raw.githubusercontent.com/Fyrd/caniuse/master/fulldata-json/data-2.0.json",featureID=location.href.split("?feat=")[1],browsers=["ie","edge","firefox","chrome","safari","opera","ios_saf","op_mini","android","and_chr"],periods=["future_1","current","past_1","past_2"];document.getElementById("defaultMessage").innerHTML='<a href="http://caniuse.com/#feat='+featureID+'">Can I Use '+featureID+"?</a> Data on support for the "+featureID+" feature across the major browsers from caniuse.com. (Embed Loading)",loadJSON(caniuseDataUrl,function(e){var t=e.data[featureID];if(t){var n=t.usage_perc_y,s=t.usage_perc_a,a=n+s,a=a.toFixed(2),r=t.description;r.length>190&&(r=r.slice(0,180)+"...."),document.getElementById("featureTitle").innerHTML=t.title,document.getElementById("featureDescription").innerHTML=r,document.getElementById("featureLink").href="http://caniuse.com/#feat="+featureID,document.getElementById("note").innerHTML='Global: <span class="y">'+n+'%</span> + <span class="a">'+s+"%</span> = "+a+"%";for(var o={},i=0;i<browsers.length;i++){for(var l,u=browsers[i],d=e.agents[u].current_version,g=0;g<e.agents[u].version_list.length;g++)0===e.agents[u].version_list[g].era&&(l=g);l=parseInt(l),o[u]={future_1:e.agents[u].version_list[l+1]?e.agents[u].version_list[l+1].version:null,current:d,past_1:e.agents[u].version_list[l-1]?e.agents[u].version_list[l-1].version:null,past_2:e.agents[u].version_list[l-2]?e.agents[u].version_list[l-2].version:null}}for(var c={},i=0;i<browsers.length;i++){var u=browsers[i],f=o[u].future_1,p=e.agents[u].usage_global[f],p=p?p.toFixed(2):0,m=o[u].current,_=e.agents[u].usage_global[m],_=_?_.toFixed(2):0,y=o[u].past_1,v=e.agents[u].usage_global[y],v=v?v.toFixed(2):0,h=o[u].past_2,I=e.agents[u].usage_global[h],I=I?I.toFixed(2):0;c[u]={future_1:p,current:_,past_1:v,past_2:I}}for(var b={},i=0;i<browsers.length;i++){var u=browsers[i];b[u]={future_1:t.stats[u][o[u].future_1],current:t.stats[u][o[u].current],past_1:t.stats[u][o[u].past_1],past_2:t.stats[u][o[u].past_2]}}for(var E=!1,B=!1,i=0;i<browsers.length;i++)for(var u=browsers[i],g=0;g<periods.length;g++){for(var M,w=periods[g],T=document.getElementsByClassName(w)[0],L=T.childNodes,D=0;D<L.length;D++)L[D].className.indexOf(u)>-1&&(M=L[D]);void 0!=b[u][w]?M.className+=" "+b[u][w]:!1;var x=getShortenedBrowserVersion(o[u][w]),H="<span>"+x+'</span><span class="usage">'+c[u][w]+"%</span>";void 0!=o[u][w]?M.innerHTML=H:M.innerHTML="<span></span>",void 0!=b[u][w]&&b[u][w].indexOf("x")>-1&&(E=!0),void 0!=b[u][w]&&b[u][w].indexOf("u")>-1&&(B=!0)}E?document.getElementById("legendX").style.display="inline-block":document.getElementById("legendX").style.display="none",B?document.getElementById("legendU").style.display="inline-block":document.getElementById("legendU").style.display="none"}else document.getElementById("featureTitle").innerHTML="Uh Oh!",document.getElementById("featureDescription").innerHTML="The feature <strong>'"+featureID+"'</strong> was not recognized. ",document.getElementById("featureMain").innerHTML="";document.getElementById("defaultMessage").style.display="none",document.getElementsByClassName("feature")[0].style.display="block"},function(e){document.getElementById("defaultMessage").innerHTML="Error Getting JSON File: "+e.response,console.error(e)});
+// DEFINE VARIABLES
+// *************************
+
+var caniuseDataUrl = 'https://raw.githubusercontent.com/Fyrd/caniuse/master/fulldata-json/data-2.0.json';
+
+var featureID = location.href.split('?feat=')[1],
+	featureID = featureID.split('&periods=')[0];
+
+var periods = location.href.split('&periods=')[1],
+	periods = periods.split(",");
+
+var browsers = ['ie', 'edge', 'firefox', 'chrome', 'safari', 'opera', 'ios_saf', 'op_mini', 'android', 'and_chr'];
+
+
+
+
+// ADD TABLE ROWS FOR EACH PERIOD
+// *************************
+
+for (var i = periods.length - 1; i > -1; i--) {
+
+	var tableCells = '<td class="ie"></td><td class="edge"></td><td class="firefox"></td><td class="chrome"></td><td class="safari"></td><td class="opera"></td><td class="ios_saf"></td><td class="op_mini"></td><td class="android"></td><td class="and_chr"></td>';
+
+	var row = document.createElement("tr");
+	row.className = 'statistics '+periods[i];
+	row.innerHTML = tableCells;
+
+	document.getElementById('tableBody').appendChild(row);
+}
+
+
+
+// DEFINE FUNCTIONS
+// *************************
+
+function getShortenedBrowserVersion(version) {
+	if ( version && version.indexOf('-') > -1 ) {
+		version = version.split('-')[1];
+	}
+	return version;
+}
+function loadJSON(path, success, error) {
+	// Function from: http://stackoverflow.com/a/18278346
+    var xhr = new XMLHttpRequest();
+    xhr.onreadystatechange = function()
+    {
+        if (xhr.readyState === XMLHttpRequest.DONE) {
+            if (xhr.status === 200) {
+                if (success)
+                    success(JSON.parse(xhr.responseText));
+            } else {
+                if (error)
+                    error(xhr);
+            }
+        }
+    };
+    xhr.open("GET", path, true);
+    xhr.send();
+}
+
+
+// SET DEFAULT MESSAGE OF EMBED LOADING
+document.getElementById('defaultMessage').innerHTML = '<a href="http://caniuse.com/#feat='+featureID+'">Can I Use '+featureID+'?</a> Data on support for the '+featureID+' feature across the major browsers from caniuse.com. (Embed Loading)';
+
+
+
+// GET CANIUSE JSON
+// *************************
+
+loadJSON(caniuseDataUrl, function(res) { 
+
+	//console.log(res);
+	var feature = res.data[featureID];
+	
+	if (feature) {
+
+		var global_y = feature.usage_perc_y;
+		var global_a = feature.usage_perc_a;
+		var global_total = global_y + global_a,
+			global_total = global_total.toFixed(2);
+
+		var description = feature.description;
+
+		if ( description.length > 190 ) {
+			description = description.slice(0, 180) + '....';
+		}
+
+
+
+
+		// DISPLAY GENERAL FEATURE INFORMATION
+		// *************************
+
+		document.getElementById('featureTitle').innerHTML = feature.title;
+		document.getElementById('featureDescription').innerHTML = description;
+		document.getElementById('featureLink').href = 'http://caniuse.com/#feat=' + featureID;
+		document.getElementById('note').innerHTML = 'Global: <span class="y">'+global_y+'%</span> + <span class="a">'+global_a+'%</span> = '+global_total+'%';
+
+
+
+
+
+
+		// GET BROWSER VERSIONS
+		// *************************
+
+		var browserVersions = {};
+		for (var i = 0; i < browsers.length; i++) {
+			var browser = browsers[i];
+
+			// GET INDEX OF CURRENT VERSION
+			var currentVersion = res.agents[browser].current_version;
+			var currentVersionIndex;
+			for (var x = 0; x < res.agents[browser].version_list.length; x++ ) {
+				if ( res.agents[browser].version_list[x].era === 0 ) {
+					currentVersionIndex = x;
+				}
+			} 
+			currentVersionIndex = parseInt(currentVersionIndex);
+
+
+			browserVersions[browser] = {};
+
+			for (var x = 0; x < periods.length; x++) {
+
+				var period = periods[x];
+
+				if ( period === 'current' ) {
+
+					browserVersions[browser][period] = currentVersion;
+				}
+
+				else if ( period.indexOf('past') > -1 ) {
+
+					n = parseInt(period.split('_')[1]);
+
+					browserVersions[browser][period] = res.agents[browser].version_list[currentVersionIndex - n] ? res.agents[browser].version_list[currentVersionIndex - n].version : null
+
+				}
+
+				else if ( period.indexOf('future') > -1 ) {
+
+					n = parseInt(period.split('_')[1]);
+
+					browserVersions[browser][period] = res.agents[browser].version_list[currentVersionIndex + n] ? res.agents[browser].version_list[currentVersionIndex + n].version : null
+
+				}
+
+
+			}
+		}
+
+
+
+		// GET BROWSER VERSIONS USAGE
+		// *************************
+
+		var browserUsage = {};
+		for (var i = 0; i < browsers.length; i++) {
+
+			var browser = browsers[i];
+			browserUsage[browser] = {};
+
+			for (var x = 0; x < periods.length; x++) {
+
+				var period = periods[x];
+
+				var period_version = browserVersions[browser][period];
+				var period_usage = res.agents[browser].usage_global[period_version],
+					period_usage = period_usage ? period_usage.toFixed(2) : 0;
+
+				browserUsage[browser][period] = period_usage;
+
+			}
+		}
+
+
+
+
+
+		// GET DATA FOR EACH BROWSER
+		// *************************
+
+		var data = {};
+		for (var i = 0; i < browsers.length; i++) {
+
+			var browser = browsers[i];
+			data[browser] = {};
+
+			for (var x = 0; x < periods.length; x++) {
+				var period = periods[x];
+				data[browser][period] = feature.stats[browser][ browserVersions[browser][period] ];
+			}
+
+
+		}
+
+
+	
+
+		var hasPrefixed = false;
+		var hasUnknown = false;
+
+		// DISPLAY DATA
+		// *************************
+
+		for (var i = 0; i < browsers.length; i++) {
+
+			var browser = browsers[i];
+
+
+			// LOOP THROUGH PERIODS (BROWSER VERSIONS)
+			for (var x = 0; x < periods.length; x++) {
+
+				var period = periods[x];
+				var period_element;
+
+				// LOOP THROUGH ROW CHILDREN TO FIND THE CURRENT TABLE CELL
+				var row = document.getElementsByClassName(period)[0];
+				var rowChildren = row.childNodes;
+				for ( var r = 0; r < rowChildren.length; r++ ) {
+					if ( rowChildren[r].className.indexOf(browser) > -1) {
+						period_element = rowChildren[r];
+					}
+				} 
+
+
+				// 	ADD SUPPORT CLASS TO TABLE CELL
+				data[browser][period] != undefined ? period_element.className += ' '+data[browser][period] : false;
+
+				// GET VERSION NUMBER + BROWSER USAGE
+				var browserVersion = getShortenedBrowserVersion( browserVersions[browser][period] );
+				var versionString = '<span>' + browserVersion + '</span><span class="usage">'+browserUsage[browser][period]+'%</span>';
+
+				// ADD VERSION NUMBER TO TABLE CELL
+				browserVersions[browser][period] != undefined ? period_element.innerHTML = versionString : period_element.innerHTML = '<span></span>';
+
+				// CHECK IF ANY HAS PREFIX OR UNKOWN
+				if ( data[browser][period] != undefined && data[browser][period].indexOf('x') > -1 ) {
+					hasPrefixed = true;
+				}
+				if ( data[browser][period] != undefined && data[browser][period].indexOf('u') > -1 ) {
+					hasUnknown = true;
+				}
+
+
+			} // end loop through period
+
+		} // end display data loop
+
+		// DISPLAY PREFIX LEGEND IF DATA HAS PREFIXED
+		hasPrefixed ? document.getElementById('legendX').style.display = "inline-block" : document.getElementById('legendX').style.display = "none";
+		hasUnknown ? document.getElementById('legendU').style.display = "inline-block" : document.getElementById('legendU').style.display = "none";
+
+	} else {
+
+		// IF NO FEATURE FOUND
+		// *************************
+
+		// DISPLAY ERROR MESSAGE IF FEATURE WASN'T FOUND
+		document.getElementById('featureTitle').innerHTML = 'Uh Oh!';
+		document.getElementById('featureDescription').innerHTML = "The feature <strong>'"+featureID+"'</strong> was not recognized. ";
+		document.getElementById('featureMain').innerHTML = '';
+	}
+
+
+	// AFTER EVERYTHING HAS LOADED, SHOW FEATURE AND HIDE DEFAULT MESSAGE
+	document.getElementById('defaultMessage').style.display = "none";
+	document.getElementsByClassName('feature')[0].style.display = "block";
+
+}, function(xhr) { 
+
+	// IF ERROR GETTING JSON FILE
+	// *************************
+
+	document.getElementById('defaultMessage').innerHTML = 'Error Getting JSON File: ' + xhr.response;
+	console.error(xhr); 
+});	

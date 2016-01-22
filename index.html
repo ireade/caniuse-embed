@@ -61,7 +61,7 @@
 		<section class="site-section">
 			<h2>Example</h2>
 
-			<p class="ciu_embed" data-feature="svg-html">
+			<p class="ciu_embed" data-feature="svg-html" data-periods="future_1,current,past_1,past_2,past_3" style="border: 1px solid red;">
 				<a href="http://caniuse.com/#feat=svg-html">Can I Use picture?</a> Data on support for the svg-html feature across the major browsers from caniuse.com.
 			</p>
 		</section>
@@ -87,12 +87,24 @@
 
 			<section>
 
-			<h3>Step 2 - Choose a Feature</h3>
+			<h3>Step 2 - Choose Embed Settings</h3>
 				
 			<div class="input-group">
+				<label for="featureID">Choose a Feature</label>
 				<select name="featureID" id="featureID">
-					
 				</select>
+			</div>
+
+			<div class="input-group">
+				<label>Select</label>
+
+				<label> <input type="checkbox" name="periods" value="future_1"> Future 1 </label>
+
+				<label> <input type="checkbox" name="periods" value="current"> Current </label>
+
+			</div>
+
+			<div class="input-group">
 				<input type="submit" value="Generate">
 			</div>	
 				

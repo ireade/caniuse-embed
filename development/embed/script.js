@@ -1,12 +1,32 @@
-
 // DEFINE VARIABLES
 // *************************
 
 var caniuseDataUrl = 'https://raw.githubusercontent.com/Fyrd/caniuse/master/fulldata-json/data-2.0.json';
-var featureID = location.href.split('?feat=')[1];
+
+var featureID = location.href.split('?feat=')[1],
+	featureID = featureID.split('&periods=')[0];
+
+var periods = location.href.split('&periods=')[1],
+	periods = periods.split(",");
 
 var browsers = ['ie', 'edge', 'firefox', 'chrome', 'safari', 'opera', 'ios_saf', 'op_mini', 'android', 'and_chr'];
-var periods = ['future_1', 'current', 'past_1', 'past_2'];
+
+
+
+
+// ADD TABLE ROWS FOR EACH PERIOD
+// *************************
+
+for (var i = periods.length - 1; i > -1; i--) {
+
+	var tableCells = '<td class="ie"></td><td class="edge"></td><td class="firefox"></td><td class="chrome"></td><td class="safari"></td><td class="opera"></td><td class="ios_saf"></td><td class="op_mini"></td><td class="android"></td><td class="and_chr"></td>';
+
+	var row = document.createElement("tr");
+	row.className = 'statistics '+periods[i];
+	row.innerHTML = tableCells;
+
+	document.getElementById('tableBody').appendChild(row);
+}
 
 
 
@@ -20,6 +40,7 @@ function getShortenedBrowserVersion(version) {
 	return version;
 }
 function loadJSON(path, success, error) {
+	// Function from: http://stackoverflow.com/a/18278346
     var xhr = new XMLHttpRequest();
     xhr.onreadystatechange = function()
     {
@@ -87,22 +108,45 @@ loadJSON(caniuseDataUrl, function(res) {
 		for (var i = 0; i < browsers.length; i++) {
 			var browser = browsers[i];
 
+			// GET INDEX OF CURRENT VERSION
 			var currentVersion = res.agents[browser].current_version;
 			var currentVersionIndex;
-
 			for (var x = 0; x < res.agents[browser].version_list.length; x++ ) {
 				if ( res.agents[browser].version_list[x].era === 0 ) {
 					currentVersionIndex = x;
 				}
 			} 
-
 			currentVersionIndex = parseInt(currentVersionIndex);
 
-			browserVersions[browser] = {
-				future_1: res.agents[browser].version_list[currentVersionIndex + 1] ? res.agents[browser].version_list[currentVersionIndex + 1].version : null,
-				current: currentVersion,
-				past_1: res.agents[browser].version_list[currentVersionIndex - 1] ? res.agents[browser].version_list[currentVersionIndex - 1].version : null,
-				past_2: res.agents[browser].version_list[currentVersionIndex - 2] ? res.agents[browser].version_list[currentVersionIndex - 2].version : null
+
+			browserVersions[browser] = {};
+
+			for (var x = 0; x < periods.length; x++) {
+
+				var period = periods[x];
+
+				if ( period === 'current' ) {
+
+					browserVersions[browser][period] = currentVersion;
+				}
+
+				else if ( period.indexOf('past') > -1 ) {
+
+					n = parseInt(period.split('_')[1]);
+
+					browserVersions[browser][period] = res.agents[browser].version_list[currentVersionIndex - n] ? res.agents[browser].version_list[currentVersionIndex - n].version : null
+
+				}
+
+				else if ( period.indexOf('future') > -1 ) {
+
+					n = parseInt(period.split('_')[1]);
+
+					browserVersions[browser][period] = res.agents[browser].version_list[currentVersionIndex + n] ? res.agents[browser].version_list[currentVersionIndex + n].version : null
+
+				}
+
+
 			}
 		}
 
@@ -113,29 +157,20 @@ loadJSON(caniuseDataUrl, function(res) {
 
 		var browserUsage = {};
 		for (var i = 0; i < browsers.length; i++) {
+
 			var browser = browsers[i];
+			browserUsage[browser] = {};
 
-			var future_1 = browserVersions[browser].future_1;
-			var future_1_usage = res.agents[browser].usage_global[future_1],
-				future_1_usage = future_1_usage ? future_1_usage.toFixed(2) : 0;
+			for (var x = 0; x < periods.length; x++) {
 
-			var current = browserVersions[browser].current;
-			var current_usage = res.agents[browser].usage_global[current],
-				current_usage = current_usage ? current_usage.toFixed(2) : 0;
+				var period = periods[x];
 
-			var past_1 = browserVersions[browser].past_1;
-			var past_1_usage = res.agents[browser].usage_global[past_1],
-				past_1_usage = past_1_usage ? past_1_usage.toFixed(2) : 0;
+				var period_version = browserVersions[browser][period];
+				var period_usage = res.agents[browser].usage_global[period_version],
+					period_usage = period_usage ? period_usage.toFixed(2) : 0;
 
-			var past_2 = browserVersions[browser].past_2;
-			var past_2_usage = res.agents[browser].usage_global[past_2],
-				past_2_usage = past_2_usage ? past_2_usage.toFixed(2) : 0;
+				browserUsage[browser][period] = period_usage;
 
-			browserUsage[browser] = {
-				future_1: future_1_usage,
-				current: current_usage,
-				past_1: past_1_usage,
-				past_2: past_2_usage
 			}
 		}
 
@@ -148,13 +183,16 @@ loadJSON(caniuseDataUrl, function(res) {
 
 		var data = {};
 		for (var i = 0; i < browsers.length; i++) {
+
 			var browser = browsers[i];
-			data[browser] = {
-				future_1: feature.stats[browser][ browserVersions[browser].future_1 ],
-				current: feature.stats[browser][ browserVersions[browser].current ],
-				past_1: feature.stats[browser][ browserVersions[browser].past_1 ],
-				past_2: feature.stats[browser][ browserVersions[browser].past_2 ]
+			data[browser] = {};
+
+			for (var x = 0; x < periods.length; x++) {
+				var period = periods[x];
+				data[browser][period] = feature.stats[browser][ browserVersions[browser][period] ];
 			}
+
+
 		}
 
 
@@ -190,7 +228,7 @@ loadJSON(caniuseDataUrl, function(res) {
 				// 	ADD SUPPORT CLASS TO TABLE CELL
 				data[browser][period] != undefined ? period_element.className += ' '+data[browser][period] : false;
 
-				// GET VERSION NUMBER ALONE OR VERSION NUMBER WITH BROWSER USAGE
+				// GET VERSION NUMBER + BROWSER USAGE
 				var browserVersion = getShortenedBrowserVersion( browserVersions[browser][period] );
 				var versionString = '<span>' + browserVersion + '</span><span class="usage">'+browserUsage[browser][period]+'%</span>';
 
