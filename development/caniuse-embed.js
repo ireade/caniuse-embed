@@ -1,3 +1,7 @@
+function resizeIframe(obj) {
+obj.style.height = obj.contentWindow.document.body.scrollHeight + 'px';
+}
+
 var caniuse_embeds = document.getElementsByClassName("ciu_embed");
 
 function calcIframeHeight(embed, rows) {
@@ -27,7 +31,9 @@ function calcIframeHeight(embed, rows) {
 
 	iframeHeight += (rowHeight * rows);
 
-	return iframeHeight + 'px';
+	//return iframeHeight + 'px';
+
+	return '';
 }
 
 for (var i = 0; i < caniuse_embeds.length; i++) {
@@ -39,7 +45,7 @@ for (var i = 0; i < caniuse_embeds.length; i++) {
 
 	if (feature) {
 		
-		var iframe = '<iframe src="http://caniuse.bitsofco.de/embed/index.html?feat='+feature+'&periods='+periods+'" frameborder="0" width="100%" height="'+iframeHeight+'"></iframe>';
+		var iframe = '<iframe src="http://caniuse.bitsofco.de/embed/index.html?feat='+feature+'&periods='+periods+'" frameborder="0" width="100%" scrolling="no" onload="resizeIframe(this)"></iframe>';
 		embed.innerHTML = iframe;
 
 	} else {
