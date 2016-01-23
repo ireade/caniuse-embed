@@ -2,7 +2,8 @@ var gulp = require('gulp'),
     sass = require('gulp-sass'),
     gutil = require('gulp-util'),
     uglify = require('gulp-uglify'),
-    minifyHTML = require('gulp-minify-html');
+    minifyHTML = require('gulp-minify-html'),
+    connect = require('gulp-connect');
 
 var caniuseEmbed = "development/caniuse-embed.js";
 var embedStyle = "development/embed/style.scss"
@@ -33,6 +34,12 @@ gulp.task('minify-html', function() {
     .pipe(gulp.dest('embed'));
 });
 
+gulp.task('connect', function() {
+  connect.server({
+    port: 8000
+  });
+});
+
 gulp.task('watch', function() {
     gulp.watch(caniuseEmbed,['script']); 
     gulp.watch(embedScript,['script']); 
@@ -40,4 +47,4 @@ gulp.task('watch', function() {
     gulp.watch(embedHTML,['minify-html']); 
 });
 
-gulp.task('default', ['script', 'sass', 'minify-html', 'watch']);
+gulp.task('default', ['connect', 'script', 'sass', 'minify-html', 'watch']);

@@ -81,10 +81,6 @@ loadJSON(caniuseDataUrl, function(res) {
 
 		var description = feature.description;
 
-		if ( description.length > 190 ) {
-			description = description.slice(0, 180) + '....';
-		}
-
 
 
 
