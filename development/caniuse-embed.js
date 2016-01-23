@@ -1,33 +1,40 @@
 var caniuse_embeds = document.getElementsByClassName("ciu_embed");
 
-function initialResizeIframe(obj) {
-	setTimeout(function() {
 
-		var iframeContentHeight = obj.contentWindow.document.body.childNodes[1].scrollHeight;
-		obj.height = iframeContentHeight + 'px';
+// Create IE + others compatible event handler
+var eventMethod = window.addEventListener ? "addEventListener" : "attachEvent";
+var eventer = window[eventMethod];
+var messageEvent = eventMethod == "attachEvent" ? "onmessage" : "message";
 
-	} , 1000);
-}
+// Listen to message from child window
+eventer(messageEvent,function(e) {
 
-function doSomething(featureID, height) {
+	var data = e.data;
+
+	if (  (typeof data === 'string') && (data.indexOf('ciu_embed') > -1) ) {
+
+		console.log(data);
+
+	 	var featureID = data.split(':')[1];
+	 	var height = data.split(':')[2];
 
 
-	for (var i = 0; i < caniuse_embeds.length; i++) {
+	 	for (var i = 0; i < caniuse_embeds.length; i++) {
 
-		if ( caniuse_embeds[i].getAttribute('data-feature') === featureID ) {
+			if ( caniuse_embeds[i].getAttribute('data-feature') === featureID ) {
 
-			height+=20;
+				var iframeHeight = parseInt(height) + 20;
 
-			caniuse_embeds[i].childNodes[0].height = height + 'px';
+				caniuse_embeds[i].childNodes[0].height = iframeHeight + 'px';
+
+				console.log(height);
+			}
 		}
 
-	}
 
+	} 
+},false);
 
-
-
-
-}
 
 function calcIframeHeight(embed, rows) {
 	var parentWidth = embed.parentNode.offsetWidth; 
@@ -57,8 +64,6 @@ function calcIframeHeight(embed, rows) {
 	iframeHeight += (rowHeight * rows);
 
 	return iframeHeight + 'px';
-
-	//return '100%';
 }
 
 for (var i = 0; i < caniuse_embeds.length; i++) {
@@ -73,9 +78,9 @@ for (var i = 0; i < caniuse_embeds.length; i++) {
 	if (feature) {
 
 		var url = 'http://caniuse.bitsofco.de/embed/index.html';
-		//var url = 'http://localhost:8000/embed/index.html'
+		var url = 'http://localhost:8000/embed/index.html'
 		
-		var iframe = '<iframe src="'+url+'?feat='+feature+'&periods='+periods+'" frameborder="0" width="100%" height="'+iframeHeight+'" style="border: 5px solid black;"></iframe>';
+		var iframe = '<iframe src="'+url+'?feat='+feature+'&periods='+periods+'" frameborder="0" width="100%" height="'+iframeHeight+'" style="border-bottom: 5px solid black;"></iframe>';
 
 		embed.innerHTML = iframe;
 
