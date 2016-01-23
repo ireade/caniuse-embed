@@ -45,7 +45,7 @@ if (  (typeof data === 'string') && (data.indexOf('ciu_embed') > -1) ) {
 
 		if ( embed.getAttribute('data-feature') === featureID ) {
 
-			var iframeHeight = parseInt(height) + 20;
+			var iframeHeight = parseInt(height) + 30;
 			embed.childNodes[0].height = iframeHeight + 'px';
 
 		}
