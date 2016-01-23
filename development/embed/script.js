@@ -1,24 +1,6 @@
 // DEFINE VARIABLES
 // *************************
 
-//document.domain = '*.*';
-
-// window.parent.doSomething();
-
-// var t = window.innerHeight;
-
-
-
-
-
-// window.onresize = function(event) {
-// 	window.parent.doSomething('100px');
-// }
-
-
-
-
-
 var caniuseDataUrl = 'https://raw.githubusercontent.com/Fyrd/caniuse/master/fulldata-json/data-2.0.json';
 
 var featureID = location.href.split('?feat=')[1],
@@ -295,7 +277,7 @@ loadJSON(caniuseDataUrl, function(res) {
 		var featureHeight = document.getElementsByClassName('feature')[0].scrollHeight;
 		//console.log(featureHeight);
 		window.parent.doSomething(featureID, featureHeight);
-	}
+	} 
 
 
 }, function(xhr) { 

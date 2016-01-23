@@ -73,7 +73,7 @@ for (var i = 0; i < caniuse_embeds.length; i++) {
 	if (feature) {
 
 		var url = 'http://caniuse.bitsofco.de/embed/index.html';
-		var url = 'http://localhost:8000/embed/index.html'
+		//var url = 'http://localhost:8000/embed/index.html'
 		
 		var iframe = '<iframe src="'+url+'?feat='+feature+'&periods='+periods+'" frameborder="0" width="100%" height="'+iframeHeight+'" style="border: 5px solid black;"></iframe>';
 
