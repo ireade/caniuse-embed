@@ -279,9 +279,6 @@ loadJSON(caniuseDataUrl, function(res) {
 
 
 
-	
-
-
 }, function(xhr) { 
 
 	// IF ERROR GETTING JSON FILE
