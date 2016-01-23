@@ -79,20 +79,12 @@ loadJSON(caniuseDataUrl, function(res) {
 		var global_total = global_y + global_a,
 			global_total = global_total.toFixed(2);
 
-		var description = feature.description;
-
-		if ( description.length > 190 ) {
-			description = description.slice(0, 180) + '....';
-		}
-
-
-
 
 		// DISPLAY GENERAL FEATURE INFORMATION
 		// *************************
 
 		document.getElementById('featureTitle').innerHTML = feature.title;
-		document.getElementById('featureDescription').innerHTML = description;
+		document.getElementById('featureDescription').innerHTML = feature.description;
 		document.getElementById('featureLink').href = 'http://caniuse.com/#feat=' + featureID;
 		document.getElementById('note').innerHTML = 'Global: <span class="y">'+global_y+'%</span> + <span class="a">'+global_a+'%</span> = '+global_total+'%';
 
