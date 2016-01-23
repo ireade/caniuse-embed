@@ -259,13 +259,13 @@ loadJSON(caniuseDataUrl, function(res) {
 
 
 	// PASS HEIGHT TO PARENT DOCUMENT
-	var featureHeight = document.getElementsByClassName('feature')[0].scrollHeight;
-	var infoString = 'ciu_embed:' + featureID + ':' + featureHeight;
+	var documentHeight = document.getElementsByClassName('feature')[0].scrollHeight;
+	var infoString = 'ciu_embed:' + featureID + ':' + documentHeight;
 	parent.postMessage(infoString,"*");
 
 	window.onresize = function(event) {
-		featureHeight = document.getElementsByClassName('feature')[0].scrollHeight;
-		var infoString = 'ciu_embed:' + featureID + ':' + featureHeight;
+		documentHeight = document.getElementsByClassName('feature')[0].scrollHeight;
+		var infoString = 'ciu_embed:' + featureID + ':' + documentHeight;
 		parent.postMessage(infoString,"*");
 	} 
 

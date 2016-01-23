@@ -1,6 +1,7 @@
 var caniuse_embeds = document.getElementsByClassName("ciu_embed");
 
 for (var i = 0; i < caniuse_embeds.length; i++) {
+
 	var embed = caniuse_embeds[i];
 	var feature = embed.getAttribute('data-feature');
 	var periods = embed.getAttribute('data-periods');
@@ -23,33 +24,32 @@ for (var i = 0; i < caniuse_embeds.length; i++) {
 
 
 // GET RESPONSIVE HEIGHT PASSED FROM IFRAME
-// from https://davidwalsh.name/window-iframe
+// eventer from https://davidwalsh.name/window-iframe
 
 var eventMethod = window.addEventListener ? "addEventListener" : "attachEvent";
 var eventer = window[eventMethod];
 var messageEvent = eventMethod == "attachEvent" ? "onmessage" : "message";
 
 eventer(messageEvent,function(e) {
-var data = e.data;
+	var data = e.data;
 
-if (  (typeof data === 'string') && (data.indexOf('ciu_embed') > -1) ) {
+	if (  (typeof data === 'string') && (data.indexOf('ciu_embed') > -1) ) {
 
-	//console.log(data);
+		//console.log(data);
 
- 	var featureID = data.split(':')[1];
- 	var height = data.split(':')[2];
+	 	var featureID = data.split(':')[1];
+	 	var height = data.split(':')[2];
 
- 	for (var i = 0; i < caniuse_embeds.length; i++) {
+	 	for (var i = 0; i < caniuse_embeds.length; i++) {
 
- 		var embed = caniuse_embeds[i];
+	 		var embed = caniuse_embeds[i];
 
-		if ( embed.getAttribute('data-feature') === featureID ) {
-
-			var iframeHeight = parseInt(height) + 30;
-			embed.childNodes[0].height = iframeHeight + 'px';
-
+			if ( embed.getAttribute('data-feature') === featureID ) {
+				var iframeHeight = parseInt(height) + 20;
+				embed.childNodes[0].height = iframeHeight + 'px';
+				break;
+			}
 		}
-	}
 
-} 
+	} 
 },false);
