@@ -266,18 +266,14 @@ loadJSON(caniuseDataUrl, function(res) {
 	document.getElementsByClassName('feature')[0].style.display = "block";
 
 
+	// PASS HEIGHT TO PARENT DOCUMENT
 	var featureHeight = document.getElementsByClassName('feature')[0].scrollHeight;
-
-	var test = 'ciu_embed:' + featureID + ':' + featureHeight;
-
-
+	var infoString = 'ciu_embed:' + featureID + ':' + featureHeight;
+	parent.postMessage(test,"*");
 
 	window.onresize = function(event) {
-
-		var featureHeight = document.getElementsByClassName('feature')[0].scrollHeight;
-
-		var test = 'ciu_embed:' + featureID + ':' + featureHeight;
-
+		featureHeight = document.getElementsByClassName('feature')[0].scrollHeight;
+		var infoString = 'ciu_embed:' + featureID + ':' + featureHeight;
 		parent.postMessage(test,"*");
 	} 
 

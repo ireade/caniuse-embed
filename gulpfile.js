@@ -12,10 +12,10 @@ var embedHTML = "development/embed/index.html";
 
 gulp.task('script', function() {
     gulp.src(caniuseEmbed)
-        // .pipe(uglify())
+        .pipe(uglify())
         .pipe(gulp.dest(''));
     gulp.src(embedScript)
-        // .pipe(uglify())
+        .pipe(uglify())
         .pipe(gulp.dest('embed'));
 });
 
