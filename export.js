@@ -1,5 +1,8 @@
 $(document).ready(function() {
 
+
+
+
 	// SORTING FUNCTION FROM http://stackoverflow.com/a/979325
 	var sort_by = function(field, primer){
 	   var key = primer ? 

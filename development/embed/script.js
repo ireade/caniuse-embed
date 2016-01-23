@@ -1,6 +1,24 @@
 // DEFINE VARIABLES
 // *************************
 
+//document.domain = '*.*';
+
+// window.parent.doSomething();
+
+// var t = window.innerHeight;
+
+
+
+
+
+// window.onresize = function(event) {
+// 	window.parent.doSomething('100px');
+// }
+
+
+
+
+
 var caniuseDataUrl = 'https://raw.githubusercontent.com/Fyrd/caniuse/master/fulldata-json/data-2.0.json';
 
 var featureID = location.href.split('?feat=')[1],
@@ -265,6 +283,21 @@ loadJSON(caniuseDataUrl, function(res) {
 	document.getElementById('defaultMessage').style.display = "none";
 	document.getElementsByClassName('feature')[0].style.display = "block";
 
+
+	var featureHeight = document.getElementsByClassName('feature')[0].scrollHeight;
+
+	
+
+	window.parent.doSomething(featureID, featureHeight);
+
+	window.onresize = function(event) {
+
+		var featureHeight = document.getElementsByClassName('feature')[0].scrollHeight;
+		//console.log(featureHeight);
+		window.parent.doSomething(featureID, featureHeight);
+	}
+
+
 }, function(xhr) { 
 
 	// IF ERROR GETTING JSON FILE
@@ -273,3 +306,5 @@ loadJSON(caniuseDataUrl, function(res) {
 	document.getElementById('defaultMessage').innerHTML = 'Error Getting JSON File: ' + xhr.response;
 	console.error(xhr); 
 });	
+
+
