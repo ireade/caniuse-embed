@@ -158,6 +158,7 @@ pre {
 	color: #000;
 	
 	white-space: pre-line;
+	word-wrap: break-word;
 	position: relative;
 }
 
@@ -238,30 +239,6 @@ label.current {
 
 input[type="checkbox"] {
 }
-
-
-
-.ciu_embed {
-
-	iframe {
-		border: 10px solid red;
-	}
-	
-}
-
-/*.ciu_embed  {
-    position: relative;
-    padding-bottom: 56.25%; 
-    padding-top: 25px;
-    height: 0;
-}
-.ciu_embed  iframe {
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-}*/
 
 
 

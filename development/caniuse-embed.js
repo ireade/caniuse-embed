@@ -1,55 +1,55 @@
-var caniuse_embeds = document.getElementsByClassName("ciu_embed");
+(function() {
 
-for (var i = 0; i < caniuse_embeds.length; i++) {
+	var caniuse_embeds = document.getElementsByClassName("ciu_embed");
 
-	var embed = caniuse_embeds[i];
-	var feature = embed.getAttribute('data-feature');
-	var periods = embed.getAttribute('data-periods');
+	for (var i = 0; i < caniuse_embeds.length; i++) {
 
-	if (feature) {
+		var embed = caniuse_embeds[i];
+		var feature = embed.getAttribute('data-feature');
+		var periods = embed.getAttribute('data-periods');
 
-		var url = 'http://caniuse.bitsofco.de/embed/index.html';
-		//var url = 'http://localhost:8000/embed/index.html'
+		if (feature) {
 
-		var iframe = '<iframe src="'+url+'?feat='+feature+'&periods='+periods+'" frameborder="0" width="100%" height="400px"></iframe>';
+			var url = 'http://caniuse.bitsofco.de/embed/index.html';
+			//var url = 'http://localhost:8000/embed/index.html'
 
-		embed.innerHTML = iframe;
+			var iframe = '<iframe src="'+url+'?feat='+feature+'&periods='+periods+'" frameborder="0" width="100%" height="400px"></iframe>';
 
-	} else {
+			embed.innerHTML = iframe;
 
-		embed.innerHTML = "A feature was not included. Go to <a href='http://caniuse.bitsofco.de/#how-to-use'>http://caniuse.bitsofco.de/#how-to-use</a> to generate an embed.";
-	}
-}
+		} else {
 
-
-
-// GET RESPONSIVE HEIGHT PASSED FROM IFRAME
-// eventer from https://davidwalsh.name/window-iframe
-
-var eventMethod = window.addEventListener ? "addEventListener" : "attachEvent";
-var eventer = window[eventMethod];
-var messageEvent = eventMethod == "attachEvent" ? "onmessage" : "message";
-
-eventer(messageEvent,function(e) {
-	var data = e.data;
-
-	if (  (typeof data === 'string') && (data.indexOf('ciu_embed') > -1) ) {
-
-		//console.log(data);
-
-	 	var featureID = data.split(':')[1];
-	 	var height = data.split(':')[2];
-
-	 	for (var i = 0; i < caniuse_embeds.length; i++) {
-
-	 		var embed = caniuse_embeds[i];
-
-			if ( embed.getAttribute('data-feature') === featureID ) {
-				var iframeHeight = parseInt(height) + 20;
-				embed.childNodes[0].height = iframeHeight + 'px';
-				break;
-			}
+			embed.innerHTML = "A feature was not included. Go to <a href='http://caniuse.bitsofco.de/#how-to-use'>http://caniuse.bitsofco.de/#how-to-use</a> to generate an embed.";
 		}
+	}
 
-	} 
-},false);
+
+
+	// GET RESPONSIVE HEIGHT PASSED FROM IFRAME
+
+	var eventMethod = window.addEventListener ? "addEventListener" : "attachEvent";
+	var eventer = window[eventMethod];
+	var messageEvent = eventMethod == "attachEvent" ? "onmessage" : "message";
+
+	eventer(messageEvent,function(e) {
+		var data = e.data;
+		if (  (typeof data === 'string') && (data.indexOf('ciu_embed') > -1) ) {
+
+		 	var featureID = data.split(':')[1];
+		 	var height = data.split(':')[2];
+
+		 	for (var i = 0; i < caniuse_embeds.length; i++) {
+
+		 		var embed = caniuse_embeds[i];
+		 		
+				if ( embed.getAttribute('data-feature') === featureID ) {
+					var iframeHeight = parseInt(height) + 20;
+					embed.childNodes[0].height = iframeHeight + 'px';
+					break;
+				}
+			}
+		} 
+	},false);
+
+
+}).call(this);
