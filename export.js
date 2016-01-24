@@ -1,7 +1,8 @@
 $(document).ready(function() {
 
 
-
+	var stepOne = document.getElementById('copyStepOne');
+	var stepOneClipboard = new Clipboard(stepOne);
 
 	// SORTING FUNCTION FROM http://stackoverflow.com/a/979325
 	var sort_by = function(field, primer){
@@ -76,13 +77,19 @@ $(document).ready(function() {
 		var periods = getCheckedBoxes("periods"),
 			periods = periods.join();
 
-		var exportCode = '<p>Paste this snippet where you want the embed to be displayed:</p><pre>&lt;p class="ciu_embed" data-feature="'+featureID+'" data-periods="'+periods+'">\n&nbsp;&nbsp;&lt;a href="http://caniuse.com/#feat='+featureID+'">Can I Use '+featureID+'?&lt;/a&gt; Data on support for the '+featureID+' feature across the major browsers from caniuse.com.\n&lt;/p&gt;</pre>';
+		var exportCode = '&lt;p class="ciu_embed" data-feature="'+featureID+'" data-periods="'+periods+'">\n&nbsp;&nbsp;&lt;a href="http://caniuse.com/#feat='+featureID+'">Can I Use '+featureID+'?&lt;/a&gt; Data on support for the '+featureID+' feature across the major browsers from caniuse.com.\n&lt;/p&gt;';
 
-		var preview = '<p>Preview of embed:</p><p class="ciu_embed" data-feature="'+featureID+'" data-periods="'+periods+'">\n&nbsp;&nbsp;<a href="http://caniuse.com/#feat='+featureID+'">Can I Use '+featureID+'?</a> Data on support for the '+featureID+' feature across the major browsers from caniuse.com.\n</p>';
+
+		var preview = '<p class="ciu_embed" data-feature="'+featureID+'" data-periods="'+periods+'">\n&nbsp;&nbsp;<a href="http://caniuse.com/#feat='+featureID+'">Can I Use '+featureID+'?</a> Data on support for the '+featureID+' feature across the major browsers from caniuse.com.\n</p>';
 
 
 		$('.step_3').show();
-		$('.export').html(exportCode + preview);
+
+		$('#stepThree').html(exportCode)
+		$('.export-preview').html(preview);
+
+		var stepThree = document.getElementById('copyStepThree');
+		var stepThreeClipboard = new Clipboard(stepThree);
 
 		// LOAD CANIUSE-EMBED.JS SCRIPT AGAIN FOR PREVIEW
 		var head = document.getElementsByTagName('head')[0];

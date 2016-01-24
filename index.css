@@ -145,6 +145,10 @@ section:not(.site-section) {
 	margin-bottom: 40px;
 }
 
+.highlight {
+	margin-bottom: 15px;
+}
+
 pre {
 	background-color: rgb(220, 220, 220);
 	padding: 10px;
@@ -152,9 +156,30 @@ pre {
 	font-family: 'Source Code Pro', monospace;
 	font-size: 1.2rem;
 	color: #000;
-	margin-bottom: 15px;
+	
 	white-space: pre-line;
+	position: relative;
 }
+
+
+
+
+.copy-code {
+	display: inline-block;
+	width: auto;
+	border: 2px solid rgb(220, 220, 220);
+	border-top: 0;
+	background-color: rgb(250, 250, 250);
+	padding: 0px 10px;
+	cursor: pointer;
+	float: right;
+}
+.copy-code:hover {
+	background-color: rgb(220, 220, 220);
+}
+
+
+
 
 
 
