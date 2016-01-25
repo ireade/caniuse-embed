@@ -4,12 +4,23 @@
 var caniuseDataUrl = 'https://raw.githubusercontent.com/Fyrd/caniuse/master/fulldata-json/data-2.0.json';
 
 var featureID = location.href.split('?feat=')[1],
-	featureID = featureID.split('&periods=')[0];
+	featureID = featureID ? featureID.split('&periods=')[0] : null;
 
 var periods = location.href.split('&periods=')[1],
-	periods = periods.split(",");
+	periods = periods ? periods.split(",") : null;
 
 var browsers = ['ie', 'edge', 'firefox', 'chrome', 'safari', 'opera', 'ios_saf', 'op_mini', 'android', 'and_chr'];
+
+
+if ( featureID && periods ) {
+	document.getElementById('defaultMessage').innerHTML = '<a href="http://caniuse.com/#feat='+featureID+'">Can I Use '+featureID+'?</a> Data on support for the '+featureID+' feature across the major browsers from caniuse.com. (Embed Loading)';
+
+} else {
+	document.getElementById('defaultMessage').innerHTML = 'Error: Feature and/or Periods not Specified';
+}
+
+
+
 
 
 
@@ -59,8 +70,7 @@ function loadJSON(path, success, error) {
 }
 
 
-// SET DEFAULT MESSAGE OF EMBED LOADING
-document.getElementById('defaultMessage').innerHTML = '<a href="http://caniuse.com/#feat='+featureID+'">Can I Use '+featureID+'?</a> Data on support for the '+featureID+' feature across the major browsers from caniuse.com. (Embed Loading)';
+
 
 
 
