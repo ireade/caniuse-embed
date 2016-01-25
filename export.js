@@ -95,7 +95,7 @@ $(document).ready(function() {
 		var head = document.getElementsByTagName('head')[0];
 		var script = document.createElement('script');
 		script.type = 'text/javascript';
-		script.src = 'caniuse-embed.js';
+		script.src = 'caniuse-embed.min.js';
 		head.appendChild(script);
 
 
