@@ -1,7 +1,7 @@
 var gulp = require('gulp'),
     sass = require('gulp-sass'),
     gutil = require('gulp-util'),
-    uglify = require('gulp-uglify'),
+    uglify = require('gulp-uglifyjs'),
     minifyHTML = require('gulp-minify-html'),
     connect = require('gulp-connect');
 
@@ -12,7 +12,7 @@ var embedHTML = "development/embed/index.html";
 
 gulp.task('script', function() {
     gulp.src(caniuseEmbed)
-        .pipe(uglify())
+        .pipe(uglify('caniuse-embed.min.js'))
         .pipe(gulp.dest(''));
     gulp.src(embedScript)
         .pipe(uglify())
