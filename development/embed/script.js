@@ -98,6 +98,8 @@ loadJSON(caniuseDataUrl, function(res) {
 			featureDescription = featureDescription.replace(/</g, "&lt;");
 			featureDescription = featureDescription.replace(/>/g, "&gt;");
 
+		console.log(featureDescription);
+
 		document.getElementById('featureTitle').innerHTML = feature.title;
 		document.getElementById('featureDescription').innerHTML = featureDescription;
 		document.getElementById('featureLink').href = 'http://caniuse.com/#feat=' + featureID;
