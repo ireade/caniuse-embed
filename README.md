@@ -2,13 +2,17 @@
 
 **Embed up-to-date data from caniuse.com**. Displays feature support data for multiple versions of the 10 major browsers. Configurable, reliable, and fully responsive.
 
-![caniuse SVG Table](example.png)
-
+<img src="screenshot-desktop.png" alt="Desktop View of Embed" style="width: 100%;">
+<img src="screenshot-mobile.png" alt="Mobile View of Embed" width="300px">
 
 
 ## How to Use
 
 Follow instructions [here](http://caniuse.bitsofco.de/#how-to-use) to generate an embed code.
+
+## Polymer Element
+
+[Visit repo of Polymer Element](https://github.com/ireade/caniuse-embed-polymer)
 
 
 ## Copyright and Licence

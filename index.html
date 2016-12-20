@@ -3,7 +3,7 @@
 <head>
 	<meta charset="utf-8">
 	<title>The (Unofficial) CanIUse Embed</title>
-	
+
 	<meta name="viewport" content="width=device-width, initial-scale=1">
 	<meta name="description" content="Embed up-to-date data from caniuse.com. Displays feature support data for multiple versions of the 10 major browsers. Configurable, reliable, and fully responsive. ">
 	<meta name="keywords" content="caniuse">
@@ -15,7 +15,7 @@
 	<meta name="twitter:description" content="Embed up-to-date data from caniuse.com. Displays feature support data for various versions of the 10 major browsers. Configurable, reliable, and fully responsive.">
 	<meta name="twitter:image" content="http://caniuse.bitsofco.de/example.png">
 
-	
+
 	<link href='https://fonts.googleapis.com/css?family=Source+Sans+Pro:400,600|Source+Code+Pro' rel='stylesheet' type='text/css'>
 	<link rel="stylesheet" href="index.css">
 
@@ -35,7 +35,7 @@
 	<div class="container">
 
 		<section>
-		
+
 		<h1>The <span class="uo">(Unofficial)</span> CanIUse Embed</h1>
 
 		<p class="about">Embed up-to-date data from <a href="http://caniuse.com" target="_blank">caniuse.com</a>. Displays feature support data for multiple versions of the 10 major browsers. Configurable, reliable, and fully responsive.</p>
@@ -51,11 +51,11 @@
 	      data-via="ireaderinokun"
 	      data-related="ireaderinokun"> Tweet </a>
 	      </p>
-	    
+
 
 		<p>Made with <i class="twa twa-heart"></i> by <a href="https://twitter.com/ireaderinokun" target="_blank">@IreAderinokun</a></p>
 
-		
+
 		</section>
 
 		<section class="site-section">
@@ -63,14 +63,14 @@
 
 
 			<p>Default:</p>
-			<p class="ciu_embed" data-feature="viewport-units" data-periods="future_1,current,past_1,past_2">   
-				<a href="http://caniuse.com/#feat=viewport-units">Can I Use viewport-units?</a> Data on support for the viewport-units feature across the major browsers from caniuse.com. 
+			<p class="ciu_embed" data-feature="viewport-units" data-periods="future_1,current,past_1,past_2">
+				<a href="http://caniuse.com/#feat=viewport-units">Can I Use viewport-units?</a> Data on support for the viewport-units feature across the major browsers from caniuse.com.
 			</p>
 
 
 			<p>Only showing current and future versions: </p>
-			<p class="ciu_embed" data-feature="css-variables" data-periods="future_2,future_1,current">   
-				<a href="http://caniuse.com/#feat=css-variables">Can I Use css-variables?</a> Data on support for the css-variables feature across the major browsers from caniuse.com. 
+			<p class="ciu_embed" data-feature="css-variables" data-periods="future_2,future_1,current">
+				<a href="http://caniuse.com/#feat=css-variables">Can I Use css-variables?</a> Data on support for the css-variables feature across the major browsers from caniuse.com.
 			</p>
 		</section>
 
@@ -90,14 +90,14 @@
 <pre id="stepOne">&lt;script src="//cdn.jsdelivr.net/caniuse-embed/1.0.1/caniuse-embed.min.js"&gt;&lt;/script&gt;</pre>
 <div class="copy-code" id="copyStepOne" data-clipboard-target="#stepOne">Copy</div>
 </div>
-				
+
 			</section>
 
 
 			<section>
 
 			<h3>Step 2 - Choose Embed Settings</h3>
-				
+
 			<div class="input-group">
 				<label for="featureID" class="main-label">a) Choose a Feature</label>
 				<select name="featureID" id="featureID">
@@ -129,8 +129,8 @@
 
 			<div class="input-group">
 				<input type="submit" value="Generate">
-			</div>	
-				
+			</div>
+
 			</section>
 
 
@@ -153,15 +153,22 @@
 
 
 
-				
+
 			</section>
 
-			
+
 
 
 		</section>
 
-		
+		<section class="site-section" id="polymer">
+			<h2>Polymer Element</h2>
+
+			<p>You can now use this embed as a Polymer Element. <a href="https://beta.webcomponents.org/element/ireade/caniuse-embed-polymer">View on WebComponenets.org</a></p>
+
+		</section>
+
+
 
 	</div>
 
@@ -169,15 +176,15 @@
 
 
 	<script src="caniuse-embed.min.js"></script>
-	
+
 	<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
 	<script src="clipboard.min.js"></script>
 	<script src="export.js"></script>
 
 	<script>
     window.twttr=(function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],t=window.twttr||{};if(d.getElementById(id))return;js=d.createElement(s);js.id=id;js.src="https://platform.twitter.com/widgets.js";fjs.parentNode.insertBefore(js,fjs);t._e=[];t.ready=function(f){t._e.push(f);};return t;}(document,"script","twitter-wjs"));
-    </script> 
+    </script>
 
-    
+
 </body>
 </html>
