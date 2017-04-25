@@ -1,4 +1,4 @@
-# The (Unofficial) CanIUse Embed
+# The CanIUse Embed
 
 **Embed up-to-date data from caniuse.com**. Displays feature support data for multiple versions of the 10 major browsers. Configurable, reliable, and fully responsive.
 
