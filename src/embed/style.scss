@@ -262,6 +262,8 @@ tr.future_1 td span {
 
 
 
+
+
 tr.statistics td.y span:not(.usage),
 .legend .y {
 	background-color: $supported;
@@ -310,11 +312,55 @@ tr.statistics td.x span:not(.usage):after {
 }
 
 
+tr.statistics td.d span:not(.usage):after {
+	// with Prefix
+	content: ' ';
+	position: absolute;
+	top: 0;
+	right: 0;
+	//background-color: #000;
+	color: #000;
+	line-height: 1;
+	font-size: 1pt;
+
+	height: 20px;
+	width: 20px;
+
+	background-image: url(/embed/assets/flag.png);
+	background-position: top 3px right 3px;
+	background-repeat: no-repeat;
+	background-size: 10px;
+
+	@media screen and (max-width: 600px) {
+		background-position: top 3px right 3px;
+		background-size: 8px;
+	}
+}
+.legend .d {
+	background-color: #fff;
+	color: #000;
+
+	img {
+		height: 10px;
+		width: auto;
+		margin-right: 5px;
+	}
+}
+
+
+
+//
+
+
 .legend div {
 	display: inline-block;
 	width: auto;
 	padding: 3px 5px;
 	margin-right: 5px;
+
+	@media screen and (max-width: 450px) {
+		margin-bottom: 5px;
+	}
 }
 
 .note {

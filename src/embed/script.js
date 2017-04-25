@@ -79,7 +79,7 @@ function loadJSON(path, success, error) {
 
 loadJSON(caniuseDataUrl, function(res) { 
 
-	//console.log(res);
+	console.log(res);
 	var feature = res.data[featureID];
 	
 	if (feature) {
@@ -202,6 +202,7 @@ loadJSON(caniuseDataUrl, function(res) {
 
 		var hasPrefixed = false;
 		var hasUnknown = false;
+		var hasFlag = false;
 
 		// DISPLAY DATA
 		// *************************
@@ -244,6 +245,9 @@ loadJSON(caniuseDataUrl, function(res) {
 				if ( data[browser][period] != undefined && data[browser][period].indexOf('u') > -1 ) {
 					hasUnknown = true;
 				}
+				if ( data[browser][period] != undefined && data[browser][period].indexOf('d') > -1 ) {
+					hasFlag = true;
+				}
 
 
 			} // end loop through period
@@ -253,6 +257,7 @@ loadJSON(caniuseDataUrl, function(res) {
 		// DISPLAY PREFIX LEGEND IF DATA HAS PREFIXED
 		hasPrefixed ? document.getElementById('legendX').style.display = "inline-block" : document.getElementById('legendX').style.display = "none";
 		hasUnknown ? document.getElementById('legendU').style.display = "inline-block" : document.getElementById('legendU').style.display = "none";
+		hasFlag ? document.getElementById('legendD').style.display = "inline-block" : document.getElementById('legendD').style.display = "none";
 
 	} else {
 
