@@ -5,10 +5,10 @@ var gulp = require('gulp'),
     minifyHTML = require('gulp-minify-html'),
     connect = require('gulp-connect');
 
-var caniuseEmbed = "development/caniuse-embed.js";
-var embedStyle = "development/embed/style.scss"
-var embedScript = "development/embed/script.js";
-var embedHTML = "development/embed/index.html";
+var caniuseEmbed = "src/caniuse-embed.js";
+var embedStyle = "src/embed/style.scss"
+var embedScript = "src/embed/script.js";
+var embedHTML = "src/embed/index.html";
 
 gulp.task('script', function() {
     gulp.src(caniuseEmbed)
