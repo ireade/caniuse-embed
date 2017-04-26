@@ -213,13 +213,9 @@ input[type="submit"] {
 select {
 	padding: 5px;
 	background-color: #fff;
-	border: 2px solid #DB5600;
 	margin-right: 10px;
 	margin-bottom: 10px;
-
 	width: 100%;
-	max-width: 400px;
-
 }
 
 input[type="submit"] {

@@ -1,6 +1,5 @@
 $(document).ready(function() {
 
-
 	var stepOne = document.getElementById('copyStepOne');
 	var stepOneClipboard = new Clipboard(stepOne);
 
@@ -41,10 +40,7 @@ $(document).ready(function() {
 	// GET FEATURE DATA JSON
 	$.getJSON('https://raw.githubusercontent.com/Fyrd/caniuse/master/fulldata-json/data-2.0.json', function(res) {
 
-		//console.log(res);
-
 		var featuresArray = [];
-
 		for (var feature in res.data) {
 			var featureTitle = res.data[feature].title;
 			featureTitle = capitalizeFirstLetter(featureTitle);
@@ -54,17 +50,19 @@ $(document).ready(function() {
 			}
 			featuresArray.push(feature);
 		}
-
 		featuresArray.sort(sort_by('title', function(a){return a}));
 
 		for (var i = 0; i < featuresArray.length; i++) {
-
 			var feature = featuresArray[i];
-
 			var option = '<option value="'+feature.id+'">'+feature.title+'</option>';
 			$('select[name="featureID"]').append(option);
-
 		}
+
+		$('select[name="featureID"]').selectize({
+			create: false,
+			sortField: 'text',
+			placeholder: 'Select a Feature'
+		});
 
 	});
 
