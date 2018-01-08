@@ -1,0 +1,119 @@
+/* Table Head: Browser Names ************************** */
+
+th.ie .browser-title,
+th.edge .browser-title {
+  border-bottom-color: #233D61;
+}
+
+th.chrome .browser-title {
+  border-bottom-color: #3F77BB;
+}
+
+th.firefox .browser-title {
+  border-bottom-color: #A36223;
+}
+
+th.safari .browser-title {
+  border-bottom-color: #666;
+}
+
+th.ios_saf .browser-title {
+  border-bottom-color: #333;
+}
+
+th.opera .browser-title {
+  border-bottom-color: #812323;
+}
+
+th.op_mini .browser-title {
+  border-bottom-color: #992626;
+}
+
+th.android .browser-title {
+  border-bottom-color: #7BA13B;
+}
+
+/* Usage Information ************************** */
+
+// Supported
+
+tr.statistics td.y span:not(.usage),
+.legend .y {
+  background-color: $supported;
+  color: #FFF;
+}
+
+// Not Supported
+
+tr.statistics td.n span:not(.usage),
+tr.statistics td.p span:not(.usage),
+tr.statistics td.d span:not(.usage),
+.legend .n {
+  background-color: $not-supported;
+  color: #FFF;
+}
+
+// Partial Support
+
+tr.statistics td.a span:not(.usage),
+.legend .a {
+  background-color: $partial;
+  color: #FFF;
+}
+
+// Unknown Support
+
+tr.statistics td.u span:not(.usage),
+.legend .u {
+  background-color: $unknown;
+  color: #FFF;
+}
+
+// Prefixed
+
+tr.statistics td.x span:not(.usage)::after {
+  // with Prefix
+  content: ' ';
+  position: absolute;
+  top: 0;
+  right: 0;
+  background-color: #FF6;
+  color: #000;
+  line-height: 1;
+  font-size: 1pt;
+  height: 10px;
+  width: 10px;
+
+  @media screen and (max-width: 600px) {
+    height: 6px;
+  }
+}
+
+.legend .x {
+  background-color: #FF6;
+  color: #000;
+}
+
+// Behind a Flag
+
+tr.statistics td.d span:not(.usage)::after {
+  // with Prefix
+  content: ' ';
+  position: absolute;
+  top: 0;
+  right: 0;
+  color: #000;
+  line-height: 1;
+  font-size: 1pt;
+  height: 20px;
+  width: 20px;
+  background-image: url(/embed/assets/flag.png);
+  background-position: top 3px right 3px;
+  background-repeat: no-repeat;
+  background-size: 10px;
+
+  @media screen and (max-width: 600px) {
+    background-position: top 3px right 3px;
+    background-size: 8px;
+  }
+}

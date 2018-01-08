@@ -1,0 +1,41 @@
+
+.legend div {
+  display: inline-block;
+  width: auto;
+  padding: 3px 5px;
+  margin-right: 5px;
+
+  @media screen and (max-width: 450px) {
+    margin-bottom: 5px;
+  }
+}
+
+.legend .d {
+  background-color: #FFF;
+  color: #000;
+
+  img {
+    height: 10px;
+    width: auto;
+    margin-right: 5px;
+  }
+}
+
+.note {
+  float: right;
+  font-weight: 600;
+
+  @media (max-width: 500px) {
+    float: none;
+    display: block;
+    margin-bottom: 5px;
+  }
+}
+
+span.a {
+  color: $partial;
+}
+
+span.y {
+  color: $supported;
+}

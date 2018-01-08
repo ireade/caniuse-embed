@@ -1,0 +1,48 @@
+/* LAYOUT */
+
+.feature {
+  background-color: $bg-colour;
+  position: relative;
+  border: 3px solid $theme;
+  border-bottom: 0;
+  display: none;
+}
+
+.header {
+  padding: 10px 10px 0;
+
+  .title {
+    margin-bottom: 5px;
+    font-size: 2rem;
+
+    span {
+      margin-bottom: 5px;
+      padding-right: 10px;
+    }
+  }
+
+  .description {
+    font-size: 1.6rem;
+  }
+
+  .icon-external-link {
+    height: auto;
+    max-height: 20px;
+  }
+}
+
+.main {
+  padding: 10px 5px;
+
+  @media (min-width: 500px) {
+    padding: 10px;
+  }
+}
+
+.footer {
+  padding: 5px 10px;
+  margin-top: 20px;
+  background-color: $theme;
+  color: #FFF;
+  font-size: 1.1rem;
+}

@@ -1,0 +1,28 @@
+/* RESET */
+
+html, body, div, span, 
+h1, p, a, small, strong, 
+table, tbody, thead, tr, th, td, 
+footer, header, main {
+  margin: 0;
+  padding: 0;
+  border: 0;
+  font: inherit;
+  font-size: 100%;
+  vertical-align: baseline;
+}
+
+footer,
+header {
+  display: block;
+}
+
+html {
+  box-sizing: border-box;
+}
+
+*,
+*::before,
+*::after {
+  box-sizing: inherit;
+}

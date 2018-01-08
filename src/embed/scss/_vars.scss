@@ -1,0 +1,18 @@
+// Variables ************************** */
+
+$theme: #DB5600;
+$bg-colour: #F2E8D5;
+$dark-grey: #584E3B;
+
+$supported: #39B54A;
+$partial: #A8BD04;
+$not-supported: #C44230;
+$unknown: #838383;
+
+// Mixins ************************** */
+
+@mixin supports-grid {
+  @supports (display: grid) {
+    @content;
+  }
+}

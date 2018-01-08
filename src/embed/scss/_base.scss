@@ -1,0 +1,29 @@
+/* BASE */
+
+html {
+  font-size: 62.5%;
+}
+
+body {
+  font-size: 1.4rem;
+  line-height: 1.4;
+  font-family: 'Open Sans', sans-serif;
+  font-weight: 300;
+}
+
+a {
+  color: inherit; 
+}
+
+h1 a {
+text-decoration: none;
+}
+
+small,
+.legend {
+  font-size: 1.1rem;
+}
+
+strong {
+  font-weight: 600;
+}

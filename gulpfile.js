@@ -6,7 +6,7 @@ var gulp = require('gulp'),
     connect = require('gulp-connect');
 
 var caniuseEmbed = "src/caniuse-embed.js";
-var embedStyle = "src/embed/style.scss"
+var embedStyle = "src/embed/scss/style.scss";
 var embedScript = "src/embed/script.js";
 var embedHTML = "src/embed/index.html";
 
@@ -43,7 +43,7 @@ gulp.task('connect', function() {
 gulp.task('watch', function() {
     gulp.watch(caniuseEmbed,['script']); 
     gulp.watch(embedScript,['script']); 
-    gulp.watch(embedStyle,['sass']); 
+    gulp.watch("src/embed/scss/*.scss",['sass']); 
     gulp.watch(embedHTML,['minify-html']); 
 });
 

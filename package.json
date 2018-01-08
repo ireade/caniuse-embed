@@ -23,5 +23,8 @@
     "gulp-sass": "^2.1.1",
     "gulp-uglifyjs": "^0.6.2",
     "gulp-util": "^3.0.6"
+  },
+  "dependencies": {
+    "gulp-connect": "^5.2.0"
   }
 }

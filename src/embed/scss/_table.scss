@@ -1,0 +1,172 @@
+/* Table Layout ************************** */
+
+// Table
+
+table {
+  width: 100%;
+  border-collapse: collapse;
+  border-spacing: 0;
+  line-height: 1.2;
+  margin-bottom: 20px;
+  font-size: 1.2rem;
+
+  @media (min-width: 700px) {
+    font-size: 1.4rem;
+  }
+}
+
+// Table Head
+
+table thead th {
+  width: 10%;
+  vertical-align: bottom;
+
+  @include supports-grid() {
+    width: 100%;
+  }
+}
+
+.browser-title {
+  display: block;
+  margin-bottom: 5px;
+  padding-bottom: 5px;
+  border-bottom-style: solid;
+  border-bottom-width: 5px;
+  position: relative;
+
+  @media (max-width: 700px) {
+    height: 150px;
+
+    span {
+      position: absolute;
+      border-bottom: 0;
+      padding-left: 5px;
+      padding-bottom: 0;
+
+      -webkit-transform: rotate(-90deg);
+      -moz-transform: rotate(-90deg);
+      -ms-transform: rotate(-90deg);
+      -o-transform: rotate(-90deg);
+      transform: rotate(-90deg);
+      white-space: nowrap;
+
+      left: 0;
+      bottom: 20px;
+      text-align: left;
+      width: 100%;
+    }
+  }
+}
+
+table thead th,
+.browser-title {
+  @include supports-grid() {
+    display: grid;
+  }
+}
+
+.browser-title span {
+  @include supports-grid() {
+    align-self: end;
+  }
+}
+
+// Table Body
+
+table tbody {
+  @include supports-grid() {
+    display: grid;
+    grid-row-gap: 5px;
+  }
+}
+
+table tbody td {
+  text-align: center;
+  position: relative;
+}
+
+table tbody td:hover {
+  cursor: default;
+}
+
+table tbody td span:not(.usage) {
+  display: block;
+  height: 100%;
+  width: 100%;
+  padding: 7px 0;
+  position: relative;
+}
+
+// Header or Body Rows
+
+table tr {
+  @include supports-grid() {
+    display: grid;
+    grid-template-columns: repeat(10, 1fr);
+    grid-gap: 5px;
+  }
+}
+
+table td,
+table th {
+  border: 5px solid $bg-colour;
+
+  @include supports-grid() {
+    border: none;
+  }
+}
+
+// Current Row
+
+tr.current {
+  @include supports-grid() {
+    background-color: $dark-grey;
+    outline: 5px solid $dark-grey;
+    margin-top: 5px;
+    margin-bottom: 5px;
+  }
+}
+
+tr.current td {
+  border: 5px solid $dark-grey;
+  position: relative;
+
+  @include supports-grid() {
+    border: none;
+  }
+}
+
+tr.current td span {
+  border-top: 5px solid $dark-grey;
+
+  @include supports-grid() {
+    border: 0;
+  }
+}
+
+// First Future Row
+
+tr.future_1 td span {
+  border-top: 5px solid $bg-colour;
+
+  @include supports-grid() {
+    border: 0;
+  }
+}
+
+/* Usage Information ************************** */
+
+span.usage {
+  padding-top: 7px;
+  position: absolute;
+  width: 100%;
+  background-color: #FFF;
+  height: 100%;
+  top: 0;
+  left: 0;
+  display: none;
+}
+
+td:hover span.usage {
+  display: block;
+}
