@@ -9,6 +9,22 @@ $partial: #A8BD04;
 $not-supported: #C44230;
 $unknown: #838383;
 
+$font-colour: #FFF;
+
+body {
+  --supported: #39B54A;
+  --partial: #A8BD04;
+  --not-supported: #C44230;
+  --font-colour: #FFF;
+}
+
+body.accessible-colours {
+  --supported: #A6EDB2;
+  --partial: #97BFF0;
+  --not-supported: #842E98;
+  --font-colour: #000;
+}
+
 // Mixins ************************** */
 
 @mixin supports-grid {

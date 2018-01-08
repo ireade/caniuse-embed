@@ -45,4 +45,33 @@
   background-color: $theme;
   color: #FFF;
   font-size: 1.1rem;
+  display: flex;
+  justify-content: space-between;
+}
+
+.footer button {
+  background: none;
+  border: 1px solid #FFF;
+  border-radius: 3px;
+  color: #FFF;
+  font-family: 'Open Sans', sans-serif;
+  font-weight: 300;
+  cursor: pointer;
+  display: none;
+}
+
+@supports (color: var(--supported)) {
+  .footer button {
+    display: inline-block;
+  }
+}
+
+.footer button {
+  .enable { display: inline; }
+  .disable { display: none; }
+}
+
+.accessible-colours .footer button {
+  .enable { display: none; }
+  .disable { display: inline; }
 }

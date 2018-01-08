@@ -40,7 +40,9 @@ th.android .browser-title {
 tr.statistics td.y span:not(.usage),
 .legend .y {
   background-color: $supported;
-  color: #FFF;
+  background-color: var(--supported);
+  color: $font-colour;
+  color: var(--font-colour);
 }
 
 // Not Supported
@@ -50,6 +52,7 @@ tr.statistics td.p span:not(.usage),
 tr.statistics td.d span:not(.usage),
 .legend .n {
   background-color: $not-supported;
+  background-color: var(--not-supported);
   color: #FFF;
 }
 
@@ -58,7 +61,9 @@ tr.statistics td.d span:not(.usage),
 tr.statistics td.a span:not(.usage),
 .legend .a {
   background-color: $partial;
-  color: #FFF;
+  background-color: var(--partial);
+  color: $font-colour;
+  color: var(--font-colour);
 }
 
 // Unknown Support

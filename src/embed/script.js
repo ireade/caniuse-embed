@@ -21,10 +21,6 @@ if ( featureID && periods ) {
 
 
 
-
-
-
-
 // ADD TABLE ROWS FOR EACH PERIOD
 // *************************
 
@@ -50,6 +46,7 @@ function getShortenedBrowserVersion(version) {
 	}
 	return version;
 }
+
 function loadJSON(path, success, error) {
 	// Function from: http://stackoverflow.com/a/18278346
     var xhr = new XMLHttpRequest();
@@ -68,8 +65,6 @@ function loadJSON(path, success, error) {
     xhr.open("GET", path, true);
     xhr.send();
 }
-
-
 
 
 
@@ -295,7 +290,18 @@ loadJSON(caniuseDataUrl, function(res) {
 	// *************************
 
 	document.getElementById('defaultMessage').innerHTML = 'Error Getting JSON File: ' + xhr.response;
-	console.error(xhr); 
-});	
+  console.error(xhr); 
+  
+});	// end loadJSON
 
 
+// TOGGLE ACCESSIBLE COLOURS
+// *************************
+
+var accessibleColoursToggle = document.getElementById("accessibleColoursToggle");
+
+accessibleColoursToggle.addEventListener("click", function() {
+  console.log("hello")
+
+  document.body.classList.toggle("accessible-colours")
+})
