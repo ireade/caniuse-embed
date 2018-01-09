@@ -73,12 +73,14 @@ $(document).ready(function() {
 		var featureID = $('select[name="featureID"]').val();
 
 		var periods = getCheckedBoxes("periods"),
-			periods = periods.join();
+        periods = periods.join();
 
-		var exportCode = '&lt;p class="ciu_embed" data-feature="'+featureID+'" data-periods="'+periods+'">\n&nbsp;&nbsp;&lt;a href="http://caniuse.com/#feat='+featureID+'">Can I Use '+featureID+'?&lt;/a&gt; Data on support for the '+featureID+' feature across the major browsers from caniuse.com.\n&lt;/p&gt;';
+    var accessibleColours = document.getElementById("add-accessible-colours").checked;
+
+		var exportCode = '&lt;p class="ciu_embed" data-feature="'+featureID+'" data-periods="'+periods+'" data-accessible-colours="'+accessibleColours+'">\n&nbsp;&nbsp;&lt;a href="http://caniuse.com/#feat='+featureID+'">Can I Use '+featureID+'?&lt;/a&gt; Data on support for the '+featureID+' feature across the major browsers from caniuse.com.\n&lt;/p&gt;';
 
 
-		var preview = '<p class="ciu_embed" data-feature="'+featureID+'" data-periods="'+periods+'">\n&nbsp;&nbsp;<a href="http://caniuse.com/#feat='+featureID+'">Can I Use '+featureID+'?</a> Data on support for the '+featureID+' feature across the major browsers from caniuse.com.\n</p>';
+		var preview = '<p class="ciu_embed" data-feature="'+featureID+'" data-periods="'+periods+'" data-accessible-colours="'+accessibleColours+'">\n&nbsp;&nbsp;<a href="http://caniuse.com/#feat='+featureID+'">Can I Use '+featureID+'?</a> Data on support for the '+featureID+' feature across the major browsers from caniuse.com.\n</p>';
 
 
 		$('.step_3').show();

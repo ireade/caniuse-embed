@@ -6,20 +6,21 @@
 
 		var embed = caniuse_embeds[i];
 		var feature = embed.getAttribute('data-feature');
-		var periods = embed.getAttribute('data-periods');
+    var periods = embed.getAttribute('data-periods');
+    var accessibleColours = embed.getAttribute('data-accessible-colours') || 'false';
 
 		if (feature) {
 
-			var url = '//caniuse.bitsofco.de/embed/index.html';
+			var url = 'https://caniuse.bitsofco.de/embed/index.html';
 			//var url = 'http://localhost:8000/embed/index.html'
 
-			var iframe = '<iframe src="'+url+'?feat='+feature+'&periods='+periods+'" frameborder="0" width="100%" height="400px"></iframe>';
+			var iframe = '<iframe src="'+url+'?feat='+feature+'&periods='+periods+'&accessible-colours='+accessibleColours+'" frameborder="0" width="100%" height="400px"></iframe>';
 
 			embed.innerHTML = iframe;
 
 		} else {
 
-			embed.innerHTML = "A feature was not included. Go to <a href='http://caniuse.bitsofco.de/#how-to-use'>http://caniuse.bitsofco.de/#how-to-use</a> to generate an embed.";
+			embed.innerHTML = "A feature was not included. Go to <a href='https://caniuse.bitsofco.de/#how-to-use'>https://caniuse.bitsofco.de/#how-to-use</a> to generate an embed.";
 		}
 	}
 

@@ -4,10 +4,13 @@
 var caniuseDataUrl = 'https://raw.githubusercontent.com/Fyrd/caniuse/master/fulldata-json/data-2.0.json';
 
 var featureID = location.href.split('?feat=')[1],
-	featureID = featureID ? featureID.split('&periods=')[0] : null;
+	  featureID = featureID ? featureID.split('&periods=')[0] : null;
 
 var periods = location.href.split('&periods=')[1],
-	periods = periods ? periods.split(",") : null;
+    periods = periods ? periods.split(",") : null;
+    
+var accessibleColours = location.href.split('&accessible-colours=')[1],
+    accessibleColours = accessibleColours ? accessibleColours : false;
 
 var browsers = ['ie', 'edge', 'firefox', 'chrome', 'safari', 'opera', 'ios_saf', 'op_mini', 'android', 'and_chr'];
 
@@ -74,7 +77,7 @@ function loadJSON(path, success, error) {
 
 loadJSON(caniuseDataUrl, function(res) { 
 
-	console.log(res);
+	//console.log(res);
 	var feature = res.data[featureID];
 	
 	if (feature) {
@@ -298,10 +301,10 @@ loadJSON(caniuseDataUrl, function(res) {
 // TOGGLE ACCESSIBLE COLOURS
 // *************************
 
-var accessibleColoursToggle = document.getElementById("accessibleColoursToggle");
+if (accessibleColours == 'true') {
+  document.body.classList.add("accessible-colours");
+}
 
-accessibleColoursToggle.addEventListener("click", function() {
-  console.log("hello")
-
+document.getElementById("accessibleColoursToggle").addEventListener("click", function() {
   document.body.classList.toggle("accessible-colours")
-})
+});
