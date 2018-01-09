@@ -7,6 +7,7 @@ var featureID = location.href.split('?feat=')[1],
 	  featureID = featureID ? featureID.split('&periods=')[0] : null;
 
 var periods = location.href.split('&periods=')[1],
+    periods = periods ? periods.split("&accessible-colours=")[0] : null,
     periods = periods ? periods.split(",") : null;
     
 var accessibleColours = location.href.split('&accessible-colours=')[1],
