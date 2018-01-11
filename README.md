@@ -11,7 +11,7 @@
 
 ### Mobile
 
-<img src="https://user-images.githubusercontent.com/8677283/34815893-6b15c04e-f6b3-11e7-8041-0b1106049de6.png" alt="Mobile View of Embed" width="300px">
+<img src="https://user-images.githubusercontent.com/8677283/34815893-6b15c04e-f6b3-11e7-8041-0b1106049de6.png" alt="Mobile View of Embed" width="400px">
 
 
 ### Accessible Colours (Toggleable)
