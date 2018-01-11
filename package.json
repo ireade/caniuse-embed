@@ -1,7 +1,7 @@
 {
   "name": "caniuse-embed",
-  "version": "1.1.0",
-  "description": "The unofficial embed for caniuse",
+  "version": "1.2.0",
+  "description": "The embed for caniuse",
   "main": "caniuse-embed.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
