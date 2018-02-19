@@ -13,7 +13,7 @@ var periods = location.href.split('&periods=')[1],
 var accessibleColours = location.href.split('&accessible-colours=')[1],
     accessibleColours = accessibleColours ? accessibleColours : false;
 
-var browsers = ['ie', 'edge', 'firefox', 'chrome', 'safari', 'opera', 'ios_saf', 'op_mini', 'android', 'and_chr'];
+var browsers = ['ie', 'edge', 'firefox', 'chrome', 'safari', 'ios_saf', 'op_mini', 'and_chr', 'android', 'samsung'];
 
 
 if ( featureID && periods ) {
@@ -30,7 +30,11 @@ if ( featureID && periods ) {
 
 for (var i = periods.length - 1; i > -1; i--) {
 
-	var tableCells = '<td class="ie"></td><td class="edge"></td><td class="firefox"></td><td class="chrome"></td><td class="safari"></td><td class="opera"></td><td class="ios_saf"></td><td class="op_mini"></td><td class="android"></td><td class="and_chr"></td>';
+  var tableCells = "";
+
+  for (var j = 0; j < browsers.length; j++) {
+    tableCells += '<td class="' + browsers[j] + '"></td>';
+  }
 
 	var row = document.createElement("tr");
 	row.className = 'statistics '+periods[i];
