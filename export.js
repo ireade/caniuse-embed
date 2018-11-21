@@ -1,43 +1,42 @@
-$(document).ready(function() {
 
-	var stepOne = document.getElementById('copyStepOne');
-	var stepOneClipboard = new Clipboard(stepOne);
+/* =====================
+ * Utility functions
+ * =====================*/
 
-	// SORTING FUNCTION FROM http://stackoverflow.com/a/979325
-	var sort_by = function(field, primer){
-	   var key = primer ? 
-	       function(x) {return primer(x[field])} : 
-	       function(x) {return x[field]};
-	   return function (a, b) {
-	       return a = key(a), b = key(b), 1 * ((a > b) - (b > a));
-	     } 
+// SORTING FUNCTION FROM http://stackoverflow.com/a/979325
+function sort_by(field, primer){
+	var key = primer ? 
+			function(x) {return primer(x[field])} : 
+			function(x) {return x[field]};
+	return function (a, b) {
+			return a = key(a), b = key(b), 1 * ((a > b) - (b > a));
+		} 
+}
+
+function capitalizeFirstLetter(string) {
+	return string.charAt(0).toUpperCase() + string.slice(1);
+}
+
+// Pass the checkbox name to the function
+function getCheckedBoxes(chkboxName) {
+	var checkboxes = document.getElementsByName(chkboxName);
+	var checkboxesChecked = [];
+	// loop over them all
+	for (var i=0; i<checkboxes.length; i++) {
+		// And stick the checked ones onto an array...
+		if (checkboxes[i].checked) {
+				checkboxesChecked.push(checkboxes[i].value);
+		}
 	}
+	// Return the array if it is non-empty, or null
+	return checkboxesChecked.length > 0 ? checkboxesChecked : null;
+}
 
-	function capitalizeFirstLetter(string) {
-	    return string.charAt(0).toUpperCase() + string.slice(1);
-	}
-	// Pass the checkbox name to the function
-	function getCheckedBoxes(chkboxName) {
-	  var checkboxes = document.getElementsByName(chkboxName);
-	  var checkboxesChecked = [];
-	  // loop over them all
-	  for (var i=0; i<checkboxes.length; i++) {
-	     // And stick the checked ones onto an array...
-	     if (checkboxes[i].checked) {
-	        checkboxesChecked.push(checkboxes[i].value);
-	     }
-	  }
-	  // Return the array if it is non-empty, or null
-	  return checkboxesChecked.length > 0 ? checkboxesChecked : null;
-	}
+/* =====================
+ * Get list of available features for <select>
+ * =====================*/
 
-	
-	$('input[value="current"]').on('click', function() {
-		return false;
-	})
-
-
-	// GET FEATURE DATA JSON
+function getFeatureList() {
 	$.getJSON('https://raw.githubusercontent.com/Fyrd/caniuse/master/fulldata-json/data-2.0.json', function(res) {
 
 		var featuresArray = [];
@@ -63,46 +62,75 @@ $(document).ready(function() {
 			sortField: 'text',
 			placeholder: 'Select a Feature'
 		});
-
 	});
+}
 
+/* =====================
+ * Generate feature
+ * =====================*/
 
+function generatePreview(featureID, periods, accessibleColours, screenshot) {
 
-	$('input[type="submit"]').on('click', function() {
+	console.log(screenshot);
 
-		var featureID = $('select[name="featureID"]').val();
+	return '<p class="ciu_embed" data-feature="'+featureID+'" data-periods="'+periods+'" data-accessible-colours="'+accessibleColours+'">\n&nbsp;&nbsp;<a href="http://caniuse.com/#feat='+featureID+'">Can I Use '+featureID+'?</a> Data on support for the '+featureID+' feature across the major browsers from caniuse.com.\n</p>';
+}
 
-		var periods = getCheckedBoxes("periods"),
-        periods = periods.join();
+function displayExportCode(preview) {
+ var exportCode = preview
+									.replace(/</g, "&lt;")
+									.replace(/>/g, "&gt;");
+	$('#stepThree').html(exportCode);
 
-    var accessibleColours = document.getElementById("add-accessible-colours").checked;
+	return preview;
+}
 
-		var exportCode = '&lt;p class="ciu_embed" data-feature="'+featureID+'" data-periods="'+periods+'" data-accessible-colours="'+accessibleColours+'">\n&nbsp;&nbsp;&lt;a href="http://caniuse.com/#feat='+featureID+'">Can I Use '+featureID+'?&lt;/a&gt; Data on support for the '+featureID+' feature across the major browsers from caniuse.com.\n&lt;/p&gt;';
+function displayPreview(preview) {
 
+	$('.export-preview').html(preview);
+	new Clipboard(document.getElementById('copyStepThree'));
 
-		var preview = '<p class="ciu_embed" data-feature="'+featureID+'" data-periods="'+periods+'" data-accessible-colours="'+accessibleColours+'">\n&nbsp;&nbsp;<a href="http://caniuse.com/#feat='+featureID+'">Can I Use '+featureID+'?</a> Data on support for the '+featureID+' feature across the major browsers from caniuse.com.\n</p>';
+	// Load caniuse-embed.min.js again for preview
+	var DOMContentLoaded_event = document.createEvent("Event");
+	DOMContentLoaded_event.initEvent("DOMContentLoaded", true, true);
+	window.document.dispatchEvent(DOMContentLoaded_event);
 
+	return preview;
+}
 
-		$('.step_3').show();
+function generateScreenshot(feature, periods, accessibleColours) {
+	console.log(feature, periods, accessibleColours);
+	var url = 'https://caniuse.bitsofco.de/embed/index.html?feat='+feature+'&periods='+periods+'&accessible-colours='+accessibleColours;
 
-		$('#stepThree').html(exportCode)
-		$('.export-preview').html(preview);
+	return "screenshot";
+}
 
-		var stepThree = document.getElementById('copyStepThree');
-		var stepThreeClipboard = new Clipboard(stepThree);
+/* =====================
+ * Initialise
+ * =====================*/
 
-		// LOAD CANIUSE-EMBED.JS SCRIPT AGAIN FOR PREVIEW
-		var head = document.getElementsByTagName('head')[0];
-		var script = document.createElement('script');
-		script.type = 'text/javascript';
-		script.src = 'caniuse-embed.min.js';
-		head.appendChild(script);
+new Clipboard(document.getElementById('copyStepOne'));
+$('input[value="current"]').on('click', function() { return false; });
 
+getFeatureList();
 
-		ga('send', 'event', 'button', 'click', 'generate embed');
+document.getElementById('generate-embed').addEventListener('click', function(e) {
+	e.preventDefault();
 
-		return false;
-	})
+	var featureID = $('select[name="featureID"]').val();
+	var periods = getCheckedBoxes("periods").join();
+	var accessibleColours = document.getElementById("add-accessible-colours").checked;
+	var fallbackScreenshot = document.getElementById("fallback-screenshot").checked;
 
+	var start = Promise.resolve();
+	if (fallbackScreenshot) start = generateScreenshot(featureID, periods, accessibleColours);
 
-})
+	start
+		.then((screenshot) => generatePreview(featureID, periods, accessibleColours, screenshot))
+		.then((preview) => displayExportCode(preview))
+		.then((preview) => displayPreview(preview))
+	
+	$('.step_3').show();
+
+	ga('send', 'event', 'button', 'click', 'generate embed');
+}); // end input submit

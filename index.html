@@ -134,12 +134,16 @@
 				<label><input type="radio" name="accessible-colours" value="false" checked> Default</label>
 
 				<label><input type="radio" name="accessible-colours" id="add-accessible-colours" value="true"> Accessible</label>
-
-
 			</div>
 
 			<div class="input-group">
-				<input type="submit" value="Generate">
+				<label class="main-label">4) Add a fallback screenshot?</label>
+
+				<label><input type="checkbox" name="fallback-screenshot" id="fallback-screenshot"> Yes, Add Fallback Screenshot</label>
+			</div>
+
+			<div class="input-group">
+				<input id="generate-embed" type="submit" value="Generate">
 			</div>
 
 			</section>
@@ -177,7 +181,7 @@
 
 
 
-	<script src="caniuse-embed.min.js"></script>
+	<script id="caniuse-embed-script" src="caniuse-embed.min.js"></script>
 
 	<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
 	<script src="https://cdnjs.cloudflare.com/ajax/libs/selectize.js/0.12.4/js/standalone/selectize.min.js"></script>
