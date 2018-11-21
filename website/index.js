@@ -1,3 +1,4 @@
+const generateEmbedButton = document.getElementById("generate-embed");
 
 /* =====================
  * Utility functions
@@ -71,9 +72,24 @@ function getFeatureList() {
 
 function generatePreview(featureID, periods, accessibleColours, screenshot) {
 
-	console.log(screenshot);
+	if (screenshot) {
+		const imageBase = screenshot.secure_url.split(".png")[0];
 
-	return '<p class="ciu_embed" data-feature="'+featureID+'" data-periods="'+periods+'" data-accessible-colours="'+accessibleColours+'">\n&nbsp;&nbsp;<a href="http://caniuse.com/#feat='+featureID+'">Can I Use '+featureID+'?</a> Data on support for the '+featureID+' feature across the major browsers from caniuse.com.\n</p>';
+		return `<p class="ciu_embed" data-feature="${featureID}" data-periods="${periods}" data-accessible-colours="${accessibleColours}">
+			<a href="http://caniuse.com/#feat=${featureID}">
+				<picture>
+					<source type="image/webp" srcset="${imageBase}.webp">
+					<source type="image/png" srcset="${imageBase}.png">
+					<source type="image/jpeg" srcset="${imageBase}.jpg">
+					<img src="${imageBase}.png" alt="Data on support for the ${featureID} feature across the major browsers from caniuse.com">
+				</picture>
+			</a>
+		</p>`;
+	} 
+
+	return `<p class="ciu_embed" data-feature="${featureID}" data-periods="${periods}" data-accessible-colours="${accessibleColours}">
+		<a href="http://caniuse.com/#feat=${featureID}">Can I Use ${featureID}?</a> Data on support for the ${featureID} feature across the major browsers from caniuse.com.
+	</p>`;
 }
 
 function displayExportCode(preview) {
@@ -99,10 +115,27 @@ function displayPreview(preview) {
 }
 
 function generateScreenshot(feature, periods, accessibleColours) {
-	console.log(feature, periods, accessibleColours);
-	var url = 'https://caniuse.bitsofco.de/embed/index.html?feat='+feature+'&periods='+periods+'&accessible-colours='+accessibleColours;
+	const options = {
+		method: "POST",
+		headers: {
+			"Content-Type": "application/json; charset=utf-8"
+		},
+		body: JSON.stringify({
+			feature: feature,
+			periods: periods,
+			accessibleColours: accessibleColours
+		})
+	};
 
-	return "screenshot";
+	generateEmbedButton.innerHTML = '<div aria-label="Loading" class="lds-ellipsis"><div></div><div></div><div></div><div></div></div>';
+	let screenshot = null;
+
+	return fetch("https://caniuse-embed-screenshot-api.herokuapp.com/upload", options)
+		.then((res) => res.json())
+		.then((res) => screenshot = res)
+		.catch((err) => null)
+		.then(() => generateEmbedButton.innerHTML = 'Generate')
+		.then(() => screenshot);
 }
 
 /* =====================
@@ -114,7 +147,7 @@ $('input[value="current"]').on('click', function() { return false; });
 
 getFeatureList();
 
-document.getElementById('generate-embed').addEventListener('click', function(e) {
+generateEmbedButton.addEventListener('click', function(e) {
 	e.preventDefault();
 
 	var featureID = $('select[name="featureID"]').val();
@@ -127,10 +160,12 @@ document.getElementById('generate-embed').addEventListener('click', function(e) 
 
 	start
 		.then((screenshot) => generatePreview(featureID, periods, accessibleColours, screenshot))
+		.then((preview) => {
+			$('.step_3').show();
+			return preview;
+		})
 		.then((preview) => displayExportCode(preview))
 		.then((preview) => displayPreview(preview))
-	
-	$('.step_3').show();
+		.then(() => ga('send', 'event', 'button', 'click', 'generate embed'));
 
-	ga('send', 'event', 'button', 'click', 'generate embed');
 }); // end input submit

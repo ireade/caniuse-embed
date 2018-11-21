@@ -18,18 +18,21 @@
 
 	<link href='https://fonts.googleapis.com/css?family=Source+Sans+Pro:400,600|Source+Code+Pro' rel='stylesheet' type='text/css'>
 	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/selectize.js/0.12.4/css/selectize.min.css">
-	<link rel="stylesheet" href="index.css">
+	<link rel="stylesheet" href="website/index.css">
 
 	<script>
-	  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
-	  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
-	  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
-	  })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+		(function (i, s, o, g, r, a, m) {
+			i['GoogleAnalyticsObject'] = r; i[r] = i[r] || function () {
+				(i[r].q = i[r].q || []).push(arguments)
+			}, i[r].l = 1 * new Date(); a = s.createElement(o),
+				m = s.getElementsByTagName(o)[0]; a.async = 1; a.src = g; m.parentNode.insertBefore(a, m)
+		})(window, document, 'script', '//www.google-analytics.com/analytics.js', 'ga');
 
-	  ga('create', 'UA-60256750-10', 'auto');
-	  ga('send', 'pageview');
+		ga('create', 'UA-60256750-10', 'auto');
+		ga('send', 'pageview');
 	</script>
 </head>
+
 <body>
 
 
@@ -37,24 +40,22 @@
 
 		<section>
 
-		<h1>The CanIUse Embed</h1>
+			<h1>The CanIUse Embed</h1>
 
-		<p class="about">Embed up-to-date data from <a href="http://caniuse.com" target="_blank">caniuse.com</a>. Displays feature support data for multiple versions of the 10 major browsers. Configurable, reliable, and fully responsive.</p>
-
-
-
-		<p><iframe src="https://ghbtns.com/github-btn.html?user=ireade&repo=caniuse-embed&type=star&count=false" frameborder="0" scrolling="0" width="60px" height="20px"></iframe>
-
-		<a class="twitter-share-button"
-	      href="https://twitter.com/share"
-	      data-text="The CanIUse Embed"
-	      data-url="http://caniuse.bitsofco.de"
-	      data-via="ireaderinokun"
-	      data-related="ireaderinokun"> Tweet </a>
-	      </p>
+			<p class="about">Embed up-to-date data from <a href="http://caniuse.com" target="_blank">caniuse.com</a>. Displays
+				feature support data for multiple versions of the 10 major browsers. Configurable, reliable, and fully responsive.</p>
 
 
-		<p>Made with <i class="twa twa-heart"></i> by <a href="https://twitter.com/ireaderinokun" target="_blank">@IreAderinokun</a></p>
+
+			<p><iframe src="https://ghbtns.com/github-btn.html?user=ireade&repo=caniuse-embed&type=star&count=false" frameborder="0"
+				 scrolling="0" width="60px" height="20px"></iframe>
+
+				<a class="twitter-share-button" href="https://twitter.com/share" data-text="The CanIUse Embed" data-url="http://caniuse.bitsofco.de"
+				 data-via="ireaderinokun" data-related="ireaderinokun"> Tweet </a>
+			</p>
+
+
+			<p>Made with <i class="twa twa-heart"></i> by <a href="https://twitter.com/ireaderinokun" target="_blank">@IreAderinokun</a></p>
 
 
 		</section>
@@ -65,13 +66,15 @@
 
 			<p>Default:</p>
 			<p class="ciu_embed" data-feature="css-grid" data-periods="future_1,current,past_1,past_2">
-				<a href="http://caniuse.com/#feat=css-grid">Can I Use css-grid?</a> Data on support for the css-grid feature across the major browsers from caniuse.com.
+				<a href="http://caniuse.com/#feat=css-grid">Can I Use css-grid?</a> Data on support for the css-grid feature across
+				the major browsers from caniuse.com.
 			</p>
 
 
 			<p>Only showing current and future versions: </p>
 			<p class="ciu_embed" data-feature="css-variables" data-periods="future_2,future_1,current">
-				<a href="http://caniuse.com/#feat=css-variables">Can I Use css-variables?</a> Data on support for the css-variables feature across the major browsers from caniuse.com.
+				<a href="http://caniuse.com/#feat=css-variables">Can I Use css-variables?</a> Data on support for the css-variables
+				feature across the major browsers from caniuse.com.
 			</p>
 		</section>
 
@@ -83,85 +86,87 @@
 
 			<section>
 
-			<h3>Step 1 - Include Script</h3>
+				<h3>Step 1 - Include Script</h3>
 
-			<p>Include the following javascript file in your document. </p>
+				<p>Include the following javascript file in your document. </p>
 
-<div class="highlight cf">
-<pre id="stepOne">&lt;script src="https://cdn.jsdelivr.net/gh/ireade/caniuse-embed/caniuse-embed.min.js"&gt;&lt;/script&gt;</pre>
-<div class="copy-code" id="copyStepOne" data-clipboard-target="#stepOne">Copy</div>
-</div>
+				<div class="highlight cf">
+					<pre id="stepOne">&lt;script src="https://cdn.jsdelivr.net/gh/ireade/caniuse-embed/caniuse-embed.min.js"&gt;&lt;/script&gt;</pre>
+					<div class="copy-code" id="copyStepOne" data-clipboard-target="#stepOne">Copy</div>
+				</div>
 
 			</section>
 
 
 			<section>
 
-			<h3>Step 2 - Choose Embed Settings</h3>
+				<h3>Step 2 - Choose Embed Settings</h3>
 
-			<div class="input-group">
-				<label for="featureID" class="main-label">a) Choose a Feature</label>
-				<select name="featureID" id="featureID">
-				</select>
-			</div>
+				<div class="input-group">
+					<label for="featureID" class="main-label">a) Choose a Feature</label>
+					<select name="featureID" id="featureID">
+					</select>
+				</div>
 
-			<div class="input-group">
-				<label class="main-label">b) Select the Browser Versions to Display</label>
+				<div class="input-group">
+					<label class="main-label">b) Select the Browser Versions to Display</label>
 
-				<label> <input type="checkbox" name="periods" value="future_3"> Future Version (Current + 3) </label>
+					<label> <input type="checkbox" name="periods" value="future_3"> Future Version (Current + 3) </label>
 
-				<label> <input type="checkbox" name="periods" value="future_2"> Future Version (Current + 2) </label>
+					<label> <input type="checkbox" name="periods" value="future_2"> Future Version (Current + 2) </label>
 
-				<label> <input type="checkbox" name="periods" value="future_1" checked="checked"> Future Version (Current + 1) </label>
+					<label> <input type="checkbox" name="periods" value="future_1" checked="checked"> Future Version (Current + 1)
+					</label>
 
-				<label class="current"> <input type="checkbox" name="periods" value="current" checked="checked"> Current Version (required)</label>
+					<label class="current"> <input type="checkbox" name="periods" value="current" checked="checked"> Current Version
+						(required)</label>
 
-				<label> <input type="checkbox" name="periods" value="past_1" checked="checked"> Past Version (Current - 1) </label>
+					<label> <input type="checkbox" name="periods" value="past_1" checked="checked"> Past Version (Current - 1) </label>
 
-				<label> <input type="checkbox" name="periods" value="past_2" checked="checked"> Past Version (Current - 2) </label>
+					<label> <input type="checkbox" name="periods" value="past_2" checked="checked"> Past Version (Current - 2) </label>
 
-				<label> <input type="checkbox" name="periods" value="past_3"> Past Version (Current - 3) </label>
+					<label> <input type="checkbox" name="periods" value="past_3"> Past Version (Current - 3) </label>
 
-				<label> <input type="checkbox" name="periods" value="past_4"> Past Version (Current - 4) </label>
+					<label> <input type="checkbox" name="periods" value="past_4"> Past Version (Current - 4) </label>
 
-				<label> <input type="checkbox" name="periods" value="past_5"> Past Version (Current - 5) </label>
+					<label> <input type="checkbox" name="periods" value="past_5"> Past Version (Current - 5) </label>
 
-			</div>
+				</div>
 
-			<div class="input-group">
-				<label class="main-label">c) Choose default colour scheme</label>
+				<div class="input-group">
+					<label class="main-label">c) Choose default colour scheme</label>
 
-				<label><input type="radio" name="accessible-colours" value="false" checked> Default</label>
+					<label><input type="radio" name="accessible-colours" value="false" checked> Default</label>
 
-				<label><input type="radio" name="accessible-colours" id="add-accessible-colours" value="true"> Accessible</label>
-			</div>
+					<label><input type="radio" name="accessible-colours" id="add-accessible-colours" value="true"> Accessible</label>
+				</div>
 
-			<div class="input-group">
-				<label class="main-label">4) Add a fallback screenshot?</label>
+				<div class="input-group">
+					<label class="main-label">4) Add a fallback screenshot?</label>
 
-				<label><input type="checkbox" name="fallback-screenshot" id="fallback-screenshot"> Yes, Add Fallback Screenshot</label>
-			</div>
+					<label><input type="checkbox" name="fallback-screenshot" id="fallback-screenshot"> Yes, Add Fallback Screenshot</label>
+				</div>
 
-			<div class="input-group">
-				<input id="generate-embed" type="submit" value="Generate">
-			</div>
+				<div class="input-group">
+					<button id="generate-embed" type="submit">Generate</button>
+				</div>
 
 			</section>
 
 
 			<section class="step_3" style="display: none;">
 
-			<h3>Step 3 - Get the Embed Code</h3>
+				<h3>Step 3 - Get the Embed Code</h3>
 
-			<p>Paste this snippet where you want the embed to be displayed:</p>
+				<p>Paste this snippet where you want the embed to be displayed:</p>
 
-<div class="highlight cf">
-<pre id="stepThree"></pre>
-<div class="copy-code" id="copyStepThree" data-clipboard-target="#stepThree">Copy</div>
-</div>
+				<div class="highlight cf">
+					<pre id="stepThree"></pre>
+					<div class="copy-code" id="copyStepThree" data-clipboard-target="#stepThree">Copy</div>
+				</div>
 
-			<p>Preview of embed:</p>
-			<div class="export-preview"></div>
+				<p>Preview of embed:</p>
+				<div class="export-preview"></div>
 			</section>
 
 
@@ -170,7 +175,8 @@
 		<section class="site-section" id="polymer">
 			<h2>Polymer Element</h2>
 
-			<p>You can now use this embed as a Polymer Element. <a href="https://beta.webcomponents.org/element/ireade/caniuse-embed-polymer">View on WebComponents.org</a></p>
+			<p>You can now use this embed as a Polymer Element. <a href="https://beta.webcomponents.org/element/ireade/caniuse-embed-polymer">View
+					on WebComponents.org</a></p>
 
 		</section>
 
@@ -185,13 +191,14 @@
 
 	<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
 	<script src="https://cdnjs.cloudflare.com/ajax/libs/selectize.js/0.12.4/js/standalone/selectize.min.js"></script>
-	<script src="clipboard.min.js"></script>
-	<script src="export.js"></script>
+	<script src="/website/clipboard.min.js"></script>
+	<script src="/website/index.js"></script>
 
 	<script>
-    window.twttr=(function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],t=window.twttr||{};if(d.getElementById(id))return;js=d.createElement(s);js.id=id;js.src="https://platform.twitter.com/widgets.js";fjs.parentNode.insertBefore(js,fjs);t._e=[];t.ready=function(f){t._e.push(f);};return t;}(document,"script","twitter-wjs"));
-    </script>
+		window.twttr = (function (d, s, id) { var js, fjs = d.getElementsByTagName(s)[0], t = window.twttr || {}; if (d.getElementById(id)) return; js = d.createElement(s); js.id = id; js.src = "https://platform.twitter.com/widgets.js"; fjs.parentNode.insertBefore(js, fjs); t._e = []; t.ready = function (f) { t._e.push(f); }; return t; }(document, "script", "twitter-wjs"));
+	</script>
 
 
 </body>
+
 </html>
