@@ -59,9 +59,7 @@ html {
 
 
 
-/* ---------------*/
-
-
+/* Typography ---------------*/
 
 html {
     font-size: 62.5%;
@@ -69,10 +67,11 @@ html {
 body {
     font-size: 1.6rem;
     line-height: 1.4;
-    font-family: 'Source Sans Pro', sans-serif;
+	font-family: 'Be Vietnam', sans-serif;
+	font-weight: 300;
     color: rgb(50, 50, 50);
-
 }
+
 a {
     color: inherit; 
 }
@@ -82,8 +81,9 @@ small {
 	display: block;
 	text-align: right;
 }
+
 strong {
-	font-weight: 600;
+	font-weight: 500;
 }
 
 h1 {
@@ -91,9 +91,6 @@ h1 {
 	margin-bottom: 20px;
 	font-weight: 600;
 }
-
-
-
 
 p.about {
 	font-size: 2.5rem;
@@ -133,8 +130,6 @@ h3 {
 		margin: 50px auto;
 	}
 }
-
-
 
 section.site-section {
 	margin-bottom: 50px;
@@ -207,7 +202,7 @@ select,
 	height: 40px;	
 	display: inline-block;
 	font-size: 1.6rem;
-    font-family: 'Source Sans Pro', sans-serif;
+    font-family: inherit;
 }
 
 select {
