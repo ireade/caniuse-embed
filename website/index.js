@@ -169,3 +169,24 @@ generateEmbedButton.addEventListener('click', function(e) {
 		.then(() => ga('send', 'event', 'button', 'click', 'generate embed'));
 
 }); // end input submit
+
+
+/// ytest
+
+
+fetch('http://localhost:8888/.netlify/functions/screenshot', {
+  method: "POST",
+  headers: {
+    "Content-Type": "application/json; charset=utf-8"
+  },
+  body: JSON.stringify({
+    feature: 'flexbox',
+    periods: 'current',
+    accessibleColours: 'false'
+  })
+})
+.then((res) => res.json())
+.then((res) => {
+  console.log("yello")
+  console.log(res);
+})
