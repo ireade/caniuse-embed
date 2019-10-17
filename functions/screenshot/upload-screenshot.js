@@ -1,10 +1,9 @@
 const cloudinary = require('cloudinary').v2;
-
-if (process.env.CLOUDINARY_CLOUD_NAME) {
-  cloudinary.config(require("./cloudinary-config"));
-} else {
-  cloudinary.config(require("./cloudinary-config.secrets"));
-}
+cloudinary.config({ 
+  cloud_name: process.env.CLOUDINARY_CLOUD_NAME,
+  api_key: process.env.CLOUDINARY_API_KEY,
+  api_secret: process.env.CLOUDINARY_API_SECRET
+});
 
 module.exports = (feature, screenshot) => {
   return new Promise((resolve, reject) => {

@@ -1,5 +1,3 @@
 node_modules
 .idea
 .netlify
-
-functions/screenshot/cloudinary-config.secrets.js

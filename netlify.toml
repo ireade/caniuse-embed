@@ -1,7 +1,3 @@
 [build]
-
-  base = "./"
-
   publish = "public/"
-
   functions = "functions/"
