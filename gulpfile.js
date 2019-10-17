@@ -13,10 +13,10 @@ var embedHTML = "src/embed/index.html";
 gulp.task('script', function() {
     gulp.src(caniuseEmbed)
         .pipe(uglify('caniuse-embed.min.js'))
-        .pipe(gulp.dest(''));
+        .pipe(gulp.dest('public'));
     gulp.src(embedScript)
         .pipe(uglify())
-        .pipe(gulp.dest('embed'));
+        .pipe(gulp.dest('public/embed'));
 });
 
 gulp.task('sass', function() {
@@ -25,13 +25,13 @@ gulp.task('sass', function() {
             outputStyle: 'compressed'
         })
             .on('error', gutil.log))
-        .pipe(gulp.dest('embed'));
+        .pipe(gulp.dest('public/embed'));
 });
 
 gulp.task('minify-html', function() {
   return gulp.src(embedHTML)
     .pipe(minifyHTML({ empty: true }))
-    .pipe(gulp.dest('embed'));
+    .pipe(gulp.dest('public/embed'));
 });
 
 gulp.task('connect', function() {
@@ -47,4 +47,4 @@ gulp.task('watch', function() {
     gulp.watch(embedHTML,['minify-html']); 
 });
 
-gulp.task('default', ['connect', 'script', 'sass', 'minify-html', 'watch']);
+gulp.task('default', ['script', 'sass', 'minify-html', 'watch']);
