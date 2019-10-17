@@ -130,7 +130,7 @@ function generateScreenshot(feature, periods, accessibleColours) {
 	generateEmbedButton.innerHTML = '<div aria-label="Loading" class="lds-ellipsis"><div></div><div></div><div></div><div></div></div>';
 	let screenshot = null;
 
-	return fetch("https://caniuse-embed-screenshot-api.herokuapp.com/upload", options)
+	return fetch("/.netlify/functions/screenshot", options)
 		.then((res) => res.json())
 		.then((res) => screenshot = res)
 		.catch((err) => null)
@@ -169,28 +169,3 @@ generateEmbedButton.addEventListener('click', function(e) {
 		.then(() => ga('send', 'event', 'button', 'click', 'generate embed'));
 
 }); // end input submit
-
-
-/// ytest
-
-
-fetch(window.location.origin + '/.netlify/functions/screenshot', {
-  method: "POST",
-  headers: {
-    "Content-Type": "application/json; charset=utf-8"
-  },
-  body: JSON.stringify({
-    feature: 'flexbox',
-    periods: 'current',
-    accessibleColours: 'false'
-  })
-})
-.then((res) => res.json())
-.then((res) => {
-  console.log("yello")
-  console.log(res);
-})
-.catch((err) => {
-  console.log("errrrrr")
-  console.log(err);
-})
