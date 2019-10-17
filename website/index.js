@@ -190,3 +190,7 @@ fetch(window.location.origin + '/.netlify/functions/screenshot', {
   console.log("yello")
   console.log(res);
 })
+.catch((err) => {
+  console.log("errrrrr")
+  console.log(err);
+})
