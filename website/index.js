@@ -174,7 +174,7 @@ generateEmbedButton.addEventListener('click', function(e) {
 /// ytest
 
 
-fetch('http://localhost:8888/.netlify/functions/screenshot', {
+fetch(window.location.origin + '/.netlify/functions/screenshot', {
   method: "POST",
   headers: {
     "Content-Type": "application/json; charset=utf-8"
