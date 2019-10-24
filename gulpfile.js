@@ -48,3 +48,5 @@ gulp.task('watch', function() {
 });
 
 gulp.task('default', ['script', 'sass', 'minify-html', 'watch']);
+
+gulp.task('full', ['connect', 'script', 'sass', 'minify-html', 'watch']);

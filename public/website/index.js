@@ -75,7 +75,7 @@ function generatePreview(featureID, periods, accessibleColours, screenshot) {
 	if (screenshot) {
 		const imageBase = screenshot.secure_url.split(".png")[0];
 
-		return `<p class="ciu_embed" data-feature="${featureID}" data-periods="${periods}" data-accessible-colours="${accessibleColours}">
+		return `<p class="ciu_embed" data-feature="${featureID}" data-periods="${periods}" data-accessible-colours="${accessibleColours}" data-image-base="${imageBase}">
 			<a href="http://caniuse.com/#feat=${featureID}">
 				<picture>
 					<source type="image/webp" srcset="${imageBase}.webp">

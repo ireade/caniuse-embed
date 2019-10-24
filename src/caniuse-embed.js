@@ -9,13 +9,14 @@
       var feature = embed.getAttribute('data-feature');
       var periods = embed.getAttribute('data-periods');
       var accessibleColours = embed.getAttribute('data-accessible-colours') || 'false';
+      var imageBase = embed.getAttribute('data-image-base') || 'none';
 
       if (feature) {
 
         var url = 'https://caniuse.bitsofco.de/embed/index.html';
         //var url = 'http://localhost:8000/embed/index.html'
 
-        var iframe = '<iframe src="'+url+'?feat='+feature+'&periods='+periods+'&accessible-colours='+accessibleColours+'" frameborder="0" width="100%" height="400px"></iframe>';
+        var iframe = '<iframe src="'+url+'?feat='+feature+'&periods='+periods+'&accessible-colours='+accessibleColours+'&image-base='+imageBase+'" frameborder="0" width="100%" height="400px"></iframe>';
 
         embed.innerHTML = iframe;
 

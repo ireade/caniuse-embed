@@ -3,25 +3,50 @@
 
 var caniuseDataUrl = 'https://raw.githubusercontent.com/Fyrd/caniuse/master/fulldata-json/data-2.0.json';
 
-var featureID = location.href.split('?feat=')[1],
-	  featureID = featureID ? featureID.split('&periods=')[0] : null;
+var featureID;
+var periods;
+var accessibleColours;
+var imageBase;
 
-var periods = location.href.split('&periods=')[1],
-    periods = periods ? periods.split("&accessible-colours=")[0] : null,
-    periods = periods ? periods.split(",") : null;
-    
-var accessibleColours = location.href.split('&accessible-colours=')[1],
-    accessibleColours = accessibleColours ? accessibleColours : false;
+window.location.search.split("?")[1].split("&").forEach(function(param) {
+  var key = param.split("=")[0];
+  var value = param.split("=")[1];
+
+  switch(key) {
+    case "feat":
+      featureID = value;
+      break;
+    case "periods":
+      periods = value.split(",");
+      break;
+    case "accessible-colours":
+      accessibleColours = value;
+      break;
+    case "image-base":
+      if (value !== 'none') imageBase = value;
+      break;
+  }
+});
 
 var browsers = ['ie', 'edge', 'firefox', 'chrome', 'safari', 'ios_saf', 'op_mini', 'and_chr', 'android', 'samsung'];
 
 
-if ( featureID && periods ) {
-	document.getElementById('defaultMessage').innerHTML = '<a href="http://caniuse.com/#feat='+featureID+'">Can I Use '+featureID+'?</a> Data on support for the '+featureID+' feature across the major browsers from caniuse.com. (Embed Loading)';
+var defaultMessage;
 
+if (featureID && periods && imageBase) {
+  defaultMessage = '<picture>'+
+    '<source type="image/webp" srcset="' + imageBase + '.webp">' +
+    '<source type="image/png" srcset="' + imageBase + '.png">' +
+    '<source type="image/jpeg" srcset="' + imageBase + '.jpg">' +
+    '<img src="' + imageBase + '.png" alt="Data on support for the ' + featureID + ' feature across the major browsers from caniuse.com">' +
+  '</picture>';
+} else if (featureID && periods)  {
+  defaultMessage = '<a href="http://caniuse.com/#feat='+featureID+'">Can I Use '+featureID+'?</a> Data on support for the '+featureID+' feature across the major browsers from caniuse.com. (Embed Loading)';
 } else {
-	document.getElementById('defaultMessage').innerHTML = 'Error: Feature and/or Periods not Specified';
+	defaultMessage = 'Error: Feature and/or Periods not Specified';
 }
+
+document.getElementById('defaultMessage').innerHTML = defaultMessage;
 
 
 
