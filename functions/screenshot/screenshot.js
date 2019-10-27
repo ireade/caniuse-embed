@@ -19,7 +19,7 @@ const takeScreenshot = async (feature, periods, accessibleColours) => {
 	const page = await browser.newPage();
 
 	await page.goto(
-		`https://caniuse.bitsofco.de/embed/index.html?feat=${feature}&periods=${periods}&accessible-colours=${accessibleColours}`,
+		`https://caniuse.bitsofco.de/embed/index.html?feat=${feature}&periods=${periods}&accessible-colours=${accessibleColours}&screenshot=true`,
 		{ waitUntil: 'networkidle2' }
 	);
 
