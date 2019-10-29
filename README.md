@@ -18,6 +18,9 @@
 
 <img src="https://user-images.githubusercontent.com/8677283/34815911-77f77564-f6b3-11e7-9fc3-f883f03e7b1b.gif" alt="Toggleable Accessible Colours" style="width: 100%;">
 
+### Live Image
+
+<img src="https://caniuse.bitsofco.de/image/css-grid.png" style="width: 100%;">
 
 ## How to Use
 
