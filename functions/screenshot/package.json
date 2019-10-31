@@ -13,7 +13,5 @@
     "cloudinary": "^1.16.0",
     "puppeteer-core": "^2.0.0"
   },
-  "devDependencies": {
-    "puppeteer": "^2.0.0"
-  }
+  "devDependencies": {}
 }
