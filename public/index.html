@@ -53,7 +53,12 @@
 		<section class="site-section">
 			<h2>Examples</h2>
 
-			<p>Default:</p>            
+			<p>The embed can be used in several forms.</p>
+			<br>
+
+			<h3>Interactive Embed</h3>
+			<p>By default, the interactive embed will display the feature support for the current version, 1 version in the future, and 2 versions back.</p>
+
             <p class="ciu_embed" data-feature="css-grid" data-periods="future_1,current,past_1,past_2" data-accessible-colours="false">
                 <a href="http://caniuse.com/#feat=css-grid">
                     <picture>
@@ -65,19 +70,8 @@
                 </a>
             </p>
 
-			<p>Only showing current and future versions: </p>
-			<p class="ciu_embed" data-feature="css-grid" data-periods="future_1,future_2,current" data-accessible-colours="false">
-                <a href="http://caniuse.com/#feat=css-grid">
-                    <picture>
-                    <source type="image/webp" srcset="https://res.cloudinary.com/ireaderinokun/image/upload/v1571341106/caniuse-embed/css-grid-2019-10-17.webp">
-                    <source type="image/png" srcset="https://res.cloudinary.com/ireaderinokun/image/upload/v1571341106/caniuse-embed/css-grid-2019-10-17.png">
-                    <source type="image/jpeg" srcset="https://res.cloudinary.com/ireaderinokun/image/upload/v1571341106/caniuse-embed/css-grid-2019-10-17.jpg">
-                    <img src="https://res.cloudinary.com/ireaderinokun/image/upload/v1571341106/caniuse-embed/css-grid-2019-10-17.png" alt="Data on support for the css-grid feature across the major browsers from caniuse.com">
-                    </picture>
-                </a>
-            </p>
+			<p>You can also select to display the accessible colours scheme by default. Although users will always have the option to toggle between the colour schemes.</p>
 
-			<p>Accessible colours by default: </p>
 			<p class="ciu_embed" data-feature="css-grid" data-periods="future_2,future_1,current" data-accessible-colours="true">
                 <a href="http://caniuse.com/#feat=css-grid">
                     <picture>
@@ -88,33 +82,47 @@
                     </picture>
                 </a>
             </p>
+
+			<h3>Live Image</h3>
+			<p>For use in places where Javascript is not supported, you can use the live image instead. The image will be updated every few weeks.</p>
+			<img src="https://caniuse.bitsofco.de/image/css-grid.png" alt="Data on support for the css-grid feature across the major browsers from caniuse.com">
+
+
+			<h3>Static Image</h3>
+			<p>If you want to capture the feature support for a specific time, you can also create a static image.</p>
+			<img src="https://res.cloudinary.com/ireaderinokun/image/upload/v1571341228/caniuse-embed/css-grid-2019-10-17.png" alt="Data on support for the css-grid feature across the major browsers from caniuse.com">
 		</section>
 
 		<section class="site-section" id="how-to-use">
-			<h2>How To Use</h2>
+			<h2>Create your Embed</h2>
 
-			<section>
-				<h3>Step 1 - Include Script</h3>
+			<section id="step-type">
+				<h3>Select Embed Type</h3>
+				<p>What type of embed would you like? See examples above for more information</p>
 
-				<p>Include the following javascript file in your document. </p>
+				<div class="input-group">
+					<label><input type="radio" name="embed-type" value="interactive-embed" checked> Interactive Embed</label>
 
-				<div class="highlight cf">
-					<pre id="stepOne">&lt;script src="https://cdn.jsdelivr.net/gh/ireade/caniuse-embed/public/caniuse-embed.min.js"&gt;&lt;/script&gt;</pre>
-					<div class="copy-code" id="copyStepOne" data-clipboard-target="#stepOne">Copy</div>
+					<label><input type="radio" name="embed-type" value="live-image"> Live Image</label>
+
+					<label><input type="radio" name="embed-type" value="static-image"> Static Image</label>
 				</div>
 			</section>
 
-			<section>
-				<h3>Step 2 - Choose Embed Settings</h3>
+			<section id="step-feature">
+				<h3>Select Feature</h3>
+				<p>What feature from caniuse.com are you trying to display?</p>
 
 				<div class="input-group">
-					<label for="featureID" class="main-label">a) Choose a Feature</label>
-					<select name="featureID" id="featureID">
-					</select>
+					<select name="featureID" id="featureID" aria-label="Feature"></select>
 				</div>
+			</section>
+
+			<section id="step-settings">
+				<h3>Additional Settings</h3>
 
 				<div class="input-group">
-					<label class="main-label">b) Select the Browser Versions to Display</label>
+					<label class="main-label">Browser Versions</label>
 
 					<label> <input type="checkbox" name="periods" value="future_3"> Future Version (Current + 3) </label>
 
@@ -123,7 +131,7 @@
 					<label> <input type="checkbox" name="periods" value="future_1" checked="checked"> Future Version (Current + 1)
 					</label>
 
-					<label class="current"> <input type="checkbox" name="periods" value="current" checked="checked"> Current Version
+					<label class="current"> <input type="checkbox" name="periods" value="current" checked="checked" disabled="disabled"> Current Version
 						(required)</label>
 
 					<label> <input type="checkbox" name="periods" value="past_1" checked="checked"> Past Version (Current - 1) </label>
@@ -139,27 +147,32 @@
 				</div>
 
 				<div class="input-group">
-					<label class="main-label">c) Choose default colour scheme</label>
+					<label class="main-label">Default Colour Scheme</label>
 
 					<label><input type="radio" name="accessible-colours" value="false" checked> Default</label>
 
 					<label><input type="radio" name="accessible-colours" id="add-accessible-colours" value="true"> Accessible</label>
 				</div>
+			</section>
 
-				<div class="input-group">
-					<label class="main-label">d) Add a fallback screenshot?</label>
+			<div class="input-group">
+				<button id="generate-embed" type="submit">Generate</button>
+			</div>
 
-					<label><input type="checkbox" name="fallback-screenshot" id="fallback-screenshot"> Yes, Add Fallback Screenshot</label>
-				</div>
+			<section id="step-script" hidden>
+				<h3>Include Script</h3>
 
-				<div class="input-group">
-					<button id="generate-embed" type="submit">Generate</button>
+				<p>Include the following javascript file in your document. </p>
+
+				<div class="highlight cf">
+					<pre id="stepOne">&lt;script src="https://cdn.jsdelivr.net/gh/ireade/caniuse-embed/public/caniuse-embed.min.js"&gt;&lt;/script&gt;</pre>
+					<div class="copy-code" id="copyStepOne" data-clipboard-target="#stepOne">Copy</div>
 				</div>
 			</section>
 
-			<section class="step_3" style="display: none;">
+			<section id="step-result" hidden>
 
-				<h3>Step 3 - Get the Embed Code</h3>
+				<h3>Get the Embed Code</h3>
 
 				<p>Paste this snippet where you want the embed to be displayed:</p>
 
@@ -168,29 +181,21 @@
 					<div class="copy-code" id="copyStepThree" data-clipboard-target="#stepThree">Copy</div>
 				</div>
 
-				<p>Preview of embed:</p>
+				<p>Preview:</p>
 				<div class="export-preview"></div>
 			</section>
 
 
 		</section>
 
-		<section class="site-section" id="polymer">
-			<h2>Polymer Element</h2>
-
-			<p>You can now use this embed as a Polymer Element. <a href="https://beta.webcomponents.org/element/ireade/caniuse-embed-polymer">View
-					on WebComponents.org</a></p>
-
-		</section>
 	</div>
-
 
 	<script id="caniuse-embed-script" src="caniuse-embed.min.js"></script>
 
 	<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
 	<script src="https://cdnjs.cloudflare.com/ajax/libs/selectize.js/0.12.4/js/standalone/selectize.min.js"></script>
-	<script src="/website/clipboard.min.js"></script>
-	<script src="/website/index.js"></script>
+	<script src="website/clipboard.min.js"></script>
+	<script src="website/index.js"></script>
 
 	<script>
 		window.twttr = (function (d, s, id) { var js, fjs = d.getElementsByTagName(s)[0], t = window.twttr || {}; if (d.getElementById(id)) return; js = d.createElement(s); js.id = id; js.src = "https://platform.twitter.com/widgets.js"; fjs.parentNode.insertBefore(js, fjs); t._e = []; t.ready = function (f) { t._e.push(f); }; return t; }(document, "script", "twitter-wjs"));

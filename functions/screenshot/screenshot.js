@@ -1,11 +1,10 @@
 /* Take Screenshot with Puppeteer *********************** */
 
 const chromium = require('chrome-aws-lambda');
-const puppeteer = require('puppeteer-core');
 
 const takeScreenshot = async (feature, periods, accessibleColours) => {
 
-  const browser = await puppeteer.launch({
+  const browser = await chromium.puppeteer.launch({
     args: chromium.args,
     defaultViewport: {
         width: 800,
@@ -53,7 +52,7 @@ const uploadScreenshot = (feature, screenshot) => {
 		const date = `${yyyy}-${mm}-${dd}`;
 
 		const options = {
-			folder: 'caniuse-embed',
+			folder: 'caniuse-embed/static',
 			public_id: `${feature}-${date}`
 		};
 
@@ -82,6 +81,7 @@ exports.handler = async (event, context) => {
 		const image = await uploadScreenshot(feature, screenshot);
 		return { statusCode: 200, body: JSON.stringify(image) };
 	} catch (err) {
+		console.log(err);
 		return { statusCode: 500, body: err.toString() }
 	}
   

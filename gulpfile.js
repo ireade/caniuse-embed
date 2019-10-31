@@ -29,15 +29,15 @@ gulp.task('sass', function() {
 });
 
 gulp.task('minify-html', function() {
-  return gulp.src(embedHTML)
-    .pipe(minifyHTML({ empty: true }))
-    .pipe(gulp.dest('public/embed'));
+    return gulp.src(embedHTML)
+        .pipe(minifyHTML({ empty: true }))
+        .pipe(gulp.dest('public/embed'));
 });
 
 gulp.task('connect', function() {
-  connect.server({
-    port: 8000
-  });
+    connect.server({
+        port: 8000
+    });
 });
 
 gulp.task('watch', function() {

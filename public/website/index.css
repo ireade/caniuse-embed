@@ -57,6 +57,10 @@ html {
   clear:both;
 }
 
+[hidden] {
+	display: none;
+}
+
 
 
 /* Typography ---------------*/
@@ -104,14 +108,21 @@ p {
 h2 {
 	font-size: 2.5rem;
 	font-weight: 600;
+	padding-bottom: 10px;
 	margin-bottom: 20px;
+	border-bottom: 1px solid rgb(220, 220, 220);
 }
 
 
 h3 {
-	font-size: 2rem;
+	font-size: 1.8rem;
 	font-weight: 600;
-	margin-bottom: 20px;
+	margin-bottom: 10px;
+}
+
+img {
+	max-width: 100%;
+	height: auto;
 }
 
 .uo {
@@ -134,7 +145,6 @@ h3 {
 section.site-section {
 	margin-bottom: 50px;
 	padding-bottom: 30px;
-	border-bottom: 1px solid rgb(220, 220, 220);
 }
 section:not(.site-section) {
 	margin-bottom: 40px;

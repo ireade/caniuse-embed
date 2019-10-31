@@ -4,21 +4,6 @@ const generateEmbedButton = document.getElementById("generate-embed");
  * Utility functions
  * =====================*/
 
-// SORTING FUNCTION FROM http://stackoverflow.com/a/979325
-function sort_by(field, primer){
-	var key = primer ? 
-			function(x) {return primer(x[field])} : 
-			function(x) {return x[field]};
-	return function (a, b) {
-			return a = key(a), b = key(b), 1 * ((a > b) - (b > a));
-		} 
-}
-
-function capitalizeFirstLetter(string) {
-	return string.charAt(0).toUpperCase() + string.slice(1);
-}
-
-// Pass the checkbox name to the function
 function getCheckedBoxes(chkboxName) {
 	var checkboxes = document.getElementsByName(chkboxName);
 	var checkboxesChecked = [];
@@ -38,6 +23,21 @@ function getCheckedBoxes(chkboxName) {
  * =====================*/
 
 function getFeatureList() {
+
+	function sort_by(field, primer) {
+		// http://stackoverflow.com/a/979325
+		var key = primer ?
+			function(x) {return primer(x[field])} :
+			function(x) {return x[field]};
+		return function (a, b) {
+			return a = key(a), b = key(b), 1 * ((a > b) - (b > a));
+		}
+	}
+
+	function capitalizeFirstLetter(string) {
+		return string.charAt(0).toUpperCase() + string.slice(1);
+	}
+
 	$.getJSON('https://raw.githubusercontent.com/Fyrd/caniuse/master/fulldata-json/data-2.0.json', function(res) {
 
 		var featuresArray = [];
@@ -70,26 +70,24 @@ function getFeatureList() {
  * Generate feature
  * =====================*/
 
-function generatePreview(featureID, periods, accessibleColours, screenshot) {
+function generatePreview(featureID, periods, accessibleColours, imageBase) {
 
-	if (screenshot) {
-		const imageBase = screenshot.secure_url.split(".png")[0];
+	imageBase = imageBase || 'https://caniuse.bitsofco.de/image/' + featureID;
 
-		return `<p class="ciu_embed" data-feature="${featureID}" data-periods="${periods}" data-accessible-colours="${accessibleColours}" data-image-base="${imageBase}">
-			<a href="http://caniuse.com/#feat=${featureID}">
-				<picture>
-					<source type="image/webp" srcset="${imageBase}.webp">
-					<source type="image/png" srcset="${imageBase}.png">
-					<source type="image/jpeg" srcset="${imageBase}.jpg">
-					<img src="${imageBase}.png" alt="Data on support for the ${featureID} feature across the major browsers from caniuse.com">
-				</picture>
-			</a>
-		</p>`;
-	} 
+	const image = `<a href="http://caniuse.com/#feat=${featureID}">
+		<picture>
+			<source type="image/webp" srcset="${imageBase}.webp">
+			<img src="${imageBase}.png" alt="Data on support for the ${featureID} feature across the major browsers from caniuse.com">
+		</picture>
+	</a>`;
 
-	return `<p class="ciu_embed" data-feature="${featureID}" data-periods="${periods}" data-accessible-colours="${accessibleColours}">
-		<a href="http://caniuse.com/#feat=${featureID}">Can I Use ${featureID}?</a> Data on support for the ${featureID} feature across the major browsers from caniuse.com.
+	if (embedType === "interactive-embed") {
+		return `<p class="ciu_embed" data-feature="${featureID}" data-periods="${periods}" data-accessible-colours="${accessibleColours}">
+		${image}
 	</p>`;
+	}
+
+	return image;
 }
 
 function displayExportCode(preview) {
@@ -106,10 +104,12 @@ function displayPreview(preview) {
 	$('.export-preview').html(preview);
 	new Clipboard(document.getElementById('copyStepThree'));
 
-	// Load caniuse-embed.min.js again for preview
-	var DOMContentLoaded_event = document.createEvent("Event");
-	DOMContentLoaded_event.initEvent("DOMContentLoaded", true, true);
-	window.document.dispatchEvent(DOMContentLoaded_event);
+	if (embedType === "interactive-embed") {
+		// Load caniuse-embed.min.js again for preview
+		var DOMContentLoaded_event = document.createEvent("Event");
+		DOMContentLoaded_event.initEvent("DOMContentLoaded", true, true);
+		window.document.dispatchEvent(DOMContentLoaded_event);
+	}
 
 	return preview;
 }
@@ -133,7 +133,7 @@ function generateScreenshot(feature, periods, accessibleColours) {
 	return fetch("/.netlify/functions/screenshot", options)
 		.then((res) => res.json())
 		.then((res) => screenshot = res)
-		.catch((err) => null)
+		.catch((err) => console.log(err))
 		.then(() => generateEmbedButton.innerHTML = 'Generate')
 		.then(() => screenshot);
 }
@@ -142,30 +142,81 @@ function generateScreenshot(feature, periods, accessibleColours) {
  * Initialise
  * =====================*/
 
+var embedType = "interactive-embed";
+
 new Clipboard(document.getElementById('copyStepOne'));
 $('input[value="current"]').on('click', function() { return false; });
 
 getFeatureList();
 
+$('input[name="embed-type"]').on('change', function(e) {
+
+	document.getElementById('step-script').setAttribute('hidden', 'hidden');
+	document.getElementById('step-result').setAttribute('hidden', 'hidden');
+
+	embedType = e.target.value;
+
+	switch(embedType) {
+		case "interactive-embed":
+		case "static-image":
+			document.getElementById('step-settings').removeAttribute('hidden');
+			break;
+		case "live-image":
+			document.getElementById('step-settings').setAttribute('hidden', 'hidden');
+			break;
+	}
+});
+
 generateEmbedButton.addEventListener('click', function(e) {
 	e.preventDefault();
+
+	function generateInteractiveEmbed(featureID, periods, accessibleColours) {
+		var preview = generatePreview(featureID, periods, accessibleColours);
+		displayExportCode(preview);
+		displayPreview(preview);
+
+		document.getElementById('step-script').removeAttribute('hidden');
+		document.getElementById('step-result').removeAttribute('hidden');
+		ga('send', 'event', 'button', 'click', 'generate embed');
+	}
+
+	function generateLiveImage(featureID) {
+		var preview = generatePreview(featureID);
+		displayExportCode(preview);
+		displayPreview(preview);
+
+		document.getElementById('step-result').removeAttribute('hidden');
+		ga('send', 'event', 'button', 'click', 'generate embed');
+	}
+
+	function generateStaticImage(featureID, periods, accessibleColours) {
+		generateScreenshot(featureID, periods, accessibleColours)
+			.then((screenshot) => {
+				const imageBase = screenshot.secure_url.split('.png')[0];
+				const preview = generatePreview(featureID, null, null, imageBase);
+				displayExportCode(preview);
+				displayPreview(preview);
+			})
+			.then(() => {
+				document.getElementById('step-result').removeAttribute('hidden');
+				ga('send', 'event', 'button', 'click', 'generate embed')
+			});
+	}
 
 	var featureID = $('select[name="featureID"]').val();
 	var periods = getCheckedBoxes("periods").join();
 	var accessibleColours = document.getElementById("add-accessible-colours").checked;
-	var fallbackScreenshot = document.getElementById("fallback-screenshot").checked;
 
-	var start = Promise.resolve();
-	if (fallbackScreenshot) start = generateScreenshot(featureID, periods, accessibleColours);
-
-	start
-		.then((screenshot) => generatePreview(featureID, periods, accessibleColours, screenshot))
-		.then((preview) => {
-			$('.step_3').show();
-			return preview;
-		})
-		.then((preview) => displayExportCode(preview))
-		.then((preview) => displayPreview(preview))
-		.then(() => ga('send', 'event', 'button', 'click', 'generate embed'));
+	switch(embedType) {
+		case "interactive-embed":
+			generateInteractiveEmbed(featureID, periods, accessibleColours);
+			break;
+		case "live-image":
+			generateLiveImage(featureID);
+			break;
+		case "static-image":
+			generateStaticImage(featureID, periods, accessibleColours);
+			break;
+	}
 
 }); // end input submit
