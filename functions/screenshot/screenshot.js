@@ -7,8 +7,8 @@ const takeScreenshot = async (feature, periods, accessibleColours) => {
   const browser = await chromium.puppeteer.launch({
     args: chromium.args,
     defaultViewport: {
-        width: 800,
-        height: 500,
+        width: 1000,
+        height: 650,
         isLandscape: true
     },
     executablePath: await chromium.executablePath,
@@ -66,7 +66,7 @@ const uploadScreenshot = (feature, screenshot) => {
 
 /* Netlify Function *********************** */
 
-exports.handler = async (event, context) => {
+exports.handler = async (event) => {
 
 	const params = JSON.parse(event.body);
 	if (!params.feature) return { statusCode: 400, body: "Feature required" };
@@ -85,4 +85,4 @@ exports.handler = async (event, context) => {
 		return { statusCode: 500, body: err.toString() }
 	}
   
-}
+};
