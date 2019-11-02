@@ -74,7 +74,7 @@ exports.handler = async (event) => {
 
 	const feature = params.feature;
 	const periods = params.periods;
-	const accessibleColours = params.accessibleColours ? (params.accessibleColours == "true") : false;
+	const accessibleColours = params.accessibleColours || false;
 
 	try {
 		const screenshot = await takeScreenshot(feature, periods, accessibleColours);
