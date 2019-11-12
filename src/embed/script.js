@@ -379,6 +379,8 @@ function fetchCanIUseData(success, error) {
 
   if (options.screenshot) {
 
+    document.body.classList.add("screenshot");
+
     var d = new Date();
     var months = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
     document.getElementById("footer-right").innerHTML = d.getDate() + ' ' + months[d.getMonth()] + ' ' + d.getFullYear();
