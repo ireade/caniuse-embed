@@ -192,12 +192,16 @@ generateEmbedButton.addEventListener('click', function(e) {
 	function generateStaticImage(featureID, periods, accessibleColours) {
 		generateScreenshot(featureID, periods, accessibleColours)
 			.then((screenshot) => {
-				const imageBase = screenshot.secure_url.split('.png')[0];
+				if (!screenshot) return console.log("Error generating screenshot");
+
+				const splitPublicId = screenshot.public_id.split("/");
+				const filename = splitPublicId[splitPublicId.length - 1];
+
+				const imageBase = "https://caniuse.bitsofco.de/static/v1/" + filename;
 				const preview = generatePreview(featureID, null, null, imageBase);
 				displayExportCode(preview);
 				displayPreview(preview);
-			})
-			.then(() => {
+
 				document.getElementById('step-result').removeAttribute('hidden');
 				ga('send', 'event', 'button', 'click', 'generate embed')
 			});

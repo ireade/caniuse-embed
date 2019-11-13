@@ -11,7 +11,11 @@
   "dependencies": {
     "chrome-aws-lambda": "^2.0.0",
     "cloudinary": "^1.16.0",
+    "node-fetch": "^2.6.0",
     "puppeteer-core": "^2.0.0"
   },
-  "devDependencies": {}
+  "devDependencies": {
+    "form-data": "^3.0.0",
+    "puppeteer": "^2.0.0"
+  }
 }

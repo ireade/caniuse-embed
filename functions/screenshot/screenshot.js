@@ -8,7 +8,7 @@ const takeScreenshot = async (feature, periods, accessibleColours) => {
     args: chromium.args,
     defaultViewport: {
         width: 1000,
-        height: 650,
+        height: 700,
         isLandscape: true
     },
     executablePath: await chromium.executablePath,
@@ -30,6 +30,41 @@ const takeScreenshot = async (feature, periods, accessibleColours) => {
 	await browser.close();
 
 	return screenshot;
+};
+
+
+/* Trim Screenshot *********************** */
+
+const fetch = require('node-fetch');
+const FormData = require('form-data');
+
+const trimScreenshot = (screenshot) => {
+
+	const formData = new FormData();
+	formData.append("image", screenshot, { filename : 'image.png' });
+
+	const options = {
+		method: "POST",
+		body: formData
+	};
+
+	return new Promise((resolve) => {
+		fetch("http://localhost:3000/trim", options) // @todo: replace with https://caniuse-embed-screenshot-api.herokuapp.com
+			.then((res) => res.blob())
+			// .then((res) => res.arrayBuffer())
+			.then((res) => {
+				console.log("**********************************")
+				console.log(res);
+				console.log("screenshot successfully trimmed");
+				console.log("**********************************")
+				resolve(res);
+			})
+			.catch((err) => {
+				console.log("error trimming screenshot");
+				console.log(err);
+				resolve(screenshot);
+			});
+	});
 };
 
 
@@ -78,7 +113,8 @@ exports.handler = async (event) => {
 
 	try {
 		const screenshot = await takeScreenshot(feature, periods, accessibleColours);
-		const image = await uploadScreenshot(feature, screenshot);
+		const trimmedScreenshot = await trimScreenshot(screenshot);
+		const image = await uploadScreenshot(feature, trimmedScreenshot);
 		return { statusCode: 200, body: JSON.stringify(image) };
 	} catch (err) {
 		console.log(err);
