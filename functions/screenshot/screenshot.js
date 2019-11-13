@@ -7,8 +7,8 @@ const takeScreenshot = async (feature, periods, accessibleColours) => {
   const browser = await chromium.puppeteer.launch({
     args: chromium.args,
     defaultViewport: {
-        width: 1000,
-        height: 700,
+        width: 800,
+        height: 600,
         isLandscape: true
     },
     executablePath: await chromium.executablePath,
@@ -37,6 +37,7 @@ const takeScreenshot = async (feature, periods, accessibleColours) => {
 
 const fetch = require('node-fetch');
 const FormData = require('form-data');
+const arrayBufferToBuffer = require('arraybuffer-to-buffer');
 
 const trimScreenshot = (screenshot) => {
 
@@ -48,17 +49,14 @@ const trimScreenshot = (screenshot) => {
 		body: formData
 	};
 
+	const url = "https://caniuse-embed-screenshot-api.herokuapp.com/trim";
+	//const url = "http://localhost:3000/trim"; // @testing
+
 	return new Promise((resolve) => {
-		fetch("http://localhost:3000/trim", options) // @todo: replace with https://caniuse-embed-screenshot-api.herokuapp.com
-			.then((res) => res.blob())
-			// .then((res) => res.arrayBuffer())
-			.then((res) => {
-				console.log("**********************************")
-				console.log(res);
-				console.log("screenshot successfully trimmed");
-				console.log("**********************************")
-				resolve(res);
-			})
+		fetch(url, options)
+			.then((res) => res.arrayBuffer())
+			.then(arrayBufferToBuffer)
+			.then((res) => resolve(res))
 			.catch((err) => {
 				console.log("error trimming screenshot");
 				console.log(err);
@@ -80,15 +78,9 @@ cloudinary.config({
 const uploadScreenshot = (feature, screenshot) => {
 	return new Promise((resolve, reject) => {
 
-		const today = new Date();
-		const dd = today.getDate();
-		const mm = today.getMonth() + 1;
-		const yyyy = today.getFullYear();
-		const date = `${yyyy}-${mm}-${dd}`;
-
 		const options = {
 			folder: 'caniuse-embed/static',
-			public_id: `${feature}-${date}`
+			public_id: `${feature}-${new Date().getTime()}`
 		};
 
 		cloudinary.uploader.upload_stream(options, (error, result) => {
@@ -96,7 +88,7 @@ const uploadScreenshot = (feature, screenshot) => {
 			else resolve(result);
 		}).end(screenshot);
 	});
-}
+};
 
 
 /* Netlify Function *********************** */
@@ -114,6 +106,9 @@ exports.handler = async (event) => {
 	try {
 		const screenshot = await takeScreenshot(feature, periods, accessibleColours);
 		const trimmedScreenshot = await trimScreenshot(screenshot);
+
+		//return { statusCode: 200, body: JSON.stringify({}) };
+
 		const image = await uploadScreenshot(feature, trimmedScreenshot);
 		return { statusCode: 200, body: JSON.stringify(image) };
 	} catch (err) {

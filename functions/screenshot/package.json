@@ -9,6 +9,7 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "arraybuffer-to-buffer": "0.0.7",
     "chrome-aws-lambda": "^2.0.0",
     "cloudinary": "^1.16.0",
     "node-fetch": "^2.6.0",
