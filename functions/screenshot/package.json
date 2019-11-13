@@ -12,11 +12,11 @@
     "arraybuffer-to-buffer": "0.0.7",
     "chrome-aws-lambda": "^2.0.0",
     "cloudinary": "^1.16.0",
+    "form-data": "^3.0.0",
     "node-fetch": "^2.6.0",
     "puppeteer-core": "^2.0.0"
   },
   "devDependencies": {
-    "form-data": "^3.0.0",
     "puppeteer": "^2.0.0"
   }
 }

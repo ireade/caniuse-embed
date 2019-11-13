@@ -106,9 +106,6 @@ exports.handler = async (event) => {
 	try {
 		const screenshot = await takeScreenshot(feature, periods, accessibleColours);
 		const trimmedScreenshot = await trimScreenshot(screenshot);
-
-		//return { statusCode: 200, body: JSON.stringify({}) };
-
 		const image = await uploadScreenshot(feature, trimmedScreenshot);
 		return { statusCode: 200, body: JSON.stringify(image) };
 	} catch (err) {
