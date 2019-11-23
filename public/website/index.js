@@ -115,6 +115,10 @@ function displayPreview(preview) {
 }
 
 function generateScreenshot(feature, periods, accessibleColours) {
+
+	const url = "https://caniuse-embed-screenshot-api.herokuapp.com/capture";
+	//const url = "http://localhost:3000/capture"; // @testing
+
 	const options = {
 		method: "POST",
 		headers: {
@@ -130,7 +134,7 @@ function generateScreenshot(feature, periods, accessibleColours) {
 	generateEmbedButton.innerHTML = '<div aria-label="Loading" class="lds-ellipsis"><div></div><div></div><div></div><div></div></div>';
 	let screenshot = null;
 
-	return fetch("/.netlify/functions/screenshot", options)
+	return fetch(url, options)
 		.then((res) => res.json())
 		.then((res) => screenshot = res)
 		.catch((err) => console.log(err))
