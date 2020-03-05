@@ -60,7 +60,7 @@ function setDefaultLoadingMessage() {
   } 
   
   else {
-    defaultMessage = '<a href="http://caniuse.com/#feat='+options.featureID+'">Can I Use '+options.featureID+'?</a> Data on support for the '+options.featureID+' feature across the major browsers from caniuse.com. (Embed Loading)';
+    defaultMessage = '<a href="https://caniuse.com/#feat='+options.featureID+'">Can I Use '+options.featureID+'?</a> Data on support for the '+options.featureID+' feature across the major browsers from caniuse.com. (Embed Loading)';
   }
   
   document.getElementById('defaultMessage').innerHTML = defaultMessage;
@@ -74,7 +74,7 @@ function getShortenedBrowserVersion(version) {
 }
 
 function fetchCanIUseData(success, error) {
-  // Function from: http://stackoverflow.com/a/18278346
+  // Function from: https://stackoverflow.com/a/18278346
     var xhr = new XMLHttpRequest();
     xhr.onreadystatechange = function()
     {
