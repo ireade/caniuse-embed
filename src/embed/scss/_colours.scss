@@ -45,6 +45,12 @@ tr.statistics td.y span:not(.usage),
   color: var(--font-colour);
 }
 
+body.accessible-colours tr.statistics td.y span:not(.usage),
+body.accessible-colours .legend .y {
+  background-color: $supported-a;
+  background-color: var(--supported);
+}
+
 // Not Supported
 
 tr.statistics td.n span:not(.usage),
@@ -56,6 +62,15 @@ tr.statistics td.d span:not(.usage),
   color: #FFF;
 }
 
+body.accessible-colours tr.statistics td.n span:not(.usage),
+body.accessible-colours tr.statistics td.p span:not(.usage),
+body.accessible-colours tr.statistics td.d span:not(.usage),
+.legend .n {
+  background-color: $not-supported-a;
+  background-color: var(--not-supported);
+  color: #000;
+}
+
 // Partial Support
 
 tr.statistics td.a span:not(.usage),
@@ -64,6 +79,12 @@ tr.statistics td.a span:not(.usage),
   background-color: var(--partial);
   color: $font-colour;
   color: var(--font-colour);
+}
+
+body.accessible-colours tr.statistics td.a span:not(.usage),
+body.accessible-colours .legend .a {
+  background-color: $partial-a;
+  background-color: var(--partial);
 }
 
 // Unknown Support
