@@ -7,26 +7,21 @@ $dark-grey: #584E3B;
 $supported: #39B54A;
 $partial: #A8BD04;
 $not-supported: #C44230;
-
-$supported-a: #99FFB8;
-$partial-a: #8090F9;
-$not-supported-a: #E17085;
-
 $unknown: #838383;
 
 $font-colour: #FFF;
 
 body {
-  --supported: $supported;
-  --partial: $partial;
-  --not-supported: $not-supported;
+  --supported: #39B54A;
+  --partial: #A8BD04;
+  --not-supported: #C44230;
   --font-colour: #FFF;
 }
 
 body.accessible-colours {
-  --supported: $supported-a;
-  --partial: $partial-a;
-  --not-supported: $not-supported-a;
+  --supported: #99FFB8;
+  --partial: #8090F9;
+  --not-supported: #E17085;
   --font-colour: #000;
 }
 
