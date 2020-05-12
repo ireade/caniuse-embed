@@ -44,7 +44,6 @@ function parseQueryParams() {
 }
 
 function setDefaultLoadingMessage() {
-
     var defaultMessage;
 
     if (!options.featureID) {
@@ -71,7 +70,7 @@ function getShortenedBrowserVersion(version) {
 }
 
 function fetchCanIUseData(success, error) {
-    // Function from: http://stackoverflow.com/a/18278346
+  // Function from: https://stackoverflow.com/a/18278346
     var xhr = new XMLHttpRequest();
     xhr.onreadystatechange = function () {
         if (xhr.readyState === XMLHttpRequest.DONE) {
