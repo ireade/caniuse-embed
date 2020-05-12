@@ -128,8 +128,6 @@ function makeRequest(url) {
     });
 }
 
-
-
 function getFeature() {
 
     var dataSource = OPTIONS.featureID.indexOf('mdn-') === 0 ? 'mdn' : 'caniuse';
@@ -137,15 +135,20 @@ function getFeature() {
 
     if (dataSource === 'mdn') {
         var f = OPTIONS.featureID.split('mdn-')[1];
-        f = f.split('_');
+        f = f.split('__'); // @separator
 
         var url = 'https://raw.githubusercontent.com/mdn/browser-compat-data/master/' + f.join('/') + '.json';
 
         return makeRequest(url)
             .then(function (res) {
+
                 var feature = res[f[0]];
                 if (!feature.__compat) feature = res[f[0]][f[1]];
                 if (!feature.__compat) feature = res[f[0]][f[1]][f[2]];
+                if (!feature.__compat) feature = res[f[0]][f[1]][f[2]];
+                if (!feature.__compat) feature = res[f[0]][f[1]][f[2]][f[3]];
+                if (!feature.__compat) feature = res[f[0]][f[1]][f[2]][f[3]][f[4]];
+
                 feature = feature.__compat;
 
                 FEATURE = Object.assign({
@@ -175,8 +178,6 @@ function getFeature() {
     }
 
 }
-
-
 
 function parseBrowserData(agents) {
 

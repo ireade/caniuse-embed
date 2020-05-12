@@ -24,41 +24,20 @@ function getCheckedBoxes(chkboxName) {
 
 function getFeatureList() {
 
-	function sort_by(field, primer) {
-		// http://stackoverflow.com/a/979325
-		var key = primer ?
-			function(x) {return primer(x[field])} :
-			function(x) {return x[field]};
-		return function (a, b) {
-			return a = key(a), b = key(b), 1 * ((a > b) - (b > a));
-		}
-	}
 
-	function capitalizeFirstLetter(string) {
-		return string.charAt(0).toUpperCase() + string.slice(1);
-	}
+	$.get('http://caniuse-embed-screenshot-api.herokuapp.com/features', function(features) {
 
-	$.getJSON('https://raw.githubusercontent.com/Fyrd/caniuse/master/fulldata-json/data-2.0.json', function(res) {
+		var select = $('select[name="featureID"]');
+		var options = "";
 
-		var featuresArray = [];
-		for (var feature in res.data) {
-			var featureTitle = res.data[feature].title;
-			featureTitle = capitalizeFirstLetter(featureTitle);
-			var feature = {
-				id: feature,
-				title: featureTitle
-			}
-			featuresArray.push(feature);
-		}
-		featuresArray.sort(sort_by('title', function(a){return a}));
-
-		for (var i = 0; i < featuresArray.length; i++) {
-			var feature = featuresArray[i];
-			var option = '<option value="'+feature.id+'">'+feature.title+'</option>';
-			$('select[name="featureID"]').append(option);
+		for (var i = 0; i < features.length; i++) {
+			var feature = features[i];
+			options += '<option value="'+feature.id+'">'+feature.title+'</option>';
 		}
 
-		$('select[name="featureID"]').selectize({
+		select.append(options);
+
+		select.selectize({
 			create: false,
 			sortField: 'text',
 			placeholder: 'Select a Feature'
@@ -74,13 +53,19 @@ function generatePreview(featureID, periods, accessibleColours, imageBase) {
 
 	imageBase = imageBase || 'https://caniuse.bitsofco.de/image/' + featureID;
 
-	const image = `<a href="http://caniuse.com/#feat=${featureID}">
+	var image = `<a href="http://caniuse.com/#feat=${featureID}">
 		<picture>
 			<source type="image/webp" srcset="${imageBase}.webp">
 			<source type="image/png" srcset="${imageBase}.png">
 			<img src="${imageBase}.jpg" alt="Data on support for the ${featureID} feature across the major browsers from caniuse.com">
 		</picture>
 	</a>`;
+
+	if ((featureID.indexOf("mdn-") === 0)) {
+		image = `<a href="http://caniuse.com/#feat=${featureID}">
+			<p>Data on support for the ${featureID} feature across the major browsers from mozilla</p>
+		</a>`;
+	}
 
 	if (embedType === "interactive-embed") {
 		return `<p class="ciu_embed" data-feature="${featureID}" data-periods="${periods}" data-accessible-colours="${accessibleColours}">
@@ -215,6 +200,8 @@ generateEmbedButton.addEventListener('click', function(e) {
 	var featureID = $('select[name="featureID"]').val();
 	var periods = getCheckedBoxes("periods").join();
 	var accessibleColours = document.getElementById("add-accessible-colours").checked;
+
+	if (featureID.indexOf("mdn-") === 0) embedType = "interactive-embed"; // @todo;
 
 	switch(embedType) {
 		case "interactive-embed":
