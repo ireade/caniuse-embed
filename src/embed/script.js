@@ -26,7 +26,6 @@ function parseQueryParams() {
                 break;
             case "periods":
                 result.periods = value.split(",");
-                if (!result.periods) result.periods = ['future_1', 'current', 'past_1', 'past_2'];
                 break;
             case "accessible-colours":
                 result.accessibleColours = value === "true";
@@ -40,6 +39,7 @@ function parseQueryParams() {
         }
     });
 
+    if (!result.periods) result.periods = ['future_1', 'current', 'past_1', 'past_2'];
     return result;
 }
 
@@ -69,22 +69,26 @@ function getShortenedBrowserVersion(version) {
     return version;
 }
 
-function fetchCanIUseData(success, error) {
-  // Function from: https://stackoverflow.com/a/18278346
-    var xhr = new XMLHttpRequest();
-    xhr.onreadystatechange = function () {
-        if (xhr.readyState === XMLHttpRequest.DONE) {
-            if (xhr.status === 200) {
-                if (success)
-                    success(JSON.parse(xhr.responseText));
+function makeRequest(url) {
+    return new Promise(function(resolve, reject) {
+        var req = new XMLHttpRequest();
+        req.open('GET', url, true);
+
+        req.onload = function() {
+            if (req.status == 200) {
+                resolve( JSON.parse(req.response));
             } else {
-                if (error)
-                    error(xhr);
+                reject(Error(req.statusText));
             }
-        }
-    };
-    xhr.open("GET", caniuseDataUrl, true);
-    xhr.send();
+        };
+
+        req.onerror = function() { reject(Error("Network Error")); };
+        req.send();
+    });
+}
+
+function fetchCanIUseData(success, error) {
+    return makeRequest(caniuseDataUrl);
 }
 
 
@@ -96,6 +100,7 @@ function fetchCanIUseData(success, error) {
     // 1 - Get params
 
     options = parseQueryParams();
+    console.log(options)
 
     // 2 - Set default message while embed loads
 
@@ -127,7 +132,7 @@ function fetchCanIUseData(success, error) {
     // GET CANIUSE JSON
     // *************************
 
-    fetchCanIUseData(function (res) {
+    fetchCanIUseData().then(function (res) {
 
         var feature = res.data[options.featureID];
 
