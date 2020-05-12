@@ -77,7 +77,8 @@ function generatePreview(featureID, periods, accessibleColours, imageBase) {
 	const image = `<a href="http://caniuse.com/#feat=${featureID}">
 		<picture>
 			<source type="image/webp" srcset="${imageBase}.webp">
-			<img src="${imageBase}.png" alt="Data on support for the ${featureID} feature across the major browsers from caniuse.com">
+			<source type="image/png" srcset="${imageBase}.png">
+			<img src="${imageBase}.jpg" alt="Data on support for the ${featureID} feature across the major browsers from caniuse.com">
 		</picture>
 	</a>`;
 

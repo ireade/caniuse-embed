@@ -2,10 +2,51 @@
  *  Global Variables
  * ******************************* */
 
-var options;
-var caniuseDataUrl = 'https://raw.githubusercontent.com/Fyrd/caniuse/master/fulldata-json/data-2.0.json';
-var browsers = ['ie', 'edge', 'firefox', 'chrome', 'safari', 'ios_saf', 'op_mini', 'and_chr', 'android', 'samsung'];
+var OPTIONS;
+var BROWSERS = ['ie', 'edge', 'firefox', 'chrome', 'safari', 'ios_saf', 'op_mini', 'and_chr', 'android', 'samsung'];
+var BROWSER_DATA;
+/*
+    browserVersions: {
+        chrome: {
+            past_1: "80"
+        }
+    },
+    browserUsage: {
+        chrome: {
+            past_1: "34.80"
+        }
+    }
+*/
+var FEATURE;
+/*
 
+    feature: {
+        title,
+        description,
+        usage_perc_y,
+        usage_perc_a,
+        global_a,
+
+        stats[browser][BROWSER_DATA.versions[browser][period]]
+    }
+
+ */
+
+
+var caniuseDataUrl = 'https://raw.githubusercontent.com/Fyrd/caniuse/master/fulldata-json/data-2.0.json';
+
+var MDN_BROWSERS_KEY = {
+    'ie': 'ie',
+    'edge': 'edge',
+    'firefox': 'firefox',
+    'chrome': 'chrome',
+    'safari': 'safari',
+    'ios_saf': 'safari_ios',
+    'op_mini': 'op_mini',
+    'and_chr': 'chrome_android',
+    'android': 'android',
+    'samsung': 'samsunginternet_android',
+};
 
 /* *******************************
  *  Functions
@@ -46,17 +87,17 @@ function parseQueryParams() {
 function setDefaultLoadingMessage() {
     var defaultMessage;
 
-    if (!options.featureID) {
+    if (!OPTIONS.featureID) {
         defaultMessage = 'Error: Feature not specified';
-    } else if (options.imageBase) {
+    } else if (OPTIONS.imageBase) {
         defaultMessage = '<picture>' +
-            '<source type="image/webp" srcset="' + options.imageBase + '.webp">' +
-            '<source type="image/png" srcset="' + options.imageBase + '.png">' +
-            '<source type="image/jpeg" srcset="' + options.imageBase + '.jpg">' +
-            '<img src="' + options.imageBase + '.png" alt="Data on support for the ' + options.featureID + ' feature across the major browsers from caniuse.com">' +
+            '<source type="image/webp" srcset="' + OPTIONS.imageBase + '.webp">' +
+            '<source type="image/png" srcset="' + OPTIONS.imageBase + '.png">' +
+            '<source type="image/jpeg" srcset="' + OPTIONS.imageBase + '.jpg">' +
+            '<img src="' + OPTIONS.imageBase + '.png" alt="Data on support for the ' + OPTIONS.featureID + ' feature across the major browsers from caniuse.com">' +
             '</picture>';
     } else {
-        defaultMessage = '<a href="http://caniuse.com/#feat=' + options.featureID + '">Can I Use ' + options.featureID + '?</a> Data on support for the ' + options.featureID + ' feature across the major browsers from caniuse.com. (Embed Loading)';
+        defaultMessage = '<a href="http://caniuse.com/#feat=' + OPTIONS.featureID + '">Can I Use ' + OPTIONS.featureID + '?</a> Data on support for the ' + OPTIONS.featureID + ' feature across the major browsers from caniuse.com. (Embed Loading)';
     }
 
     document.getElementById('defaultMessage').innerHTML = defaultMessage;
@@ -87,288 +128,363 @@ function makeRequest(url) {
     });
 }
 
-function fetchCanIUseData(success, error) {
-    return makeRequest(caniuseDataUrl);
+
+
+function getFeature() {
+
+    var dataSource = OPTIONS.featureID.indexOf('mdn-') === 0 ? 'mdn' : 'caniuse';
+
+
+    if (dataSource === 'mdn') {
+        var f = OPTIONS.featureID.split('mdn-')[1];
+        f = f.split('_');
+
+        var url = 'https://raw.githubusercontent.com/mdn/browser-compat-data/master/' + f.join('/') + '.json';
+
+        return makeRequest(url)
+            .then(function (res) {
+                var feature = res[f[0]];
+                if (!feature.__compat) feature = res[f[0]][f[1]];
+                if (!feature.__compat) feature = res[f[0]][f[1]][f[2]];
+                feature = feature.__compat;
+
+                FEATURE = Object.assign({
+                    dataSource: dataSource,
+                    title: f.join(' '),
+                    url: feature.mdn_url,
+                }, feature);
+            })
+            .then(function() {
+                return makeRequest(caniuseDataUrl)
+                    .then(function (res) {
+                        return parseBrowserData(res.agents);
+                    });
+            });
+    }
+
+    else {
+        return makeRequest(caniuseDataUrl)
+            .then(function (res) {
+                FEATURE = Object.assign({
+                    dataSource: dataSource,
+                    url: 'http://caniuse.com/#feat=' + OPTIONS.featureID,
+                }, res.data[OPTIONS.featureID]);
+
+                parseBrowserData(res.agents);
+            });
+    }
+
 }
 
 
-// **************************************************************************************************
+
+function parseBrowserData(agents) {
+
+    var browserVersions = {};
+
+    for (var i = 0; i < BROWSERS.length; i++) {
+        var browser = BROWSERS[i];
+
+        // GET INDEX OF CURRENT VERSION
+        var currentVersion = agents[browser].current_version;
+        var currentVersionIndex;
+        for (var x = 0; x < agents[browser].version_list.length; x++) {
+            if (agents[browser].version_list[x].era === 0) {
+                currentVersionIndex = x;
+                break;
+            }
+        }
+        currentVersionIndex = parseInt(currentVersionIndex);
 
 
-(function () {
+        browserVersions[browser] = {};
 
-    // 1 - Get params
+        for (var x = 0; x < OPTIONS.periods.length; x++) {
 
-    options = parseQueryParams();
-    console.log(options)
+            var period = OPTIONS.periods[x];
 
-    // 2 - Set default message while embed loads
+            if (period === 'current') {
 
-    setDefaultLoadingMessage();
+                browserVersions[browser][period] = currentVersion;
+            } else if (period.indexOf('past') > -1) {
+
+                n = parseInt(period.split('_')[1]);
+                browserVersions[browser][period] = agents[browser].version_list[currentVersionIndex - n] ? agents[browser].version_list[currentVersionIndex - n].version : null
+            } else if (period.indexOf('future') > -1) {
+
+                n = parseInt(period.split('_')[1]);
+                browserVersions[browser][period] = agents[browser].version_list[currentVersionIndex + n] ? agents[browser].version_list[currentVersionIndex + n].version : null
+            }
 
 
-// **************************************************************************************************
+        }
+    }
 
 
-    // ADD TABLE ROWS FOR EACH PERIOD
+    var browserUsage = {};
+
+    for (var i = 0; i < BROWSERS.length; i++) {
+        var browser = BROWSERS[i];
+        browserUsage[browser] = {};
+
+        for (var x = 0; x < OPTIONS.periods.length; x++) {
+            var period = OPTIONS.periods[x];
+
+            var period_version = browserVersions[browser][period];
+            var period_usage = agents[browser].usage_global[period_version];
+            period_usage = period_usage ? period_usage.toFixed(2) : 0;
+
+            browserUsage[browser][period] = period_usage;
+        }
+    }
+
+    BROWSER_DATA = {
+        versions: browserVersions,
+        usage: browserUsage
+    };
+
+}
+
+
+function parseSupportData() {
+
+    // GET DATA FOR EACH BROWSER
     // *************************
+    /*
+        data: {
+            chrome: {
+                past_1: y
+            }
+        }
+     */
 
-    for (var i = options.periods.length - 1; i > -1; i--) {
+    var browserSupport = {};
+
+    function parseCanIUseData(browser, period) {
+        browserSupport[browser][period] = FEATURE.stats[browser][BROWSER_DATA.versions[browser][period]];
+    }
+
+    function parseMDNData(browser, period) {
+
+        if (!BROWSER_DATA.versions[browser][period]) return;
+
+        var supportData = FEATURE.support[MDN_BROWSERS_KEY[browser]];
+        if (!supportData) {
+            browserSupport[browser][period] = 'u';
+            return;
+        }
+
+        const version_added = supportData.version_added;
+        const this_version = BROWSER_DATA.versions[browser][period];
+        const isSupported = parseFloat(this_version) >= parseFloat(version_added);
+
+        browserSupport[browser][period] = isSupported ? 'y' : 'n';
+    }
+
+    for (var i = 0; i < BROWSERS.length; i++) {
+        var browser = BROWSERS[i];
+
+        browserSupport[browser] = {};
+
+        for (var x = 0; x < OPTIONS.periods.length; x++) {
+            var period = OPTIONS.periods[x];
+
+            switch (FEATURE.dataSource) {
+                case 'mdn':
+                    parseMDNData(browser, period);
+                    break;
+                case 'caniuse':
+                    parseCanIUseData(browser, period);
+                    break;
+            }
+        }
+    }
+
+    return browserSupport;
+}
+
+
+function displayInformation() {
+
+    document.getElementById('featureTitle').innerHTML = FEATURE.title;
+    document.getElementById('featureLink').href = FEATURE.url;
+
+    if (FEATURE.description) {
+        var featureDescription = FEATURE.description;
+        featureDescription = featureDescription.replace(/</g, "&lt;");
+        featureDescription = featureDescription.replace(/>/g, "&gt;");
+        document.getElementById('featureDescription').innerHTML = featureDescription;
+    }
+
+    if (FEATURE.usage_perc_y) {
+        var global_y = FEATURE.usage_perc_y;
+        var global_a = FEATURE.usage_perc_a;
+        var global_total = global_y + global_a,
+            global_total = global_total.toFixed(2);
+
+        document.getElementById('note').innerHTML = 'Global: <span class="y">' + global_y + '%</span> + <span class="a">' + global_a + '%</span> = ' + global_total + '%';
+    }
+}
+
+
+function displayTable(data) {
+
+    //  Create empty table cells for each browser and each period
+
+    for (var i = OPTIONS.periods.length - 1; i > -1; i--) {
 
         var tableCells = "";
 
-        for (var j = 0; j < browsers.length; j++) {
-            tableCells += '<td class="' + browsers[j] + '"></td>';
+        for (var j = 0; j < BROWSERS.length; j++) {
+            tableCells += '<td class="' + BROWSERS[j] + '"></td>';
         }
 
         var row = document.createElement("tr");
-        row.className = 'statistics ' + options.periods[i];
+        row.className = 'statistics ' + OPTIONS.periods[i];
         row.innerHTML = tableCells;
 
         document.getElementById('tableBody').appendChild(row);
     }
 
 
-    // GET CANIUSE JSON
+    // DISPLAY DATA
     // *************************
 
-    fetchCanIUseData().then(function (res) {
 
-        var feature = res.data[options.featureID];
-
-        if (feature) {
-
-            var global_y = feature.usage_perc_y;
-            var global_a = feature.usage_perc_a;
-            var global_total = global_y + global_a,
-                global_total = global_total.toFixed(2);
+    var hasPrefixed = false;
+    var hasUnknown = false;
+    var hasFlag = false;
 
 
-            // DISPLAY GENERAL FEATURE INFORMATION
-            // *************************
+    for (var i = 0; i < BROWSERS.length; i++) {
 
-            // HTML Encoding for special characters
-            var featureDescription = feature.description;
-            featureDescription = featureDescription.replace(/</g, "&lt;");
-            featureDescription = featureDescription.replace(/>/g, "&gt;");
-
-            document.getElementById('featureTitle').innerHTML = feature.title;
-            document.getElementById('featureDescription').innerHTML = featureDescription;
-            document.getElementById('featureLink').href = 'http://caniuse.com/#feat=' + options.featureID;
-            document.getElementById('note').innerHTML = 'Global: <span class="y">' + global_y + '%</span> + <span class="a">' + global_a + '%</span> = ' + global_total + '%';
+        var browser = BROWSERS[i];
 
 
-            // GET BROWSER VERSIONS
-            // *************************
+        // LOOP THROUGH PERIODS (BROWSER VERSIONS)
+        for (var x = 0; x < OPTIONS.periods.length; x++) {
 
-            var browserVersions = {};
-            for (var i = 0; i < browsers.length; i++) {
-                var browser = browsers[i];
+            var period = OPTIONS.periods[x];
+            var period_element;
 
-                // GET INDEX OF CURRENT VERSION
-                var currentVersion = res.agents[browser].current_version;
-                var currentVersionIndex;
-                for (var x = 0; x < res.agents[browser].version_list.length; x++) {
-                    if (res.agents[browser].version_list[x].era === 0) {
-                        currentVersionIndex = x;
-                        break;
-                    }
+            // LOOP THROUGH ROW CHILDREN TO FIND THE CURRENT TABLE CELL
+            var row = document.getElementsByClassName(period)[0];
+            var rowChildren = row.childNodes;
+            for (var r = 0; r < rowChildren.length; r++) {
+                if (rowChildren[r].className.indexOf(browser) > -1) {
+                    period_element = rowChildren[r];
                 }
-                currentVersionIndex = parseInt(currentVersionIndex);
-
-
-                browserVersions[browser] = {};
-
-                for (var x = 0; x < options.periods.length; x++) {
-
-                    var period = options.periods[x];
-
-                    if (period === 'current') {
-
-                        browserVersions[browser][period] = currentVersion;
-                    } else if (period.indexOf('past') > -1) {
-
-                        n = parseInt(period.split('_')[1]);
-                        browserVersions[browser][period] = res.agents[browser].version_list[currentVersionIndex - n] ? res.agents[browser].version_list[currentVersionIndex - n].version : null
-                    } else if (period.indexOf('future') > -1) {
-
-                        n = parseInt(period.split('_')[1]);
-                        browserVersions[browser][period] = res.agents[browser].version_list[currentVersionIndex + n] ? res.agents[browser].version_list[currentVersionIndex + n].version : null
-                    }
-
-
-                } // end for periods
-            } // end get browser versions
-
-
-            // GET BROWSER VERSIONS USAGE
-            // *************************
-
-            var browserUsage = {};
-            for (var i = 0; i < browsers.length; i++) {
-
-                var browser = browsers[i];
-                browserUsage[browser] = {};
-
-                for (var x = 0; x < options.periods.length; x++) {
-
-                    var period = options.periods[x];
-
-                    var period_version = browserVersions[browser][period];
-                    var period_usage = res.agents[browser].usage_global[period_version],
-                        period_usage = period_usage ? period_usage.toFixed(2) : 0;
-
-                    browserUsage[browser][period] = period_usage;
-
-                } // end for periods
-            } // end get browser usages
-
-
-            // GET DATA FOR EACH BROWSER
-            // *************************
-
-            var data = {};
-            for (var i = 0; i < browsers.length; i++) {
-
-                var browser = browsers[i];
-                data[browser] = {};
-
-                for (var x = 0; x < options.periods.length; x++) {
-                    var period = options.periods[x];
-                    data[browser][period] = feature.stats[browser][browserVersions[browser][period]];
-                }
-
-
             }
 
 
-            var hasPrefixed = false;
-            var hasUnknown = false;
-            var hasFlag = false;
+            // 	ADD SUPPORT CLASS TO TABLE CELL
+            data[browser][period] != undefined ? period_element.className += ' ' + data[browser][period] : false;
 
-            // DISPLAY DATA
-            // *************************
+            // GET VERSION NUMBER + BROWSER USAGE
+            var browserVersion = getShortenedBrowserVersion(BROWSER_DATA.versions[browser][period]);
+            var versionString = '<span>' + browserVersion + '</span><span class="usage">' + BROWSER_DATA.usage[browser][period] + '%</span>';
 
-            for (var i = 0; i < browsers.length; i++) {
+            // ADD VERSION NUMBER TO TABLE CELL
+            BROWSER_DATA.versions[browser][period] != undefined ? period_element.innerHTML = versionString : period_element.innerHTML = '<span></span>';
 
-                var browser = browsers[i];
-
-
-                // LOOP THROUGH PERIODS (BROWSER VERSIONS)
-                for (var x = 0; x < options.periods.length; x++) {
-
-                    var period = options.periods[x];
-                    var period_element;
-
-                    // LOOP THROUGH ROW CHILDREN TO FIND THE CURRENT TABLE CELL
-                    var row = document.getElementsByClassName(period)[0];
-                    var rowChildren = row.childNodes;
-                    for (var r = 0; r < rowChildren.length; r++) {
-                        if (rowChildren[r].className.indexOf(browser) > -1) {
-                            period_element = rowChildren[r];
-                        }
-                    }
+            // CHECK IF ANY HAS PREFIX OR UNKNOWN
+            if (data[browser][period] != undefined && data[browser][period].indexOf('x') > -1) {
+                hasPrefixed = true;
+            }
+            if (data[browser][period] != undefined && data[browser][period].indexOf('u') > -1) {
+                hasUnknown = true;
+            }
+            if (data[browser][period] != undefined && data[browser][period].indexOf('d') > -1) {
+                hasFlag = true;
+            }
 
 
-                    // 	ADD SUPPORT CLASS TO TABLE CELL
-                    data[browser][period] != undefined ? period_element.className += ' ' + data[browser][period] : false;
+        } // end loop through period
 
-                    // GET VERSION NUMBER + BROWSER USAGE
-                    var browserVersion = getShortenedBrowserVersion(browserVersions[browser][period]);
-                    var versionString = '<span>' + browserVersion + '</span><span class="usage">' + browserUsage[browser][period] + '%</span>';
+    } // end display data loop
 
-                    // ADD VERSION NUMBER TO TABLE CELL
-                    browserVersions[browser][period] != undefined ? period_element.innerHTML = versionString : period_element.innerHTML = '<span></span>';
+    // DISPLAY PREFIX LEGEND IF DATA HAS PREFIXED
+    hasPrefixed ? document.getElementById('legendX').style.display = "inline-block" : document.getElementById('legendX').style.display = "none";
+    hasUnknown ? document.getElementById('legendU').style.display = "inline-block" : document.getElementById('legendU').style.display = "none";
+    hasFlag ? document.getElementById('legendD').style.display = "inline-block" : document.getElementById('legendD').style.display = "none";
+}
 
-                    // CHECK IF ANY HAS PREFIX OR UNKOWN
-                    if (data[browser][period] != undefined && data[browser][period].indexOf('x') > -1) {
-                        hasPrefixed = true;
-                    }
-                    if (data[browser][period] != undefined && data[browser][period].indexOf('u') > -1) {
-                        hasUnknown = true;
-                    }
-                    if (data[browser][period] != undefined && data[browser][period].indexOf('d') > -1) {
-                        hasFlag = true;
-                    }
+// **************************************************************************************************
+
+(function () {
 
 
-                } // end loop through period
+    OPTIONS = parseQueryParams();
 
-            } // end display data loop
-
-            // DISPLAY PREFIX LEGEND IF DATA HAS PREFIXED
-            hasPrefixed ? document.getElementById('legendX').style.display = "inline-block" : document.getElementById('legendX').style.display = "none";
-            hasUnknown ? document.getElementById('legendU').style.display = "inline-block" : document.getElementById('legendU').style.display = "none";
-            hasFlag ? document.getElementById('legendD').style.display = "inline-block" : document.getElementById('legendD').style.display = "none";
-
-        } else {
-
-            // IF NO FEATURE FOUND
-            // *************************
-
-            // DISPLAY ERROR MESSAGE IF FEATURE WASN'T FOUND
-            document.getElementById('featureTitle').innerHTML = 'Uh Oh!';
-            document.getElementById('featureDescription').innerHTML = "The feature <strong>'" + options.featureID + "'</strong> was not recognized. ";
-            document.getElementById('featureMain').innerHTML = '';
-        }
+    setDefaultLoadingMessage();
 
 
-        // AFTER EVERYTHING HAS LOADED, SHOW FEATURE AND HIDE DEFAULT MESSAGE
-        document.getElementById('defaultMessage').style.display = "none";
-        document.getElementsByClassName('feature')[0].style.display = "block";
+    getFeature()
+        .then(function () {
+            if (BROWSER_DATA) return;
+            return getBrowserData();
+        })
+        .then(function () {
+            return parseSupportData();
+        })
+        .then(function (featureSupport) {
+            displayInformation();
+            displayTable(featureSupport);
+        })
+        .then(function () {
+            // AFTER EVERYTHING HAS LOADED, SHOW FEATURE AND HIDE DEFAULT MESSAGE
+            document.getElementById('defaultMessage').style.display = "none";
+            document.getElementsByClassName('feature')[0].style.display = "block";
 
 
-        // PASS HEIGHT TO PARENT DOCUMENT
-        var documentHeight = document.getElementsByClassName('feature')[0].scrollHeight;
-        var infoString = 'ciu_embed:' + options.featureID + ':' + documentHeight;
-        parent.postMessage(infoString, "*");
-
-        window.onresize = function (event) {
-            documentHeight = document.getElementsByClassName('feature')[0].scrollHeight;
-            var infoString = 'ciu_embed:' + options.featureID + ':' + documentHeight;
+            // PASS HEIGHT TO PARENT DOCUMENT
+            var documentHeight = document.getElementsByClassName('feature')[0].scrollHeight;
+            var infoString = 'ciu_embed:' + OPTIONS.featureID + ':' + documentHeight;
             parent.postMessage(infoString, "*");
-        }
+
+            window.onresize = function (event) {
+                documentHeight = document.getElementsByClassName('feature')[0].scrollHeight;
+                var infoString = 'ciu_embed:' + OPTIONS.featureID + ':' + documentHeight;
+                parent.postMessage(infoString, "*");
+            }
+        })
+        .then(function() {
+
+            if (OPTIONS.accessibleColours) {
+                document.body.classList.add("accessible-colours");
+            }
+
+            if (!OPTIONS.screenshot) {
+                document.getElementById("accessibleColoursToggle").addEventListener("click", function () {
+                    document.body.classList.toggle("accessible-colours")
+                });
+            }
+
+            if (OPTIONS.screenshot) {
+                document.body.classList.add("screenshot");
+
+                var d = new Date();
+                var months = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
+                document.getElementById("footer-right").innerHTML = d.getDate() + ' ' + months[d.getMonth()] + ' ' + d.getFullYear();
+                document.querySelector(".icon-external-link").setAttribute("hidden", "true");
+            }
+
+            switch (FEATURE.dataSource) {
+                case 'mdn':
+                    document.getElementById("footer-left").innerHTML = "Data from <a href=\"https://github.com/mdn/browser-compat-data\">mozilla.org</a> | Embed from <a href=\"https://caniuse.bitsofco.de\">caniuse.bitsofco.de</a>";
+                    break;
+                case 'caniuse':
+                    document.getElementById("footer-left").innerHTML = "Data from <a href=\"https://caniuse.com\">caniuse.com</a> | Embed from <a href=\"https://caniuse.bitsofco.de\">caniuse.bitsofco.de</a>";
+                    break;
+            }
 
 
-    }, function (xhr) {
 
-        // IF ERROR GETTING JSON FILE
-        // *************************
-
-        document.getElementById('defaultMessage').innerHTML = 'Error Getting JSON File: ' + xhr.response;
-        console.error(xhr);
-
-    });	// end loadJSON
-
-
-    // TOGGLE ACCESSIBLE COLOURS
-    // *************************
-
-    if (options.accessibleColours) {
-        document.body.classList.add("accessible-colours");
-    }
-
-    if (!options.screenshot) {
-        document.getElementById("accessibleColoursToggle").addEventListener("click", function () {
-            document.body.classList.toggle("accessible-colours")
+        })
+        .catch(function (err) {
+            document.getElementById('defaultMessage').innerHTML = 'Feature not found...';
+            console.error(err);
         });
-    }
-
-
-    // DATE FOR SCREENSHOT
-    // *************************
-
-    if (options.screenshot) {
-
-        document.body.classList.add("screenshot");
-
-        var d = new Date();
-        var months = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
-        document.getElementById("footer-right").innerHTML = d.getDate() + ' ' + months[d.getMonth()] + ' ' + d.getFullYear();
-
-        document.getElementById("footer-left").innerHTML = "Data from caniuse.com | Embed from caniuse.bitsofco.de";
-        document.querySelector(".icon-external-link").setAttribute("hidden", "true");
-    }
 
 
 })();
