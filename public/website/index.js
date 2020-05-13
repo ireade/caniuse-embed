@@ -104,7 +104,7 @@ function displayPreview(preview) {
 	return preview;
 }
 
-function generateScreenshot(feature, periods, accessibleColours) {
+function captureStaticScreenshot(feature, periods, accessibleColours) {
 
 	const url = embedAPI + '/capture';
 
@@ -210,10 +210,12 @@ generateEmbedButton.addEventListener('click', function(e) {
 	}
 
 	function generateStaticImage(featureID, periods, accessibleColours) {
-		generateScreenshot(featureID, periods, accessibleColours)
+		captureStaticScreenshot(featureID, periods, accessibleColours)
 			.then((screenshot) => {
 				if (!screenshot) return console.log("Error generating screenshot");
                 if (!screenshot.public_id) return console.log("Error generating screenshot");
+
+                console.log(screenshot);
 
 				const splitPublicId = screenshot.public_id.split("/");
 				const filename = splitPublicId[splitPublicId.length - 1];
