@@ -1,5 +1,6 @@
 var generateEmbedButton = document.getElementById("generate-embed");
 var featureSelect = $('select[name="featureID"]');
+var embedAPI = 'https://caniuse-embed-screenshot-api.herokuapp.com';
 
 /* =====================
  * Utility functions
@@ -24,24 +25,27 @@ function getCheckedBoxes(chkboxName) {
  * =====================*/
 
 function getFeatureList() {
+	const url = embedAPI + '/features';
+	return fetch(url)
+		.then((res) => res.json())
+		.then((features) => {
 
-	$.get('https://caniuse-embed-screenshot-api.herokuapp.com/features', function(features) {
+			var options = "";
 
-		var options = "";
+			for (var i = 0; i < features.length; i++) {
+				var feature = features[i];
+				options += '<option value="'+feature.id+'">'+feature.title+'</option>';
+			}
 
-		for (var i = 0; i < features.length; i++) {
-			var feature = features[i];
-			options += '<option value="'+feature.id+'">'+feature.title+'</option>';
-		}
+			featureSelect.append(options);
 
-        featureSelect.append(options);
+			featureSelect.selectize({
+				create: false,
+				sortField: 'text',
+				placeholder: 'Select a Feature'
+			});
 
-        featureSelect.selectize({
-			create: false,
-			sortField: 'text',
-			placeholder: 'Select a Feature'
 		});
-	});
 }
 
 /* =====================
@@ -97,8 +101,7 @@ function displayPreview(preview) {
 
 function generateScreenshot(feature, periods, accessibleColours) {
 
-	const url = "https://caniuse-embed-screenshot-api.herokuapp.com/capture";
-	//const url = "http://localhost:3000/capture"; // @testing
+	const url = embedAPI + '/capture';
 
 	const options = {
 		method: "POST",
