@@ -1,40 +1,62 @@
 /* *******************************
- *  Global Variables
+ *
+ *   Global Variables
+ *
  * ******************************* */
 
 var OPTIONS;
-var BROWSERS = ['ie', 'edge', 'firefox', 'chrome', 'safari', 'ios_saf', 'op_mini', 'and_chr', 'android', 'samsung'];
+/*
+    OPTIONS: {
+        featureID*,
+        periods*,
+        accessibleColours,
+        imageBase,
+        screenshot
+    }
+ */
 var BROWSER_DATA;
 /*
-    browserVersions: {
-        chrome: {
-            past_1: "80"
-        }
-    },
-    browserUsage: {
-        chrome: {
-            past_1: "34.80"
+    BROWSER_DATA: {
+        browserVersions: {
+            chrome: {
+                past_1: "80"
+            }
+        },
+        browserUsage: {
+            chrome: {
+                past_1: "34.80"
+            }
         }
     }
 */
+
 var FEATURE;
 /*
+    FEATURE: {
+        feature: {
+            title*,
 
-    feature: {
-        title,
-        description,
-        usage_perc_y,
-        usage_perc_a,
-        global_a,
+            description,
+            usage_perc_y,
+            usage_perc_a,
+            global_a,
 
-        stats[browser][BROWSER_DATA.versions[browser][period]]
+            stats[browser][BROWSER_DATA.versions[browser][period]]
+
+            stats: {
+                chrome: {
+
+                }
+            }
+        }
     }
-
  */
 
 
 var caniuseDataUrl = 'https://raw.githubusercontent.com/Fyrd/caniuse/master/fulldata-json/data-2.0.json';
+var mdnDataUrlBse = 'https://raw.githubusercontent.com/mdn/browser-compat-data/master/';
 
+var BROWSERS = ['ie', 'edge', 'firefox', 'chrome', 'safari', 'ios_saf', 'op_mini', 'and_chr', 'android', 'samsung'];
 var MDN_BROWSERS_KEY = {
     'ie': 'ie',
     'edge': 'edge',
@@ -48,14 +70,18 @@ var MDN_BROWSERS_KEY = {
     'samsung': 'samsunginternet_android',
 };
 
+
+
 /* *******************************
- *  Functions
+ *
+ *   Functions - Utilities
+ *
  * ******************************* */
 
-function parseQueryParams() {
+function setGlobalOptions() {
 
     var params = window.location.search.split("?")[1].split("&");
-    var result = {};
+    var opts = {};
 
     params.forEach(function (param) {
         var key = param.split("=")[0];
@@ -63,44 +89,27 @@ function parseQueryParams() {
 
         switch (key) {
             case "feat":
-                result.featureID = value;
+                opts.featureID = value;
+                opts.dataSource = opts.featureID.indexOf('mdn-') === 0 ? 'mdn' : 'caniuse';
                 break;
             case "periods":
-                result.periods = value.split(",");
+                opts.periods = value.split(",");
                 break;
             case "accessible-colours":
-                result.accessibleColours = value === "true";
+                opts.accessibleColours = value === "true";
                 break;
             case "image-base":
-                if (value !== 'none') result.imageBase = value;
+                if (value !== 'none') opts.imageBase = value;
                 break;
             case "screenshot":
-                result.screenshot = value === "true";
+                opts.screenshot = value === "true";
                 break;
         }
     });
 
-    if (!result.periods) result.periods = ['future_1', 'current', 'past_1', 'past_2'];
-    return result;
-}
+    if (!opts.periods) opts.periods = ['future_1', 'current', 'past_1', 'past_2'];
 
-function setDefaultLoadingMessage() {
-    var defaultMessage;
-
-    if (!OPTIONS.featureID) {
-        defaultMessage = 'Error: Feature not specified';
-    } else if (OPTIONS.imageBase) {
-        defaultMessage = '<picture>' +
-            '<source type="image/webp" srcset="' + OPTIONS.imageBase + '.webp">' +
-            '<source type="image/png" srcset="' + OPTIONS.imageBase + '.png">' +
-            '<source type="image/jpeg" srcset="' + OPTIONS.imageBase + '.jpg">' +
-            '<img src="' + OPTIONS.imageBase + '.png" alt="Data on support for the ' + OPTIONS.featureID + ' feature across the major browsers from caniuse.com">' +
-            '</picture>';
-    } else {
-        defaultMessage = '<a href="http://caniuse.com/#feat=' + OPTIONS.featureID + '">Can I Use ' + OPTIONS.featureID + '?</a> Data on support for the ' + OPTIONS.featureID + ' feature across the major browsers from caniuse.com. (Embed Loading)';
-    }
-
-    document.getElementById('defaultMessage').innerHTML = defaultMessage;
+    OPTIONS = opts;
 }
 
 function getShortenedBrowserVersion(version) {
@@ -116,7 +125,7 @@ function makeRequest(url) {
         req.open('GET', url, true);
 
         req.onload = function() {
-            if (req.status == 200) {
+            if (req.status === 200) {
                 resolve( JSON.parse(req.response));
             } else {
                 reject(Error(req.statusText));
@@ -128,56 +137,80 @@ function makeRequest(url) {
     });
 }
 
+
+
+/* *******************************
+ *
+ *   Functions - Get Information
+ *
+ * ******************************* */
+
 function getFeature() {
 
-    var dataSource = OPTIONS.featureID.indexOf('mdn-') === 0 ? 'mdn' : 'caniuse';
+    switch (OPTIONS.dataSource) {
 
+        case 'mdn':
 
-    if (dataSource === 'mdn') {
-        var f = OPTIONS.featureID.split('mdn-')[1];
-        f = f.split('__'); // @separator
+            var f = OPTIONS.featureID.split('mdn-')[1];
+            f = f.split('__'); // @separator
 
-        var url = 'https://raw.githubusercontent.com/mdn/browser-compat-data/master/' + f.join('/') + '.json';
+            var url = mdnDataUrlBse + f.join('/') + '.json';
+            return makeRequest(url)
+                .then(function (res) {
 
-        return makeRequest(url)
-            .then(function (res) {
+                    var feature = res[f[0]];
+                    if (!feature.__compat) feature = res[f[0]][f[1]];
+                    if (!feature.__compat) feature = res[f[0]][f[1]][f[2]];
+                    if (!feature.__compat) feature = res[f[0]][f[1]][f[2]];
+                    if (!feature.__compat) feature = res[f[0]][f[1]][f[2]][f[3]];
+                    if (!feature.__compat) feature = res[f[0]][f[1]][f[2]][f[3]][f[4]];
 
-                var feature = res[f[0]];
-                if (!feature.__compat) feature = res[f[0]][f[1]];
-                if (!feature.__compat) feature = res[f[0]][f[1]][f[2]];
-                if (!feature.__compat) feature = res[f[0]][f[1]][f[2]];
-                if (!feature.__compat) feature = res[f[0]][f[1]][f[2]][f[3]];
-                if (!feature.__compat) feature = res[f[0]][f[1]][f[2]][f[3]][f[4]];
+                    feature = feature.__compat;
 
-                feature = feature.__compat;
+                    FEATURE = Object.assign({
+                        title: f.join(' '),
+                        url: feature.mdn_url,
+                    }, feature);
+                })
+                .then(function() {
+                    return getBrowserData()
+                });
 
-                FEATURE = Object.assign({
-                    dataSource: dataSource,
-                    title: f.join(' '),
-                    url: feature.mdn_url,
-                }, feature);
-            })
-            .then(function() {
-                return makeRequest(caniuseDataUrl)
-                    .then(function (res) {
-                        return parseBrowserData(res.agents);
-                    });
-            });
-    }
+        case 'caniuse':
+            return makeRequest(caniuseDataUrl)
+                .then(function (res) {
+                    FEATURE = Object.assign({
+                        url: 'http://caniuse.com/#feat=' + OPTIONS.featureID,
+                    }, res.data[OPTIONS.featureID]);
 
-    else {
-        return makeRequest(caniuseDataUrl)
-            .then(function (res) {
-                FEATURE = Object.assign({
-                    dataSource: dataSource,
-                    url: 'http://caniuse.com/#feat=' + OPTIONS.featureID,
-                }, res.data[OPTIONS.featureID]);
-
-                parseBrowserData(res.agents);
-            });
+                    return getBrowserData(res.agents);
+                });
     }
 
 }
+
+function getBrowserData(agents) {
+    return Promise.resolve()
+        .then(function () {
+            if (agents) return agents;
+
+            return makeRequest(caniuseDataUrl)
+                .then(function (res) {
+                    return res.agents;
+                });
+        })
+        .then(function (a) {
+            return parseBrowserData(a);
+        });
+}
+
+
+
+/* *******************************
+ *
+ *   Functions - Parsing Data
+ *
+ * ******************************* */
 
 function parseBrowserData(agents) {
 
@@ -239,25 +272,13 @@ function parseBrowserData(agents) {
         }
     }
 
-    BROWSER_DATA = {
+    return BROWSER_DATA = {
         versions: browserVersions,
         usage: browserUsage
     };
-
 }
 
-
 function parseSupportData() {
-
-    // GET DATA FOR EACH BROWSER
-    // *************************
-    /*
-        data: {
-            chrome: {
-                past_1: y
-            }
-        }
-     */
 
     var browserSupport = {};
 
@@ -290,7 +311,7 @@ function parseSupportData() {
         for (var x = 0; x < OPTIONS.periods.length; x++) {
             var period = OPTIONS.periods[x];
 
-            switch (FEATURE.dataSource) {
+            switch (OPTIONS.dataSource) {
                 case 'mdn':
                     parseMDNData(browser, period);
                     break;
@@ -305,28 +326,92 @@ function parseSupportData() {
 }
 
 
-function displayInformation() {
 
-    document.getElementById('featureTitle').innerHTML = FEATURE.title;
+/* *******************************
+ *
+ *   Functions - Displaying Data
+ *
+ * ******************************* */
+
+function displayLoadingMessage() {
+    var defaultMessage;
+
+    if (!OPTIONS.featureID) {
+        defaultMessage = 'No feature ID was specified';
+    } else if (OPTIONS.imageBase) {
+        defaultMessage = '<picture>' +
+            '<source type="image/webp" srcset="' + OPTIONS.imageBase + '.webp">' +
+            '<source type="image/png" srcset="' + OPTIONS.imageBase + '.png">' +
+            '<source type="image/jpeg" srcset="' + OPTIONS.imageBase + '.jpg">' +
+            '<img src="' + OPTIONS.imageBase + '.png" alt="Data on support for the ' + OPTIONS.featureID + ' feature across the major browsers">' +
+            '</picture>';
+    } else {
+        defaultMessage = 'Can I Use ' + OPTIONS.featureID + '? Data on support for the ' + OPTIONS.featureID + ' feature across the major browsers. (Embed Loading)';
+    }
+
+    document.getElementById('defaultMessage').innerHTML = defaultMessage;
+}
+
+function displayFeatureInformation() {
+
+    document.getElementById('featureTitle').textContent = FEATURE.title;
     document.getElementById('featureLink').href = FEATURE.url;
 
     if (FEATURE.description) {
         var featureDescription = FEATURE.description;
         featureDescription = featureDescription.replace(/</g, "&lt;");
         featureDescription = featureDescription.replace(/>/g, "&gt;");
+        featureDescription = featureDescription.replace(/&lt;code&gt;/g, "");
+        featureDescription = featureDescription.replace(/&lt;\/code&gt;/g, "");
         document.getElementById('featureDescription').innerHTML = featureDescription;
     }
 
     if (FEATURE.usage_perc_y) {
         var global_y = FEATURE.usage_perc_y;
         var global_a = FEATURE.usage_perc_a;
-        var global_total = global_y + global_a,
-            global_total = global_total.toFixed(2);
+        var global_total = global_y + global_a;
+        global_total = global_total.toFixed(2);
 
         document.getElementById('note').innerHTML = 'Global: <span class="y">' + global_y + '%</span> + <span class="a">' + global_a + '%</span> = ' + global_total + '%';
-    }
-}
+    } else if (FEATURE.status) {
 
+        if (FEATURE.status.experimental) {
+            document.getElementById('note').innerHTML = '<strong>Experimental</strong> feature';
+        }
+
+        if (FEATURE.status.deprecated) {
+            document.getElementById('note').innerHTML = '<strong>Deprecated</strong> feature';
+        }
+    }
+
+    if (OPTIONS.accessibleColours) {
+        document.body.classList.add("accessible-colours");
+    }
+
+    if (OPTIONS.screenshot) {
+        document.body.classList.add("screenshot");
+
+        var d = new Date();
+        var months = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
+        document.getElementById("footer-right").innerHTML = d.getDate() + ' ' + months[d.getMonth()] + ' ' + d.getFullYear();
+        document.querySelector(".icon-external-link").setAttribute("hidden", "true");
+    } else {
+        document.getElementById("accessibleColoursToggle").addEventListener("click", function () {
+            document.body.classList.toggle("accessible-colours")
+        });
+    }
+
+    switch (OPTIONS.dataSource) {
+        case 'mdn':
+            document.getElementById("footer-left").innerHTML = "Data from <a href=\"https://github.com/mdn/browser-compat-data\">mozilla.org</a> | Embed from <a href=\"https://caniuse.bitsofco.de\">caniuse.bitsofco.de</a>";
+            break;
+        case 'caniuse':
+            document.getElementById("footer-left").innerHTML = "Data from <a href=\"https://caniuse.com\">caniuse.com</a> | Embed from <a href=\"https://caniuse.bitsofco.de\">caniuse.bitsofco.de</a>";
+            break;
+    }
+
+    document.body.classList.add(OPTIONS.dataSource);
+}
 
 function displayTable(data) {
 
@@ -410,82 +495,46 @@ function displayTable(data) {
     hasFlag ? document.getElementById('legendD').style.display = "inline-block" : document.getElementById('legendD').style.display = "none";
 }
 
-// **************************************************************************************************
+function postDocumentHeight() {
+    // PASS HEIGHT TO PARENT DOCUMENT
+    var documentHeight = document.getElementsByClassName('feature')[0].scrollHeight;
+    var infoString = 'ciu_embed:' + OPTIONS.featureID + ':' + documentHeight;
+    parent.postMessage(infoString, "*");
+
+    window.onresize = function (event) {
+        documentHeight = document.getElementsByClassName('feature')[0].scrollHeight;
+        var infoString = 'ciu_embed:' + OPTIONS.featureID + ':' + documentHeight;
+        parent.postMessage(infoString, "*");
+    }
+}
+
+/* *******************************
+ *
+ *   Start
+ *
+ * ******************************* */
 
 (function () {
 
-
-    OPTIONS = parseQueryParams();
-
-    setDefaultLoadingMessage();
-
+    setGlobalOptions();
+    displayLoadingMessage();
 
     getFeature()
-        .then(function () {
-            if (BROWSER_DATA) return;
-            return getBrowserData();
-        })
         .then(function () {
             return parseSupportData();
         })
         .then(function (featureSupport) {
-            displayInformation();
+            displayFeatureInformation();
             displayTable(featureSupport);
-        })
-        .then(function () {
-            // AFTER EVERYTHING HAS LOADED, SHOW FEATURE AND HIDE DEFAULT MESSAGE
+
             document.getElementById('defaultMessage').style.display = "none";
             document.getElementsByClassName('feature')[0].style.display = "block";
 
-
-            // PASS HEIGHT TO PARENT DOCUMENT
-            var documentHeight = document.getElementsByClassName('feature')[0].scrollHeight;
-            var infoString = 'ciu_embed:' + OPTIONS.featureID + ':' + documentHeight;
-            parent.postMessage(infoString, "*");
-
-            window.onresize = function (event) {
-                documentHeight = document.getElementsByClassName('feature')[0].scrollHeight;
-                var infoString = 'ciu_embed:' + OPTIONS.featureID + ':' + documentHeight;
-                parent.postMessage(infoString, "*");
-            }
-        })
-        .then(function() {
-
-            if (OPTIONS.accessibleColours) {
-                document.body.classList.add("accessible-colours");
-            }
-
-            if (!OPTIONS.screenshot) {
-                document.getElementById("accessibleColoursToggle").addEventListener("click", function () {
-                    document.body.classList.toggle("accessible-colours")
-                });
-            }
-
-            if (OPTIONS.screenshot) {
-                document.body.classList.add("screenshot");
-
-                var d = new Date();
-                var months = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
-                document.getElementById("footer-right").innerHTML = d.getDate() + ' ' + months[d.getMonth()] + ' ' + d.getFullYear();
-                document.querySelector(".icon-external-link").setAttribute("hidden", "true");
-            }
-
-            switch (FEATURE.dataSource) {
-                case 'mdn':
-                    document.getElementById("footer-left").innerHTML = "Data from <a href=\"https://github.com/mdn/browser-compat-data\">mozilla.org</a> | Embed from <a href=\"https://caniuse.bitsofco.de\">caniuse.bitsofco.de</a>";
-                    break;
-                case 'caniuse':
-                    document.getElementById("footer-left").innerHTML = "Data from <a href=\"https://caniuse.com\">caniuse.com</a> | Embed from <a href=\"https://caniuse.bitsofco.de\">caniuse.bitsofco.de</a>";
-                    break;
-            }
-
-
-
+            postDocumentHeight();
         })
         .catch(function (err) {
             document.getElementById('defaultMessage').innerHTML = 'Feature not found...';
             console.error(err);
         });
-
 
 })();

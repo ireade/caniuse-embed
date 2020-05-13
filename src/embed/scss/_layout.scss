@@ -8,6 +8,14 @@
   display: none;
 }
 
+body.caniuse .feature {
+  border-color: $theme-caniuse;
+}
+
+body.mdn .feature {
+  border-color: $theme-mdn;
+}
+
 body.screenshot {
     padding-top: 10px;
 }
@@ -51,6 +59,14 @@ body.screenshot {
   font-size: 1.1rem;
   display: flex;
   justify-content: space-between;
+}
+
+body.caniuse .footer {
+  background-color: $theme-caniuse;
+}
+
+body.mdn .footer {
+  background-color: $theme-mdn;
 }
 
 .footer button {
