@@ -1,4 +1,5 @@
-const generateEmbedButton = document.getElementById("generate-embed");
+var generateEmbedButton = document.getElementById("generate-embed");
+var featureSelect = $('select[name="featureID"]');
 
 /* =====================
  * Utility functions
@@ -24,10 +25,8 @@ function getCheckedBoxes(chkboxName) {
 
 function getFeatureList() {
 
-
 	$.get('http://caniuse-embed-screenshot-api.herokuapp.com/features', function(features) {
 
-		var select = $('select[name="featureID"]');
 		var options = "";
 
 		for (var i = 0; i < features.length; i++) {
@@ -35,9 +34,9 @@ function getFeatureList() {
 			options += '<option value="'+feature.id+'">'+feature.title+'</option>';
 		}
 
-		select.append(options);
+        featureSelect.append(options);
 
-		select.selectize({
+        featureSelect.selectize({
 			create: false,
 			sortField: 'text',
 			placeholder: 'Select a Feature'
@@ -53,18 +52,14 @@ function generatePreview(featureID, periods, accessibleColours, imageBase) {
 
 	imageBase = imageBase || 'https://caniuse.bitsofco.de/image/' + featureID;
 
-	var image = `<a href="http://caniuse.com/#feat=${featureID}">
-		<picture>
+	var image = `<picture>
 			<source type="image/webp" srcset="${imageBase}.webp">
 			<source type="image/png" srcset="${imageBase}.png">
 			<img src="${imageBase}.jpg" alt="Data on support for the ${featureID} feature across the major browsers from caniuse.com">
-		</picture>
-	</a>`;
+		</picture>`;
 
 	if ((featureID.indexOf("mdn-") === 0)) {
-		image = `<a href="http://caniuse.com/#feat=${featureID}">
-			<p>Data on support for the ${featureID} feature across the major browsers from mozilla</p>
-		</a>`;
+		image = `<p>Data on support for the ${featureID} feature across the major browsers from mozilla</p>`;
 	}
 
 	if (embedType === "interactive-embed") {
@@ -128,6 +123,21 @@ function generateScreenshot(feature, periods, accessibleColours) {
 		.then(() => screenshot);
 }
 
+function setDateForStaticImage() {
+
+    var span = document.getElementById('static-image-date');
+
+    var monthNames = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
+
+    var d = new Date();
+    var day = d.getDate();
+    var month = monthNames[d.getMonth()];
+    var year = d.getFullYear();
+
+    span.textContent = '(as of ' + day + ' ' + month + ' ' + year + ')';
+
+}
+
 /* =====================
  * Initialise
  * =====================*/
@@ -138,6 +148,18 @@ new Clipboard(document.getElementById('copyStepOne'));
 $('input[value="current"]').on('click', function() { return false; });
 
 getFeatureList();
+
+setDateForStaticImage();
+
+featureSelect.on('change', function (e) {
+    var option = e.target[0];
+    var dataSource = option.value.indexOf('mdn-') === 0 ? 'mdn' : 'caniuse';
+    if (dataSource === 'mdn') {
+        document.querySelector('input[type="radio"][value="live-image"]').setAttribute('disabled', 'disabled');
+    } else {
+        document.querySelector('input[type="radio"][value="live-image"]').removeAttribute('disabled');
+    }
+});
 
 $('input[name="embed-type"]').on('change', function(e) {
 
@@ -183,6 +205,7 @@ generateEmbedButton.addEventListener('click', function(e) {
 		generateScreenshot(featureID, periods, accessibleColours)
 			.then((screenshot) => {
 				if (!screenshot) return console.log("Error generating screenshot");
+                if (!screenshot.public_id) return console.log("Error generating screenshot");
 
 				const splitPublicId = screenshot.public_id.split("/");
 				const filename = splitPublicId[splitPublicId.length - 1];
@@ -201,7 +224,9 @@ generateEmbedButton.addEventListener('click', function(e) {
 	var periods = getCheckedBoxes("periods").join();
 	var accessibleColours = document.getElementById("add-accessible-colours").checked;
 
-	if (featureID.indexOf("mdn-") === 0) embedType = "interactive-embed"; // @todo;
+    if (featureID.indexOf("mdn-") === 0 && embedType === "live-image") {
+        embedType = "interactive-embed";
+    }
 
 	switch(embedType) {
 		case "interactive-embed":

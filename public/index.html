@@ -37,7 +37,8 @@
 		<section>
 			<h1>The CanIUse Embed</h1>
 
-			<p class="about">Embed up-to-date data from <a href="http://caniuse.com" target="_blank">caniuse.com</a>. Displays
+			<p class="about">Embed up-to-date data from <a href="http://caniuse.com" target="_blank">caniuse.com</a> and
+				<a href="https://github.com/mdn/browser-compat-data" target="_blank">mozilla's browser compat data</a>. Displays
 				feature support data for multiple versions of the 10 major browsers. Configurable, reliable, and fully responsive.</p>
 
 			<p><iframe src="https://ghbtns.com/github-btn.html?user=ireade&repo=caniuse-embed&type=star&count=false" frameborder="0"
@@ -68,28 +69,28 @@
 				</a>
             </p>
 
+			<p class="ciu_embed" data-feature="mdn-css__properties__z-index" data-periods="future_1,current,past_1,past_2" data-accessible-colours="false">
+				<a href="http://caniuse.com/#feat=mdn-css__properties__z-index">
+					Data on support for the mdn-css__properties__z-index feature across the major browsers from mozilla
+				</a>
+			</p>
+
 			<p>You can also select to display the accessible colours scheme by default. Although users will always have the option to toggle between the colour schemes.</p>
 
-			<p class="ciu_embed" data-feature="css-grid" data-periods="future_2,future_1,current" data-accessible-colours="true">
-                <a href="http://caniuse.com/#feat=css-grid">
-                    <picture>
-                    <source type="image/webp" srcset="https://caniuse.bitsofco.de/image/css-grid.webp">
-                    <img src="https://caniuse.bitsofco.de/image/css-grid.png" alt="Data on support for the css-grid feature across the major browsers from caniuse.com">
-                    </picture>
-                </a>
-            </p>
-
+			<br>
 			<h3>Live Image</h3>
 			<p>For use in places where Javascript is not supported, you can use the live image instead. The image is updated daily.</p>
             <img src="https://caniuse.bitsofco.de/image/css-grid.png" alt="Data on support for the css-grid feature across the major browsers from caniuse.com">
             <br><br>
             <p>The image can be accessed by passing the feature ID into the URL (or generating one below):</p>
             <div class="highlight cf">
-                <pre id="stepOne">https://caniuse.bitsofco.de/image/css-grid.png
+                <pre>https://caniuse.bitsofco.de/image/css-grid.png
 https://caniuse.bitsofco.de/image/css-grid.webp
 https://caniuse.bitsofco.de/image/css-grid.jpg
                 </pre>
             </div>
+			<p>Note: Currently only works for features from caniuse.com, not mozilla data</p>
+
             <br>
 
 			<h3>Static Image</h3>
@@ -105,6 +106,15 @@ https://caniuse.bitsofco.de/image/css-grid.jpg
 		<section class="site-section" id="how-to-use">
 			<h2>Create your Embed</h2>
 
+			<section id="step-feature">
+				<h3>Select Feature</h3>
+				<p>What feature are you trying to display?</p>
+
+				<div class="input-group">
+					<select name="featureID" id="featureID" aria-label="Feature"></select>
+				</div>
+			</section>
+
 			<section id="step-type">
 				<h3>Select Embed Type</h3>
 				<p>What type of embed would you like? See examples above for more information</p>
@@ -114,16 +124,7 @@ https://caniuse.bitsofco.de/image/css-grid.jpg
 
 					<label><input type="radio" name="embed-type" value="live-image"> Live Image</label>
 
-					<label><input type="radio" name="embed-type" value="static-image"> Static Image</label>
-				</div>
-			</section>
-
-			<section id="step-feature">
-				<h3>Select Feature</h3>
-				<p>What feature from caniuse.com are you trying to display?</p>
-
-				<div class="input-group">
-					<select name="featureID" id="featureID" aria-label="Feature"></select>
+					<label><input type="radio" name="embed-type" value="static-image"> Static Image <span id="static-image-date"></span></label>
 				</div>
 			</section>
 
