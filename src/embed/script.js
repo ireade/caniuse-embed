@@ -296,9 +296,13 @@ function parseSupportData() {
             return;
         }
 
-        const version_added = supportData.version_added;
-        const this_version = BROWSER_DATA.versions[browser][period];
-        const isSupported = parseFloat(this_version) >= parseFloat(version_added);
+        var version_added = supportData.version_added;
+        var this_version = BROWSER_DATA.versions[browser][period];
+
+        var isSupported = parseFloat(this_version) >= parseFloat(version_added);
+        if (this_version === 'TP' && version_added > 0) {
+            isSupported = true;
+        }
 
         browserSupport[browser][period] = isSupported ? 'y' : 'n';
     }

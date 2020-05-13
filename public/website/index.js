@@ -25,7 +25,7 @@ function getCheckedBoxes(chkboxName) {
 
 function getFeatureList() {
 
-	$.get('http://caniuse-embed-screenshot-api.herokuapp.com/features', function(features) {
+	$.get('https://caniuse-embed-screenshot-api.herokuapp.com/features', function(features) {
 
 		var options = "";
 
