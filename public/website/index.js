@@ -54,25 +54,30 @@ function getFeatureList() {
 
 function generatePreview(featureID, periods, accessibleColours, imageBase) {
 
-	imageBase = imageBase || 'https://caniuse.bitsofco.de/image/' + featureID;
+	var textPreview = `<p>Data on support for the ${featureID} feature across the major browsers</p>`;
+	var imagePreview;
 
-	var image = `<picture>
+	if (!imageBase && featureID.indexOf("mdn-") !== 0) {
+		imageBase = 'https://caniuse.bitsofco.de/image/' + featureID;
+	}
+
+	if (imageBase) {
+		imagePreview = `<picture>
 			<source type="image/webp" srcset="${imageBase}.webp">
 			<source type="image/png" srcset="${imageBase}.png">
 			<img src="${imageBase}.jpg" alt="Data on support for the ${featureID} feature across the major browsers from caniuse.com">
 		</picture>`;
-
-	if ((featureID.indexOf("mdn-") === 0)) {
-		image = `<p>Data on support for the ${featureID} feature across the major browsers from mozilla</p>`;
 	}
 
+	var preview = imagePreview || textPreview;
+
 	if (embedType === "interactive-embed") {
-		return `<p class="ciu_embed" data-feature="${featureID}" data-periods="${periods}" data-accessible-colours="${accessibleColours}">
-		${image}
+		preview = `<p class="ciu_embed" data-feature="${featureID}" data-periods="${periods}" data-accessible-colours="${accessibleColours}">
+		${imagePreview || textPreview}
 	</p>`;
 	}
 
-	return image;
+	return preview;
 }
 
 function displayExportCode(preview) {
