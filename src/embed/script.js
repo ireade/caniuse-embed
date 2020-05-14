@@ -207,7 +207,7 @@ function getFeature() {
             return get(caniuseDataUrl)
                 .then(function (res) {
                     FEATURE = Object.assign({
-                        url: 'http://caniuse.com/#feat=' + OPTIONS.featureID,
+                        url: 'https://caniuse.com/#feat=' + OPTIONS.featureID,
                     }, res.data[OPTIONS.featureID]);
 
                     return getBrowserData(res.agents);
