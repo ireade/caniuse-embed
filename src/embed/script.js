@@ -55,6 +55,7 @@ var FEATURE;
 
 var caniuseDataUrl = 'https://raw.githubusercontent.com/Fyrd/caniuse/master/fulldata-json/data-2.0.json';
 var mdnDataUrlBse = 'https://raw.githubusercontent.com/mdn/browser-compat-data/master/';
+var embedAPI = 'https://api.caniuse.bitsofco.de';
 
 var BROWSERS = ['ie', 'edge', 'firefox', 'chrome', 'safari', 'ios_saf', 'op_mini', 'and_chr', 'android', 'samsung'];
 var MDN_BROWSERS_KEY = {
@@ -119,7 +120,7 @@ function getShortenedBrowserVersion(version) {
     return version;
 }
 
-function makeRequest(url) {
+function get(url) {
     return new Promise(function(resolve, reject) {
         var req = new XMLHttpRequest();
         req.open('GET', url, true);
@@ -134,6 +135,25 @@ function makeRequest(url) {
 
         req.onerror = function() { reject(Error("Network Error")); };
         req.send();
+    });
+}
+
+function post(url, body) {
+    return new Promise(function(resolve, reject) {
+        var req = new XMLHttpRequest();
+        req.open('POST', url, true);
+        req.setRequestHeader('Content-type', 'application/json; charset=utf-8');
+
+        req.onload = function() {
+            if (req.status === 200) {
+                resolve( JSON.parse(req.response));
+            } else {
+                reject(Error(req.statusText));
+            }
+        };
+
+        req.onerror = function() { reject(Error("Network Error")); };
+        req.send( JSON.stringify(body) );
     });
 }
 
@@ -153,9 +173,16 @@ function getFeature() {
 
             var f = OPTIONS.featureID.split('mdn-')[1];
             f = f.split('__'); // @separator
+            var featureTitle = '';
 
-            var url = mdnDataUrlBse + f.join('/') + '.json';
-            return makeRequest(url)
+            return post(
+                embedAPI + '/format-mdn-feature-title',
+                { feature: OPTIONS.featureID }
+                )
+                .then(function (res) {
+                    featureTitle = res.title;
+                    return get(mdnDataUrlBse + f.join('/') + '.json');
+                })
                 .then(function (res) {
 
                     var feature = res[f[0]];
@@ -168,7 +195,7 @@ function getFeature() {
                     feature = feature.__compat;
 
                     FEATURE = Object.assign({
-                        title: f.join(' '),
+                        title: featureTitle,
                         url: feature.mdn_url,
                     }, feature);
                 })
@@ -177,7 +204,7 @@ function getFeature() {
                 });
 
         case 'caniuse':
-            return makeRequest(caniuseDataUrl)
+            return get(caniuseDataUrl)
                 .then(function (res) {
                     FEATURE = Object.assign({
                         url: 'http://caniuse.com/#feat=' + OPTIONS.featureID,
@@ -194,7 +221,7 @@ function getBrowserData(agents) {
         .then(function () {
             if (agents) return agents;
 
-            return makeRequest(caniuseDataUrl)
+            return get(caniuseDataUrl)
                 .then(function (res) {
                     return res.agents;
                 });
