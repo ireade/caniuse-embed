@@ -165,40 +165,23 @@ function post(url, body) {
  * ******************************* */
 
 function getFeature() {
-
     switch (OPTIONS.dataSource) {
 
         case 'mdn':
 
-            var f = OPTIONS.featureID.split('mdn-')[1];
-            f = f.split('__'); // @separator
-            var featureTitle = '';
-
-            return post(
-                embedAPI + '/format-mdn-feature-title',
-                { feature: OPTIONS.featureID }
-                )
-                .then(function (res) {
-                    featureTitle = res.title;
-
-                    var url = embedAPI + '/mdn-browser-compat-data';
-                    var body = { feature: OPTIONS.featureID };
-                    return post(url, body);
-                })
+            var url = embedAPI + '/mdn-browser-compat-data';
+            var body = { feature: OPTIONS.featureID };
+            return post(url, body)
                 .then(function (feature) {
-
-                    console.log(feature);
-
                     FEATURE = Object.assign({
-                        title: featureTitle,
                         url: feature.mdn_url,
                     }, feature);
-                })
-                .then(function() {
+
                     return getBrowserData()
                 });
 
         case 'caniuse':
+
             return get(caniuseDataUrl)
                 .then(function (res) {
                     FEATURE = Object.assign({
@@ -208,7 +191,6 @@ function getFeature() {
                     return getBrowserData(res.agents);
                 });
     }
-
 }
 
 function getBrowserData(agents) {
