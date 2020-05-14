@@ -54,7 +54,6 @@ var FEATURE;
 
 
 var caniuseDataUrl = 'https://raw.githubusercontent.com/Fyrd/caniuse/master/fulldata-json/data-2.0.json';
-var mdnDataUrlBse = 'https://raw.githubusercontent.com/mdn/browser-compat-data/master/';
 var embedAPI = 'https://api.caniuse.bitsofco.de';
 
 var BROWSERS = ['ie', 'edge', 'firefox', 'chrome', 'safari', 'ios_saf', 'op_mini', 'and_chr', 'android', 'samsung'];
@@ -120,7 +119,7 @@ function getShortenedBrowserVersion(version) {
     return version;
 }
 
-function get(url) {
+function get(url, body) {
     return new Promise(function(resolve, reject) {
         var req = new XMLHttpRequest();
         req.open('GET', url, true);
@@ -134,7 +133,9 @@ function get(url) {
         };
 
         req.onerror = function() { reject(Error("Network Error")); };
-        req.send();
+
+        if (body) req.send( JSON.stringify(body) );
+        else req.send();
     });
 }
 
@@ -181,7 +182,10 @@ function getFeature() {
                 )
                 .then(function (res) {
                     featureTitle = res.title;
-                    return get(mdnDataUrlBse + f.join('/') + '.json');
+
+                    var url = embedAPI + '/mdn-browser-compat-data';
+                    var body = { feature: OPTIONS.featureID };
+                    return get(url, body);
                 })
                 .then(function (res) {
 
