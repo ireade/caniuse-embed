@@ -119,7 +119,7 @@ function getShortenedBrowserVersion(version) {
     return version;
 }
 
-function get(url, body) {
+function get(url) {
     return new Promise(function(resolve, reject) {
         var req = new XMLHttpRequest();
         req.open('GET', url, true);
@@ -133,9 +133,7 @@ function get(url, body) {
         };
 
         req.onerror = function() { reject(Error("Network Error")); };
-
-        if (body) req.send( JSON.stringify(body) );
-        else req.send();
+        req.send();
     });
 }
 
@@ -185,9 +183,12 @@ function getFeature() {
 
                     var url = embedAPI + '/mdn-browser-compat-data';
                     var body = { feature: OPTIONS.featureID };
-                    return get(url, body);
+                    return post(url, body);
                 })
                 .then(function (feature) {
+
+                    console.log(feature);
+
                     FEATURE = Object.assign({
                         title: featureTitle,
                         url: feature.mdn_url,
