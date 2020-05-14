@@ -1,6 +1,6 @@
 var generateEmbedButton = document.getElementById("generate-embed");
 var featureSelect = $('select[name="featureID"]');
-var embedAPI = 'https://caniuse-embed-screenshot-api.herokuapp.com';
+var embedAPI = 'https://api.caniuse.bitsofco.de';
 
 /* =====================
  * Utility functions
