@@ -187,17 +187,7 @@ function getFeature() {
                     var body = { feature: OPTIONS.featureID };
                     return get(url, body);
                 })
-                .then(function (res) {
-
-                    var feature = res[f[0]];
-                    if (!feature.__compat) feature = res[f[0]][f[1]];
-                    if (!feature.__compat) feature = res[f[0]][f[1]][f[2]];
-                    if (!feature.__compat) feature = res[f[0]][f[1]][f[2]];
-                    if (!feature.__compat) feature = res[f[0]][f[1]][f[2]][f[3]];
-                    if (!feature.__compat) feature = res[f[0]][f[1]][f[2]][f[3]][f[4]];
-
-                    feature = feature.__compat;
-
+                .then(function (feature) {
                     FEATURE = Object.assign({
                         title: featureTitle,
                         url: feature.mdn_url,
@@ -542,6 +532,8 @@ function postDocumentHeight() {
         parent.postMessage(infoString, "*");
     }
 }
+
+
 
 /* *******************************
  *
