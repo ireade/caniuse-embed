@@ -312,19 +312,19 @@ function parseSupportData() {
         var this_version = BROWSER_DATA.versions[browser][period];
 
         function getValue(key) {
-            var obj;
+            var val;
 
             if (supportData[key]) {
-                obj = supportData[key]
+                val = supportData[key]
             } else if (supportData[0] && supportData[0][key]) {
-                obj = supportData[0][key]
+                val = supportData[0][key]
             } else if (supportData[1] && supportData[1][key]) {
-                obj = supportData[1][key]
+                val = supportData[1][key]
             }
 
-            if (obj) obj = obj.replace(/≤/g, "");
+            if (val) val = val.replace(/≤/g, "");
 
-            return obj;
+            return val;
         }
 
         var version_added = getValue('version_added');
