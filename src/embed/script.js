@@ -300,11 +300,17 @@ function parseSupportData() {
             return;
         }
 
-        var version_added = supportData.version_added;
         var this_version = BROWSER_DATA.versions[browser][period];
 
-        var isSupported = parseFloat(this_version) >= parseFloat(version_added);
-        if (this_version === 'TP' && version_added > 0) {
+        var version_added = supportData.version_added;
+        if (supportData[0]) version_added = supportData[0].version_added;
+
+        var isSupported = false;
+        if (version_added === true) {
+            isSupported = true;
+        } else if (this_version === 'TP' && version_added > 0) {
+            isSupported = true;
+        } else if (parseFloat(this_version) >= parseFloat(version_added)) {
             isSupported = true;
         }
 
@@ -421,7 +427,7 @@ function displayFeatureInformation() {
     document.body.classList.add(OPTIONS.dataSource);
 }
 
-function displayTable(data) {
+function displayTable(featureSupport) {
 
     //  Create empty table cells for each browser and each period
 
@@ -472,7 +478,7 @@ function displayTable(data) {
 
 
             // 	ADD SUPPORT CLASS TO TABLE CELL
-            data[browser][period] != undefined ? period_element.className += ' ' + data[browser][period] : false;
+            featureSupport[browser][period] != undefined ? period_element.className += ' ' + featureSupport[browser][period] : false;
 
             // GET VERSION NUMBER + BROWSER USAGE
             var browserVersion = getShortenedBrowserVersion(BROWSER_DATA.versions[browser][period]);
@@ -482,13 +488,13 @@ function displayTable(data) {
             BROWSER_DATA.versions[browser][period] != undefined ? period_element.innerHTML = versionString : period_element.innerHTML = '<span></span>';
 
             // CHECK IF ANY HAS PREFIX OR UNKNOWN
-            if (data[browser][period] != undefined && data[browser][period].indexOf('x') > -1) {
+            if (featureSupport[browser][period] != undefined && featureSupport[browser][period].indexOf('x') > -1) {
                 hasPrefixed = true;
             }
-            if (data[browser][period] != undefined && data[browser][period].indexOf('u') > -1) {
+            if (featureSupport[browser][period] != undefined && featureSupport[browser][period].indexOf('u') > -1) {
                 hasUnknown = true;
             }
-            if (data[browser][period] != undefined && data[browser][period].indexOf('d') > -1) {
+            if (featureSupport[browser][period] != undefined && featureSupport[browser][period].indexOf('d') > -1) {
                 hasFlag = true;
             }
 
@@ -534,6 +540,10 @@ function postDocumentHeight() {
             return parseSupportData();
         })
         .then(function (featureSupport) {
+
+            console.log(FEATURE);
+            console.log(featureSupport);
+
             displayFeatureInformation();
             displayTable(featureSupport);
 
