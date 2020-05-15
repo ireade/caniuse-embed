@@ -70,6 +70,15 @@ var MDN_BROWSERS_KEY = {
     'samsung': 'samsunginternet_android',
 };
 
+var FEATURE_IDENTIFIERS = {
+    supported: 'y',
+    unsupported: 'n',
+    partial: 'a',
+    unknown: 'u',
+    prefixed: 'x',
+    flagged: 'd'
+};
+
 
 
 /* *******************************
@@ -296,16 +305,33 @@ function parseSupportData() {
 
         var supportData = FEATURE.support[MDN_BROWSERS_KEY[browser]];
         if (!supportData) {
-            browserSupport[browser][period] = 'u';
+            browserSupport[browser][period] = FEATURE_IDENTIFIERS.unknown;
             return;
         }
 
         var this_version = BROWSER_DATA.versions[browser][period];
 
-        var version_added = supportData.version_added;
-        if (supportData[0]) version_added = supportData[0].version_added;
+        function getValue(key) {
+            var obj;
+
+            if (supportData[key]) {
+                obj = supportData[key]
+            } else if (supportData[0] && supportData[0][key]) {
+                obj = supportData[0][key]
+            } else if (supportData[1] && supportData[1][key]) {
+                obj = supportData[1][key]
+            }
+
+            if (obj) obj = obj.replace(/≤/g, "");
+
+            return obj;
+        }
+
+        var version_added = getValue('version_added');
+        var version_removed = getValue('version_removed');
 
         var isSupported = false;
+
         if (version_added === true) {
             isSupported = true;
         } else if (this_version === 'TP' && version_added > 0) {
@@ -313,8 +339,12 @@ function parseSupportData() {
         } else if (parseFloat(this_version) >= parseFloat(version_added)) {
             isSupported = true;
         }
+        if (version_removed && (parseFloat(this_version) <= parseFloat(version_removed))) {
+            isSupported = false;
+        }
 
-        browserSupport[browser][period] = isSupported ? 'y' : 'n';
+        var supportString = isSupported ? FEATURE_IDENTIFIERS.supported :  FEATURE_IDENTIFIERS.unsupported;
+        browserSupport[browser][period] = supportString;
     }
 
     for (var i = 0; i < BROWSERS.length; i++) {
@@ -488,13 +518,13 @@ function displayTable(featureSupport) {
             BROWSER_DATA.versions[browser][period] != undefined ? period_element.innerHTML = versionString : period_element.innerHTML = '<span></span>';
 
             // CHECK IF ANY HAS PREFIX OR UNKNOWN
-            if (featureSupport[browser][period] != undefined && featureSupport[browser][period].indexOf('x') > -1) {
+            if (featureSupport[browser][period] != undefined && featureSupport[browser][period].indexOf(FEATURE_IDENTIFIERS.prefixed) > -1) {
                 hasPrefixed = true;
             }
-            if (featureSupport[browser][period] != undefined && featureSupport[browser][period].indexOf('u') > -1) {
+            if (featureSupport[browser][period] != undefined && featureSupport[browser][period].indexOf(FEATURE_IDENTIFIERS.unknown) > -1) {
                 hasUnknown = true;
             }
-            if (featureSupport[browser][period] != undefined && featureSupport[browser][period].indexOf('d') > -1) {
+            if (featureSupport[browser][period] != undefined && featureSupport[browser][period].indexOf(FEATURE_IDENTIFIERS.flagged) > -1) {
                 hasFlag = true;
             }
 
