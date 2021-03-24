@@ -53,7 +53,7 @@ var FEATURE;
  */
 
 
-var caniuseDataUrl = 'https://raw.githubusercontent.com/Fyrd/caniuse/master/fulldata-json/data-2.0.json';
+var caniuseDataUrl = 'https://raw.githubusercontent.com/Fyrd/caniuse/main/fulldata-json/data-2.0.json';
 var embedAPI = 'https://api.caniuse.bitsofco.de';
 
 var BROWSERS = ['ie', 'edge', 'firefox', 'chrome', 'safari', 'ios_saf', 'op_mini', 'and_chr', 'android', 'samsung'];
