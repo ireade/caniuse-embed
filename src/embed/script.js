@@ -447,7 +447,7 @@ function displayFeatureInformation() {
 
     switch (OPTIONS.dataSource) {
         case 'mdn':
-            document.getElementById("footer-left").innerHTML = "Data from <a href=\"https://github.com/mdn/browser-compat-data\">mozilla.org</a> | Embed from <a href=\"https://caniuse.bitsofco.de\">caniuse.bitsofco.de</a>";
+            document.getElementById("footer-left").innerHTML = "Data from <a href=\"https://github.com/mdn/browser-compat-data\">MDN</a> | Embed from <a href=\"https://caniuse.bitsofco.de\">caniuse.bitsofco.de</a>";
             break;
         case 'caniuse':
             document.getElementById("footer-left").innerHTML = "Data from <a href=\"https://caniuse.com\">caniuse.com</a> | Embed from <a href=\"https://caniuse.bitsofco.de\">caniuse.bitsofco.de</a>";
