@@ -19,7 +19,7 @@
   },
   "homepage": "https://github.com/ireade/caniuse-embed",
   "devDependencies": {
-    "gulp": "^3.9.1",
+    "gulp": "^4.0.2",
     "gulp-connect": "^5.7.0",
     "gulp-minify-html": "^1.0.6",
     "gulp-sass": "^4.0.2",
