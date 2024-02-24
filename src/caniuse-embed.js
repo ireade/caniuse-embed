@@ -1,5 +1,5 @@
 (function() {
-  document.addEventListener("DOMContentLoaded", function() {
+  function init() {
 
     var caniuse_embeds = document.getElementsByClassName("ciu_embed");
 
@@ -51,6 +51,14 @@
       } 
     },false);
 
-  }); // end DOMContentLoaded
+  }
+
+  if (document.readyState === "loading") {
+    // The document hasn't finished loading
+    document.addEventListener("DOMContentLoaded", init);
+  } else {
+    // `DOMContentLoaded` has already fired
+    init();
+  }
 
 }());

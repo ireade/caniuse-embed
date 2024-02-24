@@ -1,52 +1,53 @@
-var gulp = require('gulp'),
-    sass = require('gulp-sass'),
-    gutil = require('gulp-util'),
-    uglify = require('gulp-uglifyjs'),
-    minifyHTML = require('gulp-minify-html'),
-    connect = require('gulp-connect');
+const gulp = require('gulp');
+const sass = require('gulp-sass')(require('sass'));
+const gutil = require('gulp-util');
+const uglify = require('gulp-uglifyjs');
+const minifyHTML = require('gulp-minify-html');
+const connect = require('gulp-connect');
 
-var caniuseEmbed = "src/caniuse-embed.js";
-var embedStyle = "src/embed/scss/style.scss";
-var embedScript = "src/embed/script.js";
-var embedHTML = "src/embed/index.html";
+const paths = {
+    caniuseEmbed: "src/caniuse-embed.js",
+    embedStyle: "src/embed/scss/style.scss",
+    embedScript: "src/embed/script.js",
+    embedHTML: "src/embed/index.html"
+};
 
-gulp.task('script', function() {
-    gulp.src(caniuseEmbed)
+function script() {
+    return gulp.src(paths.caniuseEmbed)
         .pipe(uglify('caniuse-embed.min.js'))
-        .pipe(gulp.dest('public'));
-    gulp.src(embedScript)
+        .pipe(gulp.dest('public'))
+        .pipe(gulp.src(paths.embedScript))
         .pipe(uglify())
         .pipe(gulp.dest('public/embed'));
-});
+}
 
-gulp.task('sass', function() {
-    gulp.src(embedStyle)
+function sassTask() {
+    return gulp.src(paths.embedStyle)
         .pipe(sass({
             outputStyle: 'compressed'
         })
-            .on('error', gutil.log))
+        .on('error', gutil.log))
         .pipe(gulp.dest('public/embed'));
-});
+}
 
-gulp.task('minify-html', function() {
-    return gulp.src(embedHTML)
+function minifyHtml() {
+    return gulp.src(paths.embedHTML)
         .pipe(minifyHTML({ empty: true }))
         .pipe(gulp.dest('public/embed'));
-});
+}
 
-gulp.task('connect', function() {
-    connect.server({
+function connectServer() {
+    return connect.server({
         port: 8000
     });
-});
+}
 
-gulp.task('watch', function() {
-    gulp.watch(caniuseEmbed,['script']); 
-    gulp.watch(embedScript,['script']); 
-    gulp.watch("src/embed/scss/*.scss",['sass']); 
-    gulp.watch(embedHTML,['minify-html']); 
-});
+function watch() {
+    gulp.watch(paths.caniuseEmbed, script); 
+    gulp.watch(paths.embedScript, script); 
+    gulp.watch("src/embed/scss/*.scss", sassTask); 
+    gulp.watch(paths.embedHTML, minifyHtml); 
+}
 
-gulp.task('default', ['script', 'sass', 'minify-html', 'watch']);
-
-gulp.task('full', ['connect', 'script', 'sass', 'minify-html', 'watch']);
+exports.default = gulp.series(script, sassTask, minifyHtml, watch);
+exports.full = gulp.series(connectServer, script, sassTask, minifyHtml, watch);
